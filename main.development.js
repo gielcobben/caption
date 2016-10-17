@@ -1,5 +1,19 @@
-import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+import os from 'os'
+import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import {download} from 'electron-dl'
+
+
+
+// -----
+const platform = os.platform() + '_' + os.arch();
+const version = app.getVersion();
+
+console.log("PLATFORM: " + platform);
+console.log("VERSION: " + version)
+
+autoUpdater.setFeedURL('http://updates.captionformac.com/update/'+platform+'/'+version);
+// -----
+
 
 require('electron-dl')();
 

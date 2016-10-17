@@ -22,6 +22,7 @@ export default class App extends Component {
     }
 
     componentWillMount() {
+
         OpenSubtitles.api.login().then((token) => {
             this.setState({
                 token: token
