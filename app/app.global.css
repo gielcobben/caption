@@ -1,0 +1,29 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  position: relative;
+  height: 100vh;
+  background: #fff;
+  color: #000;
+  overflow-y: hidden;
+}
+
+p {
+  font-size: 24px;
+}
+
+a {
+  color: white;
+  opacity: .75;
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
