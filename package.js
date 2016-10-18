@@ -148,7 +148,10 @@ function pack(plat, arch, cb) {
     arch,
     prune: true,
     'app-version': pkg.version || DEFAULT_OPTS.version,
-    out: `release/${plat}-${arch}`
+    out: `release/${plat}-${arch}`,
+    'osx-sign': {
+        identity: '76D2KX7X2M'
+    }
   });
 
   packager(opts, cb);
@@ -165,5 +168,6 @@ function log(plat, arch) {
   return (err, filepath) => {
     if (err) return console.error(err);
     console.log(`${plat}-${arch} finished!`);
+    console.log(`Finished ${pkg.productName} ${pkg.version}`);
   };
 }

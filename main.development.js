@@ -1,6 +1,7 @@
 import os from 'os'
 import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import {download} from 'electron-dl'
+import pgk from './package.json'
 
 
 
@@ -9,9 +10,26 @@ const platform = os.platform() + '_' + os.arch();
 const version = app.getVersion();
 
 console.log("PLATFORM: " + platform);
-console.log("VERSION: " + version)
+console.log("VERSION: " + pgk.version)
 
-autoUpdater.setFeedURL('http://updates.captionformac.com/update/'+platform+'/'+version);
+autoUpdater.setFeedURL('http://updates.captionformac.com/update/'+platform+'/'+pgk.version);
+autoUpdater.checkForUpdates();
+
+autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for updates...');
+});
+
+autoUpdater.on('update-available', () => {
+    console.log('New Update Available!');
+});
+
+autoUpdater.on('update-not-available', () => {
+    console.log(`You've got the latest version.`);
+});
+
+autoUpdater.on('update-downloaded', (e) => {
+    console.log(e);
+});
 // -----
 
 
