@@ -1,18 +1,20 @@
 import os from 'os'
 import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import {download} from 'electron-dl'
-import pgk from './package.json'
+import pkg from './package.json'
 
 
 
 // -----
 const platform = os.platform() + '_' + os.arch();
 const version = app.getVersion();
+const updateURL = `http://updates.captionformac.com/update/${platform}/${pkg.version}`;
 
 console.log("PLATFORM: " + platform);
-console.log("VERSION: " + pgk.version)
+console.log("VERSION: " + pkg.version);
+console.log("URL: " + updateURL);
 
-autoUpdater.setFeedURL('http://updates.captionformac.com/update/'+platform+'/'+pgk.version);
+autoUpdater.setFeedURL(updateURL);
 autoUpdater.checkForUpdates();
 
 autoUpdater.on('checking-for-update', () => {
@@ -28,8 +30,12 @@ autoUpdater.on('update-not-available', () => {
 });
 
 autoUpdater.on('update-downloaded', (e) => {
-    console.log(e);
+    autoUpdater.quitAndInstall();
 });
+
+autoUpdater.on('error', (error) => {
+    console.log(error)
+})
 // -----
 
 

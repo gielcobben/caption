@@ -1,7 +1,7 @@
 {
   "name": "caption",
   "productName": "Caption",
-  "version": "v0.1.0beta",
+  "version": "0.1.0-beta",
   "description": "Caption for Mac",
   "main": "main.js",
   "scripts": {
