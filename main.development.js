@@ -1,5 +1,5 @@
 import os from 'os'
-import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog } from 'electron';
 import {download} from 'electron-dl'
 import pkg from './package.json'
 
@@ -8,21 +8,32 @@ import pkg from './package.json'
 // -----
 const platform = os.platform() + '_' + os.arch();
 const version = app.getVersion();
-const updateURL = `http://updates.captionformac.com/update/${platform}/${pkg.version}`;
-
-console.log("PLATFORM: " + platform);
-console.log("VERSION: " + pkg.version);
-console.log("URL: " + updateURL);
+const updateURL = `http://localhost:6000/update/${os.platform()}?version=${pkg.version}`;
 
 autoUpdater.setFeedURL(updateURL);
-autoUpdater.checkForUpdates();
 
 autoUpdater.on('checking-for-update', () => {
     console.log('Checking for updates...');
 });
 
 autoUpdater.on('update-available', () => {
+
     console.log('New Update Available!');
+
+    const options = {
+        type: 'question',
+        buttons: ['Restart', 'Later'],
+        title: "Update Available",
+        message: 'The new version has been downloaded. Restart the application to apply the updates.',
+        detail: pkg.version
+    }
+
+    dialog.showMessageBox(options, function(response) {
+        if (response == 0) {
+            autoUpdater.quitAndInstall();
+        }
+    });
+
 });
 
 autoUpdater.on('update-not-available', () => {
@@ -30,12 +41,13 @@ autoUpdater.on('update-not-available', () => {
 });
 
 autoUpdater.on('update-downloaded', (e) => {
-    autoUpdater.quitAndInstall();
+    console.log(`update-downloaded`);
+    // autoUpdater.quitAndInstall();
 });
 
 autoUpdater.on('error', (error) => {
     console.log(error)
-})
+});
 // -----
 
 
@@ -123,10 +135,15 @@ app.on('ready', async () => {
 
   if (process.platform === 'darwin') {
     template = [{
-      label: 'Electron',
+      label: 'Caption',
       submenu: [{
-        label: 'About ElectronReact',
+        label: 'About Caption',
         selector: 'orderFrontStandardAboutPanel:'
+      }, {
+        label: 'Check for Updates...',
+        click() {
+          autoUpdater.checkForUpdates();
+        }
       }, {
         type: 'separator'
       }, {
@@ -135,7 +152,7 @@ app.on('ready', async () => {
       }, {
         type: 'separator'
       }, {
-        label: 'Hide ElectronReact',
+        label: 'Hide Caption',
         accelerator: 'Command+H',
         selector: 'hide:'
       }, {
@@ -225,6 +242,12 @@ app.on('ready', async () => {
       }, {
         label: 'Bring All to Front',
         selector: 'arrangeInFront:'
+      },{
+        label: 'Toggle Developer Tools',
+        accelerator: 'Alt+Command+I',
+        click() {
+          mainWindow.toggleDevTools();
+        }
       }]
     }, {
       label: 'Help',

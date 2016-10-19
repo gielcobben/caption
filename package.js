@@ -151,7 +151,8 @@ function pack(plat, arch, cb) {
     out: `release/${plat}-${arch}`,
     'osx-sign': {
         identity: '76D2KX7X2M'
-    }
+    },
+    overwrite: true
   });
 
   packager(opts, cb);
