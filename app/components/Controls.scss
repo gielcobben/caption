@@ -1,0 +1,26 @@
+.controls {
+    width: 33%;
+
+    li {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 6px;
+    }
+
+    .close {
+        background: #FF5F58;
+        box-shadow: inset 0px 0px 0px 0.5px #E14038;
+    }
+
+    .minimize {
+        background: #FFBD2D;
+        box-shadow: inset 0px 0px 0px 0.5px #E0A028;
+        margin: 0 8px;
+    }
+
+    .fullscreen {
+        background: #28CA41;
+        box-shadow: inset 0px 0px 0px 0.5px #1CA922;
+    }
+}

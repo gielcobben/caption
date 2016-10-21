@@ -25,7 +25,7 @@ autoUpdater.on('update-available', () => {
         buttons: ['Restart', 'Later'],
         title: "Update Available",
         message: 'The new version has been downloaded. Restart the application to apply the updates.',
-        detail: pkg.version
+        detail: `Caption ${pkg.version}`
     }
 
     dialog.showMessageBox(options, function(response) {
@@ -103,8 +103,8 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 550,
-    height: 450,
+    width: 400,
+    height: 365,
     frame: false
   });
 

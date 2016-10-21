@@ -1,0 +1,14 @@
+header {
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    cursor: default;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+    height: 40px;
+}

@@ -1,10 +1,17 @@
 // @flow
+import './App.scss';
+
 import OpenSubtitles from 'subtitler'
 import React, { Component, PropTypes } from 'react'
-import { TitleBar, Toolbar, SearchField } from 'react-desktop/macOs';
+// import { TitleBar, Toolbar, SearchField, Button } from 'react-desktop/macOs';
 import List from '../components/List'
 import {ipcRenderer, remote} from 'electron'
 
+// Giel:
+import Header from '../components/Header'
+import SearchField from '../components/SearchField'
+
+// App:
 export default class App extends Component {
 
     constructor(props, context) {
@@ -74,18 +81,28 @@ export default class App extends Component {
     }
 
     render() {
+        const circle = (
+            <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
+                <circle cx="12.5" cy="12.5" r="12.5"/>
+            </svg>
+        )
+
         return (
-            <div>
-                <TitleBar controls inset>
-                    <Toolbar height="43" horizontalAlignment="center">
-                        <SearchField width="300" placeholder="Search" defaultValue="" onCancel={this.handleCancel.bind(this)} onEnter={this.handleEnter.bind(this)} />
-                        <select onChange={this.handleLanguage.bind(this)}>
+            <div className="wrapper">
+                <Header />
+                <SearchField />
+                {/* <SearchField width="250" placeholder="Search" defaultValue="" onCancel={this.handleCancel.bind(this)} onEnter={this.handleEnter.bind(this)} /> */}
+                {/* <TitleBar controls inset>
+                    <Toolbar height={36}>
+                        <SearchField width="250" placeholder="Search" defaultValue="" onCancel={this.handleCancel.bind(this)} onEnter={this.handleEnter.bind(this)} />
+                        <select className="select" onChange={this.handleLanguage.bind(this)}>
                             <option value="eng">English</option>
                             <option value="dut">Dutch</option>
                         </select>
+                        <Button padding={5} />
                     </Toolbar>
                 </TitleBar>
-                <List loading={this.state.loading} results={this.state.results} width={this.state.windowWidth} height={this.state.windowHeight} />
+                <List loading={this.state.loading} results={this.state.results} width={this.state.windowWidth} height={this.state.windowHeight} /> */}
             </div>
         )
     }

@@ -1,8 +1,10 @@
 // @flow
+import './reset.scss';
+import './global.scss';
+
 import React from "react"
 import {render} from "react-dom"
 import { Router, Route, hashHistory } from 'react-router'
-import './app.global.css';
 
 import App from './containers/App'
 
