@@ -4,12 +4,14 @@ import './App.scss';
 import OpenSubtitles from 'subtitler'
 import React, { Component, PropTypes } from 'react'
 // import { TitleBar, Toolbar, SearchField, Button } from 'react-desktop/macOs';
-import List from '../components/List'
+// import List from '../components/List'
 import {ipcRenderer, remote} from 'electron'
 
 // Giel:
 import Header from '../components/Header'
 import SearchField from '../components/SearchField'
+import Loading from '../components/Loading'
+import List from '../components/List'
 
 // App:
 export default class App extends Component {
@@ -23,13 +25,12 @@ export default class App extends Component {
             query: null,
             lang: 'eng',
             results: [],
-            windowWidth: 550,
-            windowHeight: 450 - 43
+            windowWidth: 400,
+            windowHeight: 365 - 43
         }
     }
 
     componentWillMount() {
-
         OpenSubtitles.api.login().then((token) => {
             this.setState({
                 token: token
@@ -48,36 +49,48 @@ export default class App extends Component {
 
         this.setState({
             windowWidth: size[0],
-            windowHeight: size[1] - 43
+            windowHeight: size[1] - 36
         })
     }
 
-    handleEnter(e) {
-        if (e.target.value) {
+    searchSubtitle() {
+        // Check is there's an query
+        if (this.state.query) {
+
+            // Set loading to True
             this.setState({
-                query: e.target.value,
                 loading: true
             })
 
+            // Use the opensubtitles API to search for subtitles
             OpenSubtitles.api.searchForTitle(this.state.token, this.state.lang, this.state.query).then((results) => {
+
+                // Store results in state
                 this.setState({
                     results: results,
                     loading: false
                 })
+
+                // Log results
+                console.log(results)
             })
         }
     }
 
-    handleCancel(e) {
-        this.setState({
-            results: []
-        })
-    }
+    onSearch(input) {
+        // Readable value
+        const value = input.target.querySelector('input').value
 
-    handleLanguage(e) {
+        // Set query
         this.setState({
-            lang: e.target.value
+            query: value
         })
+
+        // Search if there's an value and it's not search already.
+        if (value && !this.state.loading) {
+            this.searchSubtitle()
+            console.log(`Searching For: ${this.state.query}`)
+        }
     }
 
     render() {
@@ -87,22 +100,24 @@ export default class App extends Component {
             </svg>
         )
 
+        // Variables
+        let content
+
+        // Show loading when state is loading...
+        if (this.state.loading) {
+            content = <Loading />
+        }
+        // Else, show the list with results
+        else {
+            content = <List results={this.state.results} width={this.state.windowWidth} height={this.state.windowHeight} />
+        }
+
+        // Render
         return (
             <div className="wrapper">
                 <Header />
-                <SearchField />
-                {/* <SearchField width="250" placeholder="Search" defaultValue="" onCancel={this.handleCancel.bind(this)} onEnter={this.handleEnter.bind(this)} /> */}
-                {/* <TitleBar controls inset>
-                    <Toolbar height={36}>
-                        <SearchField width="250" placeholder="Search" defaultValue="" onCancel={this.handleCancel.bind(this)} onEnter={this.handleEnter.bind(this)} />
-                        <select className="select" onChange={this.handleLanguage.bind(this)}>
-                            <option value="eng">English</option>
-                            <option value="dut">Dutch</option>
-                        </select>
-                        <Button padding={5} />
-                    </Toolbar>
-                </TitleBar>
-                <List loading={this.state.loading} results={this.state.results} width={this.state.windowWidth} height={this.state.windowHeight} /> */}
+                <SearchField onSearch={this.onSearch.bind(this)} />
+                {content}
             </div>
         )
     }
