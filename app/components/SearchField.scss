@@ -1,7 +1,13 @@
 .search-field {
-    padding: 0 20px;
-    
+    padding: 0 20px 20px 20px;
+
+    form {
+        display: block;
+        width: 100%;
+    }
+
     input {
         font-size: 16px;
+        width: 100%;
     }
 }
