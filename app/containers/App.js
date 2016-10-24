@@ -68,16 +68,16 @@ export default class App extends Component {
 
     onSearch(input) {
         // Readable value
-        const value = input.target.querySelector('input').value
+        const query = input.target.querySelector('input').value
 
         // Set query
         this.setState({
-            query: value
+            query: query
         })
 
         // Search if there's an value and it's not search already.
         // if (value && !this.state.loading) {
-        if (value) {
+        if (this.state.query) {
             this.searchSubtitle()
             console.log(`Searching For: ${this.state.query}`)
         }

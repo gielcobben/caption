@@ -6,14 +6,15 @@ export default class List extends Component {
 
     handleClick(e) {
         console.log(e)
-        console.log(clicked);
     }
 
     render() {
         return (
             <ul className='list'>
                 {this.props.results.map((result, index) => {
-                    return <ListItem onClick={this.handleClick.bind(this)} key={index} item={result} />
+                    return <ListItem key={index} onClick={() => {
+                        console.log(index)
+                    }} item={result} />
                 })}
             </ul>
         )
