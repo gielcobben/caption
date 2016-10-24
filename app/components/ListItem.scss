@@ -1,0 +1,10 @@
+.list-item {
+    position: relative;
+    display: table;
+    width: 100%;
+
+    span {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}

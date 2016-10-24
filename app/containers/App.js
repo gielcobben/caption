@@ -21,21 +21,12 @@ export default class App extends Component {
 
         this.state = {
             loading: false,
-            token: null,
             query: null,
             lang: 'eng',
             results: [],
             windowWidth: 400,
             windowHeight: 365 - 43
         }
-    }
-
-    componentWillMount() {
-        OpenSubtitles.api.login().then((token) => {
-            this.setState({
-                token: token
-            })
-        })
     }
 
     componentDidMount() {
@@ -62,17 +53,15 @@ export default class App extends Component {
                 loading: true
             })
 
-            // Use the opensubtitles API to search for subtitles
-            OpenSubtitles.api.searchForTitle(this.state.token, this.state.lang, this.state.query).then((results) => {
-
-                // Store results in state
-                this.setState({
-                    results: results,
-                    loading: false
+            OpenSubtitles.api.login().then((token) => {
+                // Use the opensubtitles API to search for subtitles
+                OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
+                    // Store results in state
+                    this.setState({
+                        results: results,
+                        loading: false
+                    })
                 })
-
-                // Log results
-                console.log(results)
             })
         }
     }
@@ -87,7 +76,8 @@ export default class App extends Component {
         })
 
         // Search if there's an value and it's not search already.
-        if (value && !this.state.loading) {
+        // if (value && !this.state.loading) {
+        if (value) {
             this.searchSubtitle()
             console.log(`Searching For: ${this.state.query}`)
         }
@@ -109,7 +99,7 @@ export default class App extends Component {
         }
         // Else, show the list with results
         else {
-            content = <List results={this.state.results} width={this.state.windowWidth} height={this.state.windowHeight} />
+            content = <List results={this.state.results} />
         }
 
         // Render

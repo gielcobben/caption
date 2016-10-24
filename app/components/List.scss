@@ -1,0 +1,13 @@
+.list {
+    overflow-y: auto;
+
+    li {
+        padding: 5px 20px;
+        height: 46px;
+        vertical-align: middle;
+
+        &:nth-child(odd) {
+            background: rgba(255, 255, 255, .03);
+        }
+    }
+}
