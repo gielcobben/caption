@@ -3,6 +3,10 @@
     display: table;
     width: 100%;
 
+    &.selected {
+        background: #007AFF !important;
+    }
+
     span {
         display: table-cell;
         vertical-align: middle;

@@ -1,13 +1,29 @@
-.list {
+.list-wrapper {
+    position: absolute;
+    top: 82px;
+    overflow-x: hidden;
     overflow-y: auto;
+    height: calc(100% - 82px);
+    width: 100%;
+}
+
+.list {
 
     li {
         padding: 5px 20px;
+        width: 100%;
         height: 46px;
         vertical-align: middle;
 
         &:nth-child(odd) {
             background: rgba(255, 255, 255, .03);
+        }
+
+        span {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }
