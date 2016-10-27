@@ -14,7 +14,7 @@ export default class ListItem extends Component {
 
         return (
             <li className={`list-item ${index == selected ? 'selected' : ''}`} onClick={handleClick} onDoubleClick={this.handleDoubleClick.bind(this)}>
-                <span>{item.MovieReleaseName}</span>
+                {item.MovieReleaseName}
             </li>
         )
     }

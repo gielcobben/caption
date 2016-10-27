@@ -18,14 +18,26 @@ export default class List extends Component {
     }
 
     render() {
+        let content
         const {results} = this.props
+
+        if (results.length > 0) {
+            content = (
+                results.map((result, index) => {
+                    return <ListItem key={index} item={result} handleClick={this.handleClick.bind(this, index)} selected={this.state.selected} index={index} />
+                })
+            )
+        }
+        else {
+            content = (
+                <li>Giel</li>
+            )
+        }
 
         return (
             <section className='list-wrapper'>
                 <ul className='list'>
-                    {results.map((result, index) => {
-                        return <ListItem key={index} item={result} handleClick={this.handleClick.bind(this, index)} selected={this.state.selected} index={index} />
-                    })}
+                    {content}
                 </ul>
             </section>
         )

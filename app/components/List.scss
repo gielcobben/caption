@@ -1,29 +1,24 @@
 .list-wrapper {
-    position: absolute;
-    top: 82px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: calc(100% - 82px);
-    width: 100%;
+    // position: absolute;
+    // top: 82px;
+    height: calc(100vh - 82px);
+    width: 100vw;
+    overflow-y: scroll;
 }
 
 .list {
+    width: 100vw;
 
     li {
-        padding: 5px 20px;
-        width: 100%;
-        height: 46px;
-        vertical-align: middle;
+        display: block;
+        padding: 15px 20px;
+        width: 100vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &:nth-child(odd) {
             background: rgba(255, 255, 255, .03);
-        }
-
-        span {
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
     }
 }

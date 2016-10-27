@@ -43,7 +43,6 @@ export default validate(merge(baseConfig, {
                     'css-loader?sourceMap'
                 ]
             },
-
             {
                 test: /^((?!\.global).)*\.css$/,
                 loaders: [

@@ -22,25 +22,8 @@ export default class App extends Component {
             loading: false,
             query: null,
             lang: 'eng',
-            results: [],
-            windowWidth: 400,
-            windowHeight: 365 - 43
+            results: []
         }
-    }
-
-    componentDidMount() {
-        window.addEventListener('resize', this.handleResize.bind(this));
-        this.handleResize()
-    }
-
-    handleResize() {
-        const mainWindow = remote.getCurrentWindow()
-        const size = mainWindow.getSize()
-
-        this.setState({
-            windowWidth: size[0],
-            windowHeight: size[1] - 36
-        })
     }
 
     searchSubtitle() {
