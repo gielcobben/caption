@@ -1,6 +1,7 @@
 import "./List.scss"
 import React, {Component} from 'react'
 import ListItem from './ListItem'
+import EmptyState from './EmptyState'
 
 export default class List extends Component {
 
@@ -29,9 +30,7 @@ export default class List extends Component {
             )
         }
         else {
-            content = (
-                <li>Giel</li>
-            )
+            content = <EmptyState />
         }
 
         return (

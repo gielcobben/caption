@@ -111,6 +111,7 @@
   "dependencies": {
     "css-modules-require-hook": "^4.0.5",
     "electron-debug": "^1.0.1",
+    "electron-json-storage": "^2.0.3",
     "postcss": "^5.2.4",
     "react": "^15.3.2",
     "react-desktop": "^0.2.14",

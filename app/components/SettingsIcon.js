@@ -12,7 +12,7 @@ export default class SettingsIcon extends Component {
         );
 
         return (
-            <div className='settings-icon'>
+            <div className='settings-icon' onClick={this.props.onClick}>
                 {icon}
             </div>
         )

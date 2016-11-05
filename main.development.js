@@ -52,6 +52,7 @@ autoUpdater.on('error', (error) => {
 let menu;
 let template;
 let mainWindow = null;
+let settingsWindow = null;
 
 
 if (process.env.NODE_ENV === 'development') {
@@ -81,8 +82,43 @@ const installExtensions = async () => {
     }
 };
 
+const openSettingsWindow = () => {
+    // create window
+    settingsWindow = new BrowserWindow({
+        show: false,
+        width: 300,
+        height: 200,
+        frame: false
+    });
+
+    // Set URL
+    settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
+
+    // On window ready, show and focus
+    settingsWindow.webContents.on('did-finish-load', () => {
+        settingsWindow.show();
+        settingsWindow.focus();
+    });
+
+    // Event
+    settingsWindow.on('closed', () => {
+        ipcMain.send('close-settings', () => {
+            console.log('closing...');
+            settingsWindow = null;
+        });
+    });
+
+    if (process.env.NODE_ENV === 'development') {
+        settingsWindow.openDevTools();
+    }
+};
+
 app.on('ready', async () => {
     await installExtensions();
+
+    ipcMain.on('open-settings', () => {
+        openSettingsWindow();
+    });
 
     mainWindow = new BrowserWindow({
         show: false,
@@ -129,6 +165,7 @@ app.on('ready', async () => {
     })
 
     if (process.env.NODE_ENV === 'development') {
+        mainWindow.openDevTools();
         mainWindow.webContents.on('context-menu', (e, props) => {
             const { x, y } = props;
 
@@ -140,8 +177,6 @@ app.on('ready', async () => {
             }]).popup(mainWindow);
         });
     }
-
-    mainWindow.openDevTools();
 
     if (process.platform === 'darwin') {
         template = [{

@@ -1,6 +1,5 @@
 import "./ListItem.scss"
 import React, {Component} from 'react'
-import {ipcRenderer} from 'electron'
 
 export default class ListItem extends Component {
 
