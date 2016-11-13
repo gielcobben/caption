@@ -7,7 +7,15 @@
     }
 
     input {
-        font-size: 16px;
+        color: #FFF;
+        font-size: 14px;
         width: 100%;
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .1);
+        height: 28px;
+        border-radius: 4px;
+        font-weight: 300;
+        outline: none;
+        padding: 0 8px;
     }
 }
