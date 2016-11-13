@@ -16,6 +16,7 @@ export default class Home extends Component {
 
     constructor(props) {
         super(props)
+        this.onSearch = this.onSearch.bind(this)
         this.state = {
             loading: false,
             query: null,
@@ -24,18 +25,19 @@ export default class Home extends Component {
         }
     }
 
-    searchSubtitle() {
+    searchSubtitle(query) {
         // Check is there's an query
-        if (this.state.query) {
+        if (query) {
 
             // Set loading to True
             this.setState({
-                loading: true
+                loading: true,
+                query: query
             })
 
             OpenSubtitles.api.login().then((token) => {
                 // Use the opensubtitles API to search for subtitles
-                OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
+                OpenSubtitles.api.searchForTitle(token, this.state.lang, query).then((results) => {
                     // Store results in state
                     this.setState({
                         results: results,
@@ -53,16 +55,11 @@ export default class Home extends Component {
         const query = input.target.querySelector('input').value
         const language = getLanguage()
 
-        // Set query
-        this.setState({
-            query: query
-        })
-
         // Search if there's an value and it's not search already.
         // if (value && !this.state.loading) {
-        if (this.state.query) {
-            this.searchSubtitle()
-            console.log(`Searching For: ${this.state.query}`)
+        if (query) {
+            this.searchSubtitle(query)
+            console.log(`Searching For: ${query}`)
         }
     }
 
@@ -73,23 +70,15 @@ export default class Home extends Component {
             </svg>
         )
 
-        // Variables
-        let content
-
-        // Show loading when state is loading...
-        if (this.state.loading) {
-            content = <Loading />
-        }
-        // Else, show the list with results
-        else {
-            content = <List results={this.state.results} />
-        }
-
         // Render
         return (
             <div className="wrapper">
-                <SearchField onSearch={this.onSearch.bind(this)} />
-                {content}
+                <SearchField onSearch={this.onSearch} />
+                {
+                    this.state.loading ?
+                    <Loading /> :
+                    <List results={this.state.results} />
+                }
             </div>
         )
     }

@@ -1,5 +1,6 @@
 import os from 'os'
 import path from 'path'
+import electronVibrancy from 'electron-vibrancy'
 import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog } from 'electron';
 import pkg from './package.json'
 
@@ -83,29 +84,14 @@ const installExtensions = async () => {
 };
 
 const openSettingsWindow = () => {
-    // create window
-    settingsWindow = new BrowserWindow({
-        show: false,
-        width: 300,
-        height: 200,
-        frame: false
-    });
 
-    // Set URL
-    settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
+    electronVibrancy.SetVibrancy(settingsWindow, 9);
+    settingsWindow.show();
 
     // On window ready, show and focus
     settingsWindow.webContents.on('did-finish-load', () => {
-        settingsWindow.show();
+        // settingsWindow.show();
         settingsWindow.focus();
-    });
-
-    // Event
-    settingsWindow.on('closed', () => {
-        ipcMain.send('close-settings', () => {
-            console.log('closing...');
-            settingsWindow = null;
-        });
     });
 
     if (process.env.NODE_ENV === 'development') {
@@ -120,22 +106,43 @@ app.on('ready', async () => {
         openSettingsWindow();
     });
 
+    // create windows
     mainWindow = new BrowserWindow({
+        center: true,
         show: false,
-        width: 400,
-        height: 365,
-        frame: false
+        width: 350,
+        height: 320,
+        // vibrancy: 'dark'
+        frame: false,
+        transparent: true
     });
 
-    mainWindow.loadURL(`file://${__dirname}/app/app.html`);
+    settingsWindow = new BrowserWindow({
+        center: true,
+        show: false,
+        width: 300,
+        height: 150,
+        frame: false,
+        transparent: true
+    });
 
+    // Set URL
+    mainWindow.loadURL(`file://${__dirname}/app/app.html`);
+    settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
+
+    // Event
     mainWindow.webContents.on('did-finish-load', () => {
+        electronVibrancy.SetVibrancy(mainWindow, 9);
         mainWindow.show();
         mainWindow.focus();
     });
 
     mainWindow.on('closed', () => {
         mainWindow = null;
+    });
+
+    settingsWindow.on('closed', () => {
+        settingsWindow = null;
     });
 
     mainWindow.webContents.session.on('will-download', (event, item, webContents) => {

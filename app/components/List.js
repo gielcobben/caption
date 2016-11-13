@@ -22,21 +22,16 @@ export default class List extends Component {
         let content
         const {results} = this.props
 
-        if (results.length > 0) {
-            content = (
-                results.map((result, index) => {
-                    return <ListItem key={index} item={result} handleClick={this.handleClick.bind(this, index)} selected={this.state.selected} index={index} />
-                })
-            )
-        }
-        else {
-            content = <EmptyState />
-        }
-
         return (
             <section className='list-wrapper'>
                 <ul className='list'>
-                    {content}
+                    {
+                        results.length > 0 ?
+                        results.map((result, index) => {
+                            return <ListItem key={index} item={result} handleClick={this.handleClick.bind(this, index)} selected={this.state.selected} index={index} />
+                        }) :
+                        <EmptyState />
+                    }
                 </ul>
             </section>
         )

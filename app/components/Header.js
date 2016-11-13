@@ -19,6 +19,7 @@ export default class Header extends Component {
 
     constructor(props) {
         super(props)
+        this.handleClick = this.handleClick.bind(this)
         this.state = {
             settingsWindow: false
         }
@@ -49,11 +50,10 @@ export default class Header extends Component {
             <header>
                 <Controls />
                 <Title title={title} />
-            {
-                pathname !== '/settings' &&
-                <SettingsIcon onClick={this.handleClick.bind(this)} />
-            }
-
+                {
+                    pathname !== '/settings' &&
+                    <SettingsIcon onClick={this.handleClick} />
+                }
             </header>
         );
     }
