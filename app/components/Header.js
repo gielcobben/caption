@@ -26,9 +26,9 @@ export default class Header extends Component {
     }
 
     handleClick() {
-        if (!this.state.settingsWindow) {
-            ipcRenderer.send('open-settings')
+        ipcRenderer.send('open-settings')
 
+        if (!this.state.settingsWindow) {
             this.setState({
                 settingsWindow: true
             })
@@ -48,7 +48,7 @@ export default class Header extends Component {
 
         return (
             <header>
-                <Controls />
+                <Controls type={title} />
                 <Title title={title} />
                 {
                     pathname !== '/settings' &&

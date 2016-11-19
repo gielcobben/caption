@@ -55,11 +55,9 @@ let template;
 let mainWindow = null;
 let settingsWindow = null;
 
-
 if (process.env.NODE_ENV === 'development') {
     require('electron-debug')(); // eslint-disable-line global-require
 }
-
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
@@ -83,30 +81,11 @@ const installExtensions = async () => {
     }
 };
 
-const openSettingsWindow = () => {
-
-    electronVibrancy.SetVibrancy(settingsWindow, 9);
-    settingsWindow.show();
-
-    // On window ready, show and focus
-    settingsWindow.webContents.on('did-finish-load', () => {
-        // settingsWindow.show();
-        settingsWindow.focus();
-    });
-
-    if (process.env.NODE_ENV === 'development') {
-        settingsWindow.openDevTools();
-    }
-};
-
-app.on('ready', async () => {
-    await installExtensions();
-
-    ipcMain.on('open-settings', () => {
-        openSettingsWindow();
-    });
-
-    // create windows
+/*
+ * Create Main Window
+ */
+const createMainWindow = () => {
+    // Create the windows
     mainWindow = new BrowserWindow({
         center: true,
         show: false,
@@ -117,33 +96,78 @@ app.on('ready', async () => {
         transparent: true
     });
 
-    settingsWindow = new BrowserWindow({
-        center: true,
-        show: false,
-        width: 300,
-        height: 150,
-        frame: false,
-        transparent: true
-    });
-
     // Set URL
     mainWindow.loadURL(`file://${__dirname}/app/app.html`);
-    settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
 
-    // Event
+    // vibrancy
+    electronVibrancy.SetVibrancy(mainWindow, 9);
+
+    // Events
     mainWindow.webContents.on('did-finish-load', () => {
-        electronVibrancy.SetVibrancy(mainWindow, 9);
         mainWindow.show();
         mainWindow.focus();
     });
 
     mainWindow.on('closed', () => {
         mainWindow = null;
-    });
-
-    settingsWindow.on('closed', () => {
         settingsWindow = null;
     });
+}
+
+/*
+ * Create Settings Window
+ */
+const createSettingsWindow = () => {
+
+    // Create
+    settingsWindow = new BrowserWindow({
+        show: false,
+        width: 300,
+        height: 150,
+        frame: false,
+        transparent: true,
+        resizable: false
+    });
+
+    // Set URL
+    settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
+
+    // vibrancy
+    electronVibrancy.SetVibrancy(settingsWindow, 9);
+
+    // Events
+    settingsWindow.on('closed', () => {
+        settingsWindow = null
+    });
+}
+
+app.on('ready', async () => {
+    await installExtensions();
+
+    // create windows
+    createMainWindow();
+    createSettingsWindow();
+
+    // Events
+    ipcMain.on('open-settings', () => {
+        settingsWindow.show();
+        if (process.env.NODE_ENV === 'development') {
+            settingsWindow.openDevTools();
+        }
+    });
+
+    ipcMain.on('close-settings', () => {
+        settingsWindow.hide();
+    });
+
+    ipcMain.on('close-main', () => {
+        mainWindow.close();
+        app.quit();
+    });
+
+    ipcMain.on('lang-changed', () => {
+        mainWindow.webContents.send('change-language')
+    })
 
     mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
         // Set the save path, making Electron not to prompt a save dialog.

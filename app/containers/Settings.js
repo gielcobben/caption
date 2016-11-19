@@ -1,4 +1,5 @@
 import './Settings.scss';
+import {ipcRenderer} from 'electron'
 import React, {Component} from 'react'
 import Storage from 'electron-json-storage'
 
@@ -17,6 +18,8 @@ export default class Settings extends Component {
         Storage.set('language', {lang: language}, (error) => {
             if (error) console.log(error)
         })
+
+        ipcRenderer.send('lang-changed')
     }
 
     render() {

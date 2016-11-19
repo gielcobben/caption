@@ -1,12 +1,26 @@
 import './Controls.scss';
 import React, { Component } from 'react';
-import {remote} from 'electron'
+import {remote, ipcRenderer} from 'electron'
 const appWindow = remote.getCurrentWindow()
 
 export default class Controls extends Component {
 
+    constructor(props) {
+        super(props)
+        this.handleClose = this.handleClose.bind(this)
+        this.handleMinimize = this.handleMinimize.bind(this)
+        this.handleFullscreen = this.handleFullscreen.bind(this)
+    }
+
     handleClose() {
-        appWindow.close()
+        const {type} = this.props
+
+        if (type === 'Settings') {
+            ipcRenderer.send('close-settings');
+        }
+        else {
+            ipcRenderer.send('close-main');
+        }
     }
 
     handleMinimize() {

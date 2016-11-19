@@ -1,8 +1,23 @@
 import './SettingsIcon.scss'
-
 import React, {Component} from 'react'
 
 export default class SettingsIcon extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            language: ''
+        }
+    }
+
+    componentDidMount() {
+        getLanguage((language) => {
+            this.setState({
+                language: language
+            })
+        })
+    }
+
     render() {
 
         const icon = (
@@ -13,7 +28,7 @@ export default class SettingsIcon extends Component {
 
         return (
             <div className='settings-icon' onClick={this.props.onClick}>
-                {icon}
+                {icon} - {this.state.language}
             </div>
         )
     }
