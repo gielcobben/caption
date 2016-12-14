@@ -2,7 +2,7 @@ import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
 import SearchField from '../components/SearchField'
 import Loading from '../components/Loading'
-import List from '../components/List'
+import Content from '../components/Content'
 
 export default class Home extends Component {
 
@@ -10,65 +10,93 @@ export default class Home extends Component {
         super(props)
 
         this.state = {
-            loading: false,
-            query: null,
+            results: [],
             lang: 'eng',
-            results: []
+            query: null,
+            filepath: null,
+            loading: false
         }
 
-        this.resetList = this.resetList.bind(this)
         this.search = this.search.bind(this)
-        this.onLanguageChange = this.onLanguageChange.bind(this)
+        this.onDrop = this.onDrop.bind(this)
+        this.resetList = this.resetList.bind(this)
         this.onQueryChange = this.onQueryChange.bind(this)
+        this.onLanguageChange = this.onLanguageChange.bind(this)
     }
 
-    searchSubtitle(query, language) {
-        // Check is there's an query
-        if (query) {
+    search(event, type) {
 
-            // Set loading to True
+        // If event, prevent default form submit
+        if (event) {
+            event.preventDefault()
+        }
+
+        // Only do a search if there's a query
+        if (this.state.query) {
+
+            // Enable loading
             this.setState({
-                loading: true,
-                query: query,
-                lang: language
+                loading: true
             })
 
             OpenSubtitles.api.login().then((token) => {
-                // Use the opensubtitles API to search for subtitles
-                OpenSubtitles.api.searchForTitle(token, language, query).then((results) => {
-                    // Store results in state
-                    this.setState({
-                        results: results,
-                        loading: false
+
+                if (type === 'file') {
+
+                    // Use the opensubtitles API to search for subtitles
+                    OpenSubtitles.api.searchForFile(token, this.state.lang, "/Users/giel/Downloads/Halt And Catch Fire Season 3 Mp4 720p/Halt And Catch Fire S03E10.mp4").then((results) => {
+
+                        console.log('searched.')
+
+                        // Store results in state
+                        this.setState({
+                            results: results,
+                            loading: false
+                        })
+
+                        // And logout when we've results
+                        OpenSubtitles.api.logout(token)
                     })
-                })
+
+                }
+                else {
+
+                    // Use the opensubtitles API to search for subtitles
+                    OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
+
+                        // Store results in state
+                        this.setState({
+                            results: results,
+                            loading: false
+                        })
+
+                        // And logout when we've results
+                        OpenSubtitles.api.logout(token)
+                    })
+                }
             })
         }
     }
 
-    search(event) {
+    onDrop(event) {
+        event.preventDefault()
 
-        if (event) {
-            event.preventDefault()    
-        }
+        // Get the dropped files
+        const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
+        // Set file path
         this.setState({
-            loading: true
+            filepath: filesDropped[0].path
         })
 
-        OpenSubtitles.api.login().then((token) => {
-            // Use the opensubtitles API to search for subtitles
-            OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
-                // Store results in state
-                this.setState({
-                    results: results,
-                    loading: false
-                })
-            })
-        })
+        // Search with type
+        this.search(null, 'file')
+
+        console.log(filesDropped[0])
     }
 
     onLanguageChange(lang) {
+
         // setState
         this.setState({
             lang: lang
@@ -79,18 +107,25 @@ export default class Home extends Component {
     }
 
     onQueryChange(query) {
+
+        // setState
         this.setState({
             query: query
         })
     }
 
     resetList() {
+
+        // setState
         this.setState({
+            loading: false,
+            query: null,
             results: []
         })
     }
 
     render() {
+
         // Construct circle icon
         const circle = (
             <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
@@ -101,11 +136,11 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField resetList={this.resetList} submitForm={this.search} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
+                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.search} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
                 {
                     this.state.loading ?
                     <Loading /> :
-                    <List results={this.state.results} />
+                    <Content onDrop={this.onDrop} results={this.state.results} />
                 }
             </div>
         )

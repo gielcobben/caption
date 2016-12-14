@@ -45,7 +45,7 @@ export default class SearchField extends Component {
                 <form onSubmit={this.props.submitForm}>
                     <input ref={(input) => { this.textInput = input }} type="text" onChange={this.handleInputChange} placeholder="Search..." />
                     <label>Language:</label>
-                    <select onChange={this.handleLanguageChange}>
+                    <select value={this.props.selectedLanguage} onChange={this.handleLanguageChange}>
                         <option value='eng'>English</option>
                         <option value='dut'>Netherlands</option>
                     </select>

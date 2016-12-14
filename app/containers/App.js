@@ -5,6 +5,23 @@ import Header from '../components/Header'
 
 // App:
 export default class App extends Component {
+
+    componentWillMount() {
+
+        // Prevent window from loading the dropped file
+        window.addEventListener("dragenter", (event) => {
+            event.preventDefault()
+        }, false)
+
+        window.addEventListener("dragover", (event) => {
+            event.preventDefault()
+        }, false)
+
+        window.addEventListener("drop", (event) => {
+            event.preventDefault()
+        }, false)
+    }
+
     render() {
         return (
             <div>
