@@ -90,8 +90,8 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         center: true,
         show: false,
-        width: 350,
-        height: 320,
+        width: 360,
+        height: 440,
         vibrancy: 'ultra-dark',
         frame: false,
         transparent: true

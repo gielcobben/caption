@@ -27,6 +27,7 @@ export default class App extends Component {
 
         ipcRenderer.on('change-language', () => {
             getLanguage((lang) => {
+                console.log(lang)
                 this.setState({
                     language: lang
                 })

@@ -17,7 +17,7 @@ export default class SearchField extends Component {
             <div className='search-field'>
                 {/* <div>{searchIcon}</div> */}
                 <form onSubmit={this.props.onSearch}>
-                    <input type="search" placeholder="Search subtitles..." />
+                    <input type="text" placeholder="Search subtitles..." />
                 </form>
             </div>
         )

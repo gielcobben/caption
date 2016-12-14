@@ -1,5 +1,6 @@
 .search-field {
     padding: 0 20px 20px 20px;
+    background: rgba(255, 255, 255, 1);
 
     form {
         display: block;
@@ -7,15 +8,16 @@
     }
 
     input {
-        color: #FFF;
-        font-size: 14px;
+        color: #000;
         width: 100%;
-        background: rgba(255, 255, 255, .1);
-        border: 1px solid rgba(255, 255, 255, .1);
-        height: 28px;
+        background: none;
+        border: none;
+        // height: 28px;
         border-radius: 4px;
-        font-weight: 300;
+        // font-weight: 300;
+        font-size: 32px;
+        font-weight: 200;
         outline: none;
-        padding: 0 8px;
+        // padding: 0 8px;
     }
 }
