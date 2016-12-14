@@ -11,11 +11,11 @@ export default class SettingsIcon extends Component {
     }
 
     componentDidMount() {
-        getLanguage((language) => {
-            this.setState({
-                language: language
-            })
-        })
+        // getLanguage((language) => {
+        //     this.setState({
+        //         language: language
+        //     })
+        // })
     }
 
     render() {

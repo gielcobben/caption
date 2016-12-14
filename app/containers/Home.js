@@ -45,19 +45,23 @@ export default class Home extends Component {
         // Prevent Default
         input.preventDefault()
 
+        console.log('go')
+
         // Readable value
         const query = input.target.querySelector('input').value
 
-        // Get language from storage with callback because it takes a while...
-        getLanguage((language) => {
+        console.log(this.props.language)
 
-            // Search if there's an value and it's not search already.
-            // if (value && !this.state.loading) {
-            if (query) {
-                this.searchSubtitle(query, language)
-                console.log(`Searching For: ${query} lang: ${language}`)
-            }
-        })
+        // // Get language from storage with callback because it takes a while...
+        // getLanguage((language) => {
+        //
+        //     // Search if there's an value and it's not search already.
+        //     // if (value && !this.state.loading) {
+        //     if (query) {
+        //         this.searchSubtitle(query, language)
+        //         console.log(`Searching For: ${query} lang: ${language}`)
+        //     }
+        // })
     }
 
     render() {

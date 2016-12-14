@@ -2,6 +2,7 @@
 import './App.scss';
 import React, { Component, PropTypes } from 'react'
 import {ipcRenderer, remote} from 'electron'
+import Storage from 'electron-json-storage'
 import Header from '../components/Header'
 
 const getLanguage = (cb) => {
