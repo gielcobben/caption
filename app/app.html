@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Caption</title>
     <script>
-      if (!process.env.HOT) {
+    if (!process.env.HOT) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = '../dist/style.css';
         document.write(link.outerHTML);
-      }
+    }
     </script>
-  </head>
-  <body>
+</head>
+<body>
     <div id="app"></div>
     <script>
-      {
+    {
         const script = document.createElement('script');
         const port = process.env.PORT || 3000;
         script.async = '';
         script.src = (process.env.HOT) ? `http://localhost:${port}/dist/bundle.js` : '../dist/bundle.js';
         document.write(script.outerHTML);
-      }
+    }
     </script>
-  </body>
+</body>
 </html>

@@ -1,53 +1,52 @@
 import os from 'os'
 import path from 'path'
-import electronVibrancy from 'electron-vibrancy'
 import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog } from 'electron';
 import pkg from './package.json'
 
 
 // -----
-const platform = os.platform() + '_' + os.arch();
-const version = app.getVersion();
-const updateURL = `http://localhost:6000/update/${os.platform()}?version=${pkg.version}`;
-
-autoUpdater.setFeedURL(updateURL);
-
-autoUpdater.on('checking-for-update', () => {
-    console.log('Checking for updates...');
-});
-
-autoUpdater.on('update-available', () => {
-
-    console.log('New Update Available!');
-
-    const options = {
-        type: 'question',
-        buttons: ['Restart', 'Later'],
-        title: "Update Available",
-        message: 'The new version has been downloaded. Restart the application to apply the updates.',
-        detail: `Caption ${pkg.version}`
-    }
-
-    dialog.showMessageBox(options, function(response) {
-        if (response == 0) {
-            autoUpdater.quitAndInstall();
-        }
-    });
-
-});
-
-autoUpdater.on('update-not-available', () => {
-    console.log(`You've got the latest version.`);
-});
-
-autoUpdater.on('update-downloaded', (e) => {
-    console.log(`update-downloaded`);
-    // autoUpdater.quitAndInstall();
-});
-
-autoUpdater.on('error', (error) => {
-    console.log(error)
-});
+// const platform = os.platform() + '_' + os.arch();
+// const version = app.getVersion();
+// const updateURL = `http://localhost:6000/update/${os.platform()}?version=${pkg.version}`;
+//
+// autoUpdater.setFeedURL(updateURL);
+//
+// autoUpdater.on('checking-for-update', () => {
+//     console.log('Checking for updates...');
+// });
+//
+// autoUpdater.on('update-available', () => {
+//
+//     console.log('New Update Available!');
+//
+//     const options = {
+//         type: 'question',
+//         buttons: ['Restart', 'Later'],
+//         title: "Update Available",
+//         message: 'The new version has been downloaded. Restart the application to apply the updates.',
+//         detail: `Caption ${pkg.version}`
+//     }
+//
+//     dialog.showMessageBox(options, function(response) {
+//         if (response == 0) {
+//             autoUpdater.quitAndInstall();
+//         }
+//     });
+//
+// });
+//
+// autoUpdater.on('update-not-available', () => {
+//     console.log(`You've got the latest version.`);
+// });
+//
+// autoUpdater.on('update-downloaded', (e) => {
+//     console.log(`update-downloaded`);
+//     // autoUpdater.quitAndInstall();
+// });
+//
+// autoUpdater.on('error', (error) => {
+//     console.log(error)
+// });
 // -----
 
 let menu;
@@ -56,7 +55,8 @@ let mainWindow = null;
 let settingsWindow = null;
 
 if (process.env.NODE_ENV === 'development') {
-    require('electron-debug')(); // eslint-disable-line global-require
+    // eslint-disable-line global-require
+    require('electron-debug')();
 }
 
 app.on('window-all-closed', () => {
@@ -66,7 +66,8 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
     if (process.env.NODE_ENV === 'development') {
-        const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+        // eslint-disable-line global-require
+        const installer = require('electron-devtools-installer');
 
         const extensions = [
             'REACT_DEVELOPER_TOOLS',
@@ -82,8 +83,8 @@ const installExtensions = async () => {
 };
 
 /*
- * Create Main Window
- */
+* Create Main Window
+*/
 const createMainWindow = () => {
     // Create the windows
     mainWindow = new BrowserWindow({
@@ -91,7 +92,7 @@ const createMainWindow = () => {
         show: false,
         width: 350,
         height: 320,
-        // vibrancy: 'dark'
+        vibrancy: 'ultra-dark',
         frame: false,
         transparent: true
     });
@@ -100,7 +101,7 @@ const createMainWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/app/app.html`);
 
     // vibrancy
-    electronVibrancy.SetVibrancy(mainWindow, 9);
+    // electronVibrancy.SetVibrancy(mainWindow, 9);
 
     // Events
     mainWindow.webContents.on('did-finish-load', () => {
@@ -115,8 +116,8 @@ const createMainWindow = () => {
 }
 
 /*
- * Create Settings Window
- */
+* Create Settings Window
+*/
 const createSettingsWindow = () => {
 
     // Create
@@ -124,6 +125,7 @@ const createSettingsWindow = () => {
         show: false,
         width: 300,
         height: 150,
+        vibrancy: 'ultra-dark',
         frame: false,
         transparent: true,
         resizable: false
@@ -133,7 +135,7 @@ const createSettingsWindow = () => {
     settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
 
     // vibrancy
-    electronVibrancy.SetVibrancy(settingsWindow, 9);
+    // electronVibrancy.SetVibrancy(settingsWindow, 9);
 
     // Events
     settingsWindow.on('closed', () => {
@@ -193,7 +195,7 @@ app.on('ready', async () => {
             }
         })
 
-    })
+    });
 
     if (process.env.NODE_ENV === 'development') {
         mainWindow.openDevTools();
