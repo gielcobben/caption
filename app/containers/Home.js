@@ -8,13 +8,18 @@ export default class Home extends Component {
 
     constructor(props) {
         super(props)
-        this.onSearch = this.onSearch.bind(this)
+
         this.state = {
             loading: false,
             query: null,
             lang: 'eng',
             results: []
         }
+
+        this.resetList = this.resetList.bind(this)
+        this.search = this.search.bind(this)
+        this.onLanguageChange = this.onLanguageChange.bind(this)
+        this.onQueryChange = this.onQueryChange.bind(this)
     }
 
     searchSubtitle(query, language) {
@@ -41,27 +46,48 @@ export default class Home extends Component {
         }
     }
 
-    onSearch(input) {
-        // Prevent Default
-        input.preventDefault()
+    search(event) {
 
-        console.log('go')
+        if (event) {
+            event.preventDefault()    
+        }
 
-        // Readable value
-        const query = input.target.querySelector('input').value
+        this.setState({
+            loading: true
+        })
 
-        console.log(this.props.language)
+        OpenSubtitles.api.login().then((token) => {
+            // Use the opensubtitles API to search for subtitles
+            OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
+                // Store results in state
+                this.setState({
+                    results: results,
+                    loading: false
+                })
+            })
+        })
+    }
 
-        // // Get language from storage with callback because it takes a while...
-        // getLanguage((language) => {
-        //
-        //     // Search if there's an value and it's not search already.
-        //     // if (value && !this.state.loading) {
-        //     if (query) {
-        //         this.searchSubtitle(query, language)
-        //         console.log(`Searching For: ${query} lang: ${language}`)
-        //     }
-        // })
+    onLanguageChange(lang) {
+        // setState
+        this.setState({
+            lang: lang
+        })
+
+        // Search
+        this.search()
+    }
+
+    onQueryChange(query) {
+        this.setState({
+            query: query
+        })
+    }
+
+    resetList() {
+        this.setState({
+            results: []
+        })
     }
 
     render() {
@@ -75,7 +101,7 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField onSearch={this.onSearch} />
+                <SearchField resetList={this.resetList} submitForm={this.search} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
                 {
                     this.state.loading ?
                     <Loading /> :

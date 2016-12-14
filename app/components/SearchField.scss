@@ -12,12 +12,31 @@
         width: 100%;
         background: none;
         border: none;
-        // height: 28px;
         border-radius: 4px;
-        // font-weight: 300;
         font-size: 32px;
         font-weight: 200;
         outline: none;
-        // padding: 0 8px;
+        margin-bottom: 10px;
+    }
+
+    label {
+        color: rgba(0, 0, 0, .5);
+        font-size: 12px;
+    }
+
+    select {
+        border: none;
+        background: none;
+        appearance: none;
+        -webkit-appearance: none;
+        color: #000;
+        font-size: 12px;
+        margin-left: 5px;
+        font-weight: 500;
+        outline: none;
+    }
+
+    ::-webkit-input-placeholder {
+        color: rgba(0, 0, 0, .1);
     }
 }

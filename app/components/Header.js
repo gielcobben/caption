@@ -50,10 +50,10 @@ export default class Header extends Component {
             <header>
                 <Controls type={title} />
                 <Title title={title} />
-                {/* {
+                {
                     pathname !== '/settings' &&
                     <SettingsIcon onClick={this.handleClick} />
-                } */}
+                }
             </header>
         );
     }

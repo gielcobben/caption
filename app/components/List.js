@@ -1,7 +1,7 @@
 import "./List.scss"
 import React, {Component} from 'react'
 import ListItem from './ListItem'
-import EmptyState from './EmptyState'
+import Dropzone from './Dropzone'
 
 export default class List extends Component {
 
@@ -24,15 +24,15 @@ export default class List extends Component {
 
         return (
             <section className='list-wrapper'>
-                <ul className='list'>
-                    {
-                        results.length > 0 ?
-                        results.map((result, index) => {
+                {
+                    results.length > 0 ?
+                    <ul className='list'>
+                        {results.map((result, index) => {
                             return <ListItem key={index} item={result} handleClick={this.handleClick.bind(this, index)} selected={this.state.selected} index={index} />
-                        }) :
-                        <EmptyState />
-                    }
-                </ul>
+                        })}
+                    </ul> :
+                    <Dropzone />
+                }
             </section>
         )
     }
