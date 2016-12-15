@@ -1,0 +1,16 @@
+.list {
+    width: 100vw;
+
+    li {
+        display: block;
+        padding: 15px 20px;
+        width: 100vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:nth-child(odd) {
+            background: rgba(255, 255, 255, .03);
+        }
+    }
+}

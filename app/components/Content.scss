@@ -1,24 +1,11 @@
-.list-wrapper {
-    // position: absolute;
-    // top: 82px;
+.content-wrapper {
     height: calc(100vh - 125px);
     width: 100vw;
-    overflow-y: scroll;
-}
+    overflow-y: hidden;
 
-.list {
-    width: 100vw;
-
-    li {
-        display: block;
-        padding: 15px 20px;
-        width: 100vw;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        &:nth-child(odd) {
-            background: rgba(255, 255, 255, .03);
-        }
+    .inner {
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
     }
 }

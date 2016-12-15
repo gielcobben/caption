@@ -14,7 +14,8 @@ export default class Home extends Component {
             lang: 'eng',
             query: null,
             filepath: null,
-            loading: false
+            loading: false,
+            visibleDropArea: true
         }
 
         this.search = this.search.bind(this)
@@ -110,7 +111,8 @@ export default class Home extends Component {
 
         // setState
         this.setState({
-            query: query
+            query: query,
+            visibleDropArea: false
         })
     }
 
@@ -120,7 +122,8 @@ export default class Home extends Component {
         this.setState({
             loading: false,
             query: null,
-            results: []
+            results: [],
+            visibleDropArea: true
         })
     }
 
@@ -140,7 +143,7 @@ export default class Home extends Component {
                 {
                     this.state.loading ?
                     <Loading /> :
-                    <Content onDrop={this.onDrop} results={this.state.results} />
+                    <Content visibleDropArea={this.state.visibleDropArea} onDrop={this.onDrop} results={this.state.results} />
                 }
             </div>
         )

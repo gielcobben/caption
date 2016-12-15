@@ -1,37 +1,21 @@
 import "./Content.scss"
 import React, {Component} from 'react'
-import ListItem from './ListItem'
+import List from './List'
 import Dropzone from './Dropzone'
+import EmptyList from './EmptyList'
 
-export default class List extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            selected: null
-        }
-    }
-
-    handleClick(index) {
-        this.setState({
-            selected: index
-        })
-    }
-
+export default class Content extends Component {
     render() {
-        let content
         const {results} = this.props
 
         return (
-            <section className='list-wrapper'>
+            <section className={`content-wrapper`}>
                 {
                     results.length > 0 ?
-                    <ul className='list'>
-                        {results.map((result, index) => {
-                            return <ListItem key={index} item={result} handleClick={this.handleClick.bind(this, index)} selected={this.state.selected} index={index} />
-                        })}
-                    </ul> :
-                    <Dropzone onDrop={this.props.onDrop} />
+                    <List /> :
+                    this.props.visibleDropArea ?
+                    <Dropzone onDrop={this.props.onDrop} /> :
+                    <EmptyList />
                 }
             </section>
         )

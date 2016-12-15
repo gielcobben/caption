@@ -6,7 +6,7 @@ export default class Dropzone extends Component {
         return (
             <section className='dropzone' onDrop={this.props.onDrop}>
                 <div className='zone'>
-                    <h2>Drop your video file…</h2>
+                    <h2>Or drop your video file(s)…</h2>
                 </div>
             </section>
         )
