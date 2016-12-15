@@ -11,13 +11,12 @@ body {
     padding: 0;
     -webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
+    background: none;
 }
 
 body {
     position: relative;
     height: 100vh;
-    // background: #232226;
-    // background: rgba(0, 0, 0, .2);
     color: #fff;
     overflow-y: hidden;
     font-size: 14px;
