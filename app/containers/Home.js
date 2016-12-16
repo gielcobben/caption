@@ -1,9 +1,33 @@
 import fs from 'fs'
+import AdmZip from 'adm-zip'
 import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
 import SearchField from '../components/SearchField'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
+
+const checkFiles = (path, callback) => {
+
+    if (fs.existsSync(path)) {
+
+        const stats = fs.statSync(path)
+        const isDirectory = stats.isDirectory()
+
+        if (isDirectory) {
+            console.log('is folder')
+
+            fs.readdir(path, (error, filesInDirectory) => {
+                return callback('directory', filesInDirectory)
+            })
+
+        }
+        else {
+            console.log('is file')
+            return callback('singleFile', false)
+        }
+
+    }
+}
 
 export default class Home extends Component {
 
@@ -14,21 +38,68 @@ export default class Home extends Component {
             results: [],
             lang: 'eng',
             query: null,
-            filepath: null,
+            files: null,
+            filePath: null,
             loading: false,
             visibleDropArea: true
         }
 
-        this.search = this.search.bind(this)
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
         this.onQueryChange = this.onQueryChange.bind(this)
+        this.searchForFiles = this.searchForFiles.bind(this)
+        this.searchForTitle = this.searchForTitle.bind(this)
         this.onLanguageChange = this.onLanguageChange.bind(this)
     }
 
-    search(event, type) {
+    searchForFiles() {
+        console.log('search for file')
+        console.log(this.state.files)
+        console.log(this.state.filePath)
 
-        // If event, prevent default form submit
+        const path = this.state.filePath
+        const files = this.state.files
+
+        this.setState({
+            loading: true
+        })
+
+        OpenSubtitles.api.login().then(token => {
+
+            files.map((file, index) => {
+
+                OpenSubtitles.api.searchForFile(token, this.state.lang, `${path}/${file}`).then(results => {
+
+                    // fs.createReadStream(results[0].ZipDownloadLink).pipe(unzip.Extract({ path: path }))
+
+                    fetch(results[0].ZipDownloadLink).then(response => {
+                        console.log(response)
+                        console.log(response.body)
+                        // response.body.on('data', chunk => {
+                        //     console.log(chunk)
+                        // })
+                    })
+
+                })
+
+                // Logout when the last result is in.
+                if (index == files.length - 1) {
+                    OpenSubtitles.api.logout(token)
+
+                    this.setState({
+                        loading: false
+                    })
+                }
+
+            })
+
+        })
+
+    }
+
+    searchForTitle(event) {
+
+        // Prevent default form submit
         if (event) {
             event.preventDefault()
         }
@@ -41,46 +112,25 @@ export default class Home extends Component {
                 loading: true
             })
 
+            // Use the opensubtitles API to search for subtitles
             OpenSubtitles.api.login().then((token) => {
+                OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
 
-                if (type === 'file') {
-
-                    // Use the opensubtitles API to search for subtitles
-                    OpenSubtitles.api.searchForFile(token, this.state.lang, "/Users/giel/Downloads/Halt And Catch Fire Season 3 Mp4 720p/Halt And Catch Fire S03E10.mp4").then((results) => {
-
-                        console.log('searched.')
-
-                        // Store results in state
-                        this.setState({
-                            results: results,
-                            loading: false
-                        })
-
-                        // And logout when we've results
-                        OpenSubtitles.api.logout(token)
+                    // Store results in state
+                    this.setState({
+                        results: results,
+                        loading: false
                     })
 
-                }
-                else {
-
-                    // Use the opensubtitles API to search for subtitles
-                    OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
-
-                        // Store results in state
-                        this.setState({
-                            results: results,
-                            loading: false
-                        })
-
-                        // And logout when we've results
-                        OpenSubtitles.api.logout(token)
-                    })
-                }
+                    // And logout when we've results
+                    OpenSubtitles.api.logout(token)
+                })
             })
         }
     }
 
     onDrop(event) {
+        // Prevent Default
         event.preventDefault()
 
         // Get the dropped files
@@ -88,39 +138,33 @@ export default class Home extends Component {
 
         // Set file path
         this.setState({
-            filepath: filesDropped[0].path
+            filePath: filesDropped[0].path
         })
 
-        // Files processing (do this outside of React)
-        if (fs.existsSync(filesDropped[0].path)) {
-            const stats = fs.statSync(filesDropped[0].path)
-            const isDirectory = stats.isDirectory()
+        // Process dropped path
+        checkFiles(filesDropped[0].path, (type, files) => {
+            if (type === 'directory') {
 
-            if (isDirectory) {
-                console.log('is folder')
+                this.setState({
+                    files: files
+                })
+
+                this.searchForFiles()
             }
             else {
-                console.log('is file')
+                // single file
             }
-        }
-
-        console.log(filesDropped[0])
+        })
     }
 
     onLanguageChange(lang) {
-
-        // setState
         this.setState({
             lang: lang
         })
-
-        // Search
-        this.search()
+        this.searchForTitle()
     }
 
     onQueryChange(query) {
-
-        // setState
         this.setState({
             query: query,
             visibleDropArea: false
@@ -128,8 +172,6 @@ export default class Home extends Component {
     }
 
     resetList() {
-
-        // setState
         this.setState({
             loading: false,
             query: null,
@@ -150,7 +192,7 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.search} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
+                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
                 {
                     this.state.loading ?
                     <Loading /> :

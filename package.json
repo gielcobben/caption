@@ -108,6 +108,7 @@
     "webpack-validator": "^2.2.9"
   },
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "css-modules-require-hook": "^4.0.5",
     "electron-debug": "^1.0.1",
     "electron-json-storage": "^2.0.3",
