@@ -75,6 +75,22 @@ export default class Home extends Component {
                     fetch(results[0].ZipDownloadLink).then(response => {
                         console.log(response)
                         console.log(response.body)
+
+                        const chunks = []
+                        const reader = response.body.getReader()
+
+                        reader.read().then(({ value, done }) => {
+                            if (done) {
+                                return chunks;
+                            }
+                            chunks.push(value);
+                        })
+
+                        const zip = new AdmZip(chunks)
+                        const zipEntries = zip.getEntries()
+
+                        console.log(zipEntries)
+
                         // response.body.on('data', chunk => {
                         //     console.log(chunk)
                         // })
