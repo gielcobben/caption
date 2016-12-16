@@ -1,3 +1,4 @@
+import fs from 'fs'
 import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
 import SearchField from '../components/SearchField'
@@ -90,8 +91,18 @@ export default class Home extends Component {
             filepath: filesDropped[0].path
         })
 
-        // Search with type
-        this.search(null, 'file')
+        // Files processing (do this outside of React)
+        if (fs.existsSync(filesDropped[0].path)) {
+            const stats = fs.statSync(filesDropped[0].path)
+            const isDirectory = stats.isDirectory()
+
+            if (isDirectory) {
+                console.log('is folder')
+            }
+            else {
+                console.log('is file')
+            }
+        }
 
         console.log(filesDropped[0])
     }
