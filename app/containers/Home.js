@@ -29,6 +29,17 @@ const checkFiles = (path, callback) => {
     }
 }
 
+const toBuffer = (arrayBuffer) => {
+    const buf = new Buffer(arrayBuffer.byteLength)
+    const view = new Uint8Array(arrayBuffer)
+
+    for (let i = 0; i < buf.length; ++i) {
+        buf[i] = view[i]
+    }
+
+    return buf
+}
+
 export default class Home extends Component {
 
     constructor(props) {
@@ -53,10 +64,6 @@ export default class Home extends Component {
     }
 
     searchForFiles() {
-        console.log('search for file')
-        console.log(this.state.files)
-        console.log(this.state.filePath)
-
         const path = this.state.filePath
         const files = this.state.files
 
@@ -66,45 +73,61 @@ export default class Home extends Component {
 
         OpenSubtitles.api.login().then(token => {
 
+            // Loop trough each dropped file
             files.map((file, index) => {
 
+                // Search by file
                 OpenSubtitles.api.searchForFile(token, this.state.lang, `${path}/${file}`).then(results => {
 
-                    // fs.createReadStream(results[0].ZipDownloadLink).pipe(unzip.Extract({ path: path }))
+                    // If results, get download link and filename
+                    const subDownloadLink = results[0].ZipDownloadLink
+                    const subFileName = results[0].SubFileName
 
-                    fetch(results[0].ZipDownloadLink).then(response => {
-                        console.log(response)
-                        console.log(response.body)
+                    // Remove extention from video filename so we can use this as the new subtitle filename
+                    const extention = file.substr(file.lastIndexOf('.') + 1)
+                    const newFilename = file.replace(`.${extention}`, '')
 
-                        const chunks = []
-                        const reader = response.body.getReader()
+                    // Download the subtitle
+                    fetch(subDownloadLink).then(response => {
 
-                        reader.read().then(({ value, done }) => {
-                            if (done) {
-                                return chunks;
-                            }
-                            chunks.push(value);
-                        })
+                        // Get arrayBuffer
+                        return response.arrayBuffer()
+                    }).then(arrayBuffer => {
 
-                        const zip = new AdmZip(chunks)
+                        // Convert to Buffer
+                        return toBuffer(arrayBuffer)
+                    }).then(buffer => {
+
+                        // Process file
+                        const zip = new AdmZip(buffer)
                         const zipEntries = zip.getEntries()
 
-                        console.log(zipEntries)
+                        // Map files in zip
+                        zipEntries.map(zipEntry => {
 
-                        // response.body.on('data', chunk => {
-                        //     console.log(chunk)
-                        // })
+                            // Search for the .srt file inside the zip
+                            if (zipEntry.entryName === subFileName) {
+
+                                // Extract srt file
+                                zip.extractEntryTo(zipEntry.entryName, path, false, true)
+
+                                // Rename subtitle file to the same filename as the video
+                                fs.rename(`${path}/${subFileName}`, `${path}/${newFilename}.srt`)
+
+                                // Done.
+                                this.setState({
+                                    loading: false
+                                })
+                            }
+
+                        })
                     })
 
                 })
 
                 // Logout when the last result is in.
-                if (index == files.length - 1) {
+                if (index === files.length - 1) {
                     OpenSubtitles.api.logout(token)
-
-                    this.setState({
-                        loading: false
-                    })
                 }
 
             })
@@ -189,9 +212,11 @@ export default class Home extends Component {
 
     resetList() {
         this.setState({
-            loading: false,
             query: null,
             results: [],
+            files: null,
+            filePath: null,
+            loading: false,
             visibleDropArea: true
         })
     }
