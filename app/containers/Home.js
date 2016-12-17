@@ -1,70 +1,228 @@
+import fs from 'fs'
+import AdmZip from 'adm-zip'
 import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
 import SearchField from '../components/SearchField'
 import Loading from '../components/Loading'
-import List from '../components/List'
+import Content from '../components/Content'
+
+const checkFiles = (path, callback) => {
+
+    if (fs.existsSync(path)) {
+
+        const stats = fs.statSync(path)
+        const isDirectory = stats.isDirectory()
+
+        if (isDirectory) {
+            console.log('is folder')
+
+            fs.readdir(path, (error, filesInDirectory) => {
+                return callback('directory', filesInDirectory)
+            })
+
+        }
+        else {
+            console.log('is file')
+            return callback('singleFile', false)
+        }
+
+    }
+}
+
+const toBuffer = (arrayBuffer) => {
+    const buf = new Buffer(arrayBuffer.byteLength)
+    const view = new Uint8Array(arrayBuffer)
+
+    for (let i = 0; i < buf.length; ++i) {
+        buf[i] = view[i]
+    }
+
+    return buf
+}
 
 export default class Home extends Component {
 
     constructor(props) {
         super(props)
-        this.onSearch = this.onSearch.bind(this)
+
         this.state = {
-            loading: false,
-            query: null,
+            results: [],
             lang: 'eng',
-            results: []
+            query: null,
+            files: null,
+            filePath: null,
+            loading: false,
+            visibleDropArea: true
         }
+
+        this.onDrop = this.onDrop.bind(this)
+        this.resetList = this.resetList.bind(this)
+        this.onQueryChange = this.onQueryChange.bind(this)
+        this.searchForFiles = this.searchForFiles.bind(this)
+        this.searchForTitle = this.searchForTitle.bind(this)
+        this.onLanguageChange = this.onLanguageChange.bind(this)
     }
 
-    searchSubtitle(query, language) {
-        // Check is there's an query
-        if (query) {
+    searchForFiles() {
+        const path = this.state.filePath
+        const files = this.state.files
 
-            // Set loading to True
-            this.setState({
-                loading: true,
-                query: query,
-                lang: language
+        this.setState({
+            loading: true
+        })
+
+        OpenSubtitles.api.login().then(token => {
+
+            // Loop trough each dropped file
+            files.map((file, index) => {
+
+                // Search by file
+                OpenSubtitles.api.searchForFile(token, this.state.lang, `${path}/${file}`).then(results => {
+
+                    // If results, get download link and filename
+                    const subDownloadLink = results[0].ZipDownloadLink
+                    const subFileName = results[0].SubFileName
+
+                    // Remove extention from video filename so we can use this as the new subtitle filename
+                    const extention = file.substr(file.lastIndexOf('.') + 1)
+                    const newFilename = file.replace(`.${extention}`, '')
+
+                    // Download the subtitle
+                    fetch(subDownloadLink).then(response => {
+
+                        // Get arrayBuffer
+                        return response.arrayBuffer()
+                    }).then(arrayBuffer => {
+
+                        // Convert to Buffer
+                        return toBuffer(arrayBuffer)
+                    }).then(buffer => {
+
+                        // Process file
+                        const zip = new AdmZip(buffer)
+                        const zipEntries = zip.getEntries()
+
+                        // Map files in zip
+                        zipEntries.map(zipEntry => {
+
+                            // Search for the .srt file inside the zip
+                            if (zipEntry.entryName === subFileName) {
+
+                                // Extract srt file
+                                zip.extractEntryTo(zipEntry.entryName, path, false, true)
+
+                                // Rename subtitle file to the same filename as the video
+                                fs.rename(`${path}/${subFileName}`, `${path}/${newFilename}.srt`)
+
+                                // Done.
+                                this.setState({
+                                    loading: false
+                                })
+                            }
+
+                        })
+                    })
+
+                })
+
+                // Logout when the last result is in.
+                if (index === files.length - 1) {
+                    OpenSubtitles.api.logout(token)
+                }
+
             })
 
+        })
+
+    }
+
+    searchForTitle(event) {
+
+        // Prevent default form submit
+        if (event) {
+            event.preventDefault()
+        }
+
+        // Only do a search if there's a query
+        if (this.state.query) {
+
+            // Enable loading
+            this.setState({
+                loading: true
+            })
+
+            // Use the opensubtitles API to search for subtitles
             OpenSubtitles.api.login().then((token) => {
-                // Use the opensubtitles API to search for subtitles
-                OpenSubtitles.api.searchForTitle(token, language, query).then((results) => {
+                OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
+
                     // Store results in state
                     this.setState({
                         results: results,
                         loading: false
                     })
+
+                    // And logout when we've results
+                    OpenSubtitles.api.logout(token)
                 })
             })
         }
     }
 
-    onSearch(input) {
+    onDrop(event) {
         // Prevent Default
-        input.preventDefault()
+        event.preventDefault()
 
-        console.log('go')
+        // Get the dropped files
+        const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
-        // Readable value
-        const query = input.target.querySelector('input').value
+        // Set file path
+        this.setState({
+            filePath: filesDropped[0].path
+        })
 
-        console.log(this.props.language)
+        // Process dropped path
+        checkFiles(filesDropped[0].path, (type, files) => {
+            if (type === 'directory') {
 
-        // // Get language from storage with callback because it takes a while...
-        // getLanguage((language) => {
-        //
-        //     // Search if there's an value and it's not search already.
-        //     // if (value && !this.state.loading) {
-        //     if (query) {
-        //         this.searchSubtitle(query, language)
-        //         console.log(`Searching For: ${query} lang: ${language}`)
-        //     }
-        // })
+                this.setState({
+                    files: files
+                })
+
+                this.searchForFiles()
+            }
+            else {
+                // single file
+            }
+        })
+    }
+
+    onLanguageChange(lang) {
+        this.setState({
+            lang: lang
+        })
+        this.searchForTitle()
+    }
+
+    onQueryChange(query) {
+        this.setState({
+            query: query,
+            visibleDropArea: false
+        })
+    }
+
+    resetList() {
+        this.setState({
+            query: null,
+            results: [],
+            files: null,
+            filePath: null,
+            loading: false,
+            visibleDropArea: true
+        })
     }
 
     render() {
+
         // Construct circle icon
         const circle = (
             <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
@@ -75,11 +233,11 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField onSearch={this.onSearch} />
+                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
                 {
                     this.state.loading ?
                     <Loading /> :
-                    <List results={this.state.results} />
+                    <Content visibleDropArea={this.state.visibleDropArea} onDrop={this.onDrop} results={this.state.results} />
                 }
             </div>
         )

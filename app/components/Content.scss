@@ -1,0 +1,11 @@
+.content-wrapper {
+    height: calc(100vh - 125px);
+    width: 100vw;
+    overflow-y: hidden;
+
+    .inner {
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+    }
+}

@@ -90,18 +90,16 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         center: true,
         show: false,
-        width: 350,
-        height: 320,
+        width: 360,
+        height: 440,
         vibrancy: 'ultra-dark',
+        // vibrancy: 'dark',
         frame: false,
         transparent: true
     });
 
     // Set URL
     mainWindow.loadURL(`file://${__dirname}/app/app.html`);
-
-    // vibrancy
-    // electronVibrancy.SetVibrancy(mainWindow, 9);
 
     // Events
     mainWindow.webContents.on('did-finish-load', () => {
@@ -111,35 +109,7 @@ const createMainWindow = () => {
 
     mainWindow.on('closed', () => {
         mainWindow = null;
-        settingsWindow = null;
-    });
-}
-
-/*
-* Create Settings Window
-*/
-const createSettingsWindow = () => {
-
-    // Create
-    settingsWindow = new BrowserWindow({
-        show: false,
-        width: 300,
-        height: 150,
-        vibrancy: 'ultra-dark',
-        frame: false,
-        transparent: true,
-        resizable: false
-    });
-
-    // Set URL
-    settingsWindow.loadURL(`file://${__dirname}/app/app.html#settings`);
-
-    // vibrancy
-    // electronVibrancy.SetVibrancy(settingsWindow, 9);
-
-    // Events
-    settingsWindow.on('closed', () => {
-        settingsWindow = null
+        // settingsWindow = null;
     });
 }
 
@@ -148,20 +118,8 @@ app.on('ready', async () => {
 
     // create windows
     createMainWindow();
-    createSettingsWindow();
 
     // Events
-    ipcMain.on('open-settings', () => {
-        settingsWindow.show();
-        if (process.env.NODE_ENV === 'development') {
-            settingsWindow.openDevTools();
-        }
-    });
-
-    ipcMain.on('close-settings', () => {
-        settingsWindow.hide();
-    });
-
     ipcMain.on('close-main', () => {
         mainWindow.close();
         app.quit();
@@ -171,6 +129,7 @@ app.on('ready', async () => {
         mainWindow.webContents.send('change-language')
     })
 
+    // Download Event
     mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
         // Set the save path, making Electron not to prompt a save dialog.
         // item.setSavePath('/tmp/save.pdf')
@@ -197,6 +156,7 @@ app.on('ready', async () => {
 
     });
 
+    // Development requirements
     if (process.env.NODE_ENV === 'development') {
         mainWindow.openDevTools();
         mainWindow.webContents.on('context-menu', (e, props) => {
@@ -211,6 +171,7 @@ app.on('ready', async () => {
         });
     }
 
+    // Menu
     if (process.platform === 'darwin') {
         template = [{
             label: 'Caption',
