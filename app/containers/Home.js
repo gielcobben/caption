@@ -71,6 +71,9 @@ export default class Home extends Component {
             loading: true
         })
 
+        console.log(files)
+        console.log(files.length)
+
         OpenSubtitles.api.login().then(token => {
 
             // Loop trough each dropped file
@@ -78,6 +81,8 @@ export default class Home extends Component {
 
                 // Search by file
                 OpenSubtitles.api.searchForFile(token, this.state.lang, `${path}/${file}`).then(results => {
+
+                    console.log(results)
 
                     // If results, get download link and filename
                     const subDownloadLink = results[0].ZipDownloadLink
@@ -175,16 +180,12 @@ export default class Home extends Component {
         // Get the dropped files
         const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
-        // Set file path
-        this.setState({
-            filePath: filesDropped[0].path
-        })
-
         // Process dropped path
         checkFiles(filesDropped[0].path, (type, files) => {
             if (type === 'directory') {
 
                 this.setState({
+                    filePath: filesDropped[0].path,
                     files: files
                 })
 
@@ -192,6 +193,22 @@ export default class Home extends Component {
             }
             else {
                 // single file
+                const filePath = filesDropped[0].path
+                const fileDirectory = filePath.replace(`/${filesDropped[0].name}`, '')
+
+                this.setState({
+                    filePath: fileDirectory,
+                    files: [filesDropped[0].name]
+                }, () => {
+                    this.searchForFiles()
+                })
+
+                // setTimeout(() => {
+                //     this.searchForFiles()
+                // }, 1000)
+
+
+
             }
         })
     }
