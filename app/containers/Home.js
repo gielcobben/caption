@@ -2,9 +2,9 @@ import fs from 'fs'
 import AdmZip from 'adm-zip'
 import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
-import SearchField from '../components/SearchField'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
+import SearchField from '../components/SearchField'
 
 const checkFiles = (filesDropped, callback) => {
 
@@ -268,11 +268,7 @@ export default class Home extends Component {
         return (
             <div className="wrapper">
                 <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} defaultValue={this.state.query} />
-                {
-                    this.state.loading ?
-                    <Loading /> :
-                    <Content visibleDropArea={this.state.visibleDropArea} onDrop={this.onDrop} results={this.state.results} />
-                }
+                <Content loading={this.state.loading} visibleDropArea={this.state.visibleDropArea} onDrop={this.onDrop} results={this.state.results} />
             </div>
         )
     }

@@ -1,9 +1,7 @@
-// @flow
 import './App.scss';
 import React, { Component, PropTypes } from 'react'
 import Header from '../components/Header'
 
-// App:
 export default class App extends Component {
 
     componentWillMount() {

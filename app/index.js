@@ -14,7 +14,7 @@ render((
     <Router history={hashHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={Home} />
-            <Route path="settings" component={Settings} />
+            {/* <Route path="settings" component={Settings} /> */}
         </Route>
     </Router>
 ), document.getElementById('app'))

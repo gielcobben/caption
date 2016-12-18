@@ -46,7 +46,7 @@ export default class Loading extends Component {
         )
 
         return (
-            <div>
+            <div className="loading">
                 {spinner}
             </div>
         )

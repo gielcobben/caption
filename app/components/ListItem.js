@@ -2,7 +2,6 @@ import "./ListItem.scss"
 import React, {Component} from 'react'
 
 export default class ListItem extends Component {
-
     constructor(props) {
         super(props)
         this.handleDoubleClick = this.handleDoubleClick.bind(this)

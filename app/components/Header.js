@@ -1,4 +1,3 @@
-// @flow
 import './Header.scss';
 import React, { Component } from 'react'
 import {ipcRenderer} from 'electron'

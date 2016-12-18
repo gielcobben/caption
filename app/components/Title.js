@@ -1,12 +1,12 @@
 import './Title.scss'
-import React, {Component} from 'react'
+import React from 'react'
 
-export default class Title extends Component {
-    render() {
-        return (
-            <div className='title'>
-                <h1>{this.props.title}</h1>
-            </div>
-        )
-    }
+const Title = ({title}) => {
+    return (
+        <div className='title'>
+            <h1>{title}</h1>
+        </div>
+    )
 }
+
+export default Title
