@@ -13,6 +13,7 @@ const packager = require('electron-packager');
 const del = require('del');
 const exec = require('child_process').exec;
 const pkg = require('./package.json');
+const config = require('./config.json');
 
 /**
  * First two values are node path and current script path
@@ -150,7 +151,7 @@ function pack(plat, arch, cb) {
     'app-version': pkg.version || DEFAULT_OPTS.version,
     out: `release/${plat}-${arch}`,
     'osx-sign': {
-        identity: '76D2KX7X2M'
+        identity: config.cosign
     },
     overwrite: true
   });

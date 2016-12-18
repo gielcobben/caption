@@ -1,7 +1,7 @@
 {
   "name": "caption",
   "productName": "Caption",
-  "version": "v0.0.1",
+  "version": "v0.5.0",
   "description": "Caption for Mac",
   "main": "main.js",
   "scripts": {
@@ -34,19 +34,16 @@
     "url": "https://github.com/gielcobben"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
-  },
   "keywords": [
     "electron",
-    "boilerplate",
     "react",
     "react-router",
-    "flux",
     "webpack",
-    "react-hot"
+    "react-hot",
+    "subtitles",
+    "download"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
+  "homepage": "http://captionformac.com/",
   "devDependencies": {
     "asar": "^0.12.3",
     "babel-core": "^6.17.0",
