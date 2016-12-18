@@ -19,11 +19,11 @@ export default class SearchField extends Component {
         this.textInput.focus()
 
         // Always focus
-        this.textInput.onblur = () => {
-            setTimeout(() => {
-                this.textInput.focus()
-            })
-        }
+        // this.textInput.onblur = () => {
+        //     setTimeout(() => {
+        //         this.textInput.focus()
+        //     })
+        // }
     }
 
     handleInputChange(event) {
