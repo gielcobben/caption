@@ -6,38 +6,105 @@ import SearchField from '../components/SearchField'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
 
-const checkFiles = (path, callback) => {
+const checkFiles = (filesDropped, callback) => {
 
-    if (fs.existsSync(path)) {
+    const files = []
 
-        const stats = fs.statSync(path)
-        const isDirectory = stats.isDirectory()
+    // Loop trough each dropped file
+    for (let i = 0; i < filesDropped.length; i++) {
 
-        if (isDirectory) {
-            console.log('is folder')
+        const file = filesDropped[i]
 
-            fs.readdir(path, (error, filesInDirectory) => {
-                return callback('directory', filesInDirectory)
-            })
+        // Check if path exists
+        if (fs.existsSync(file.path)) {
 
-        }
-        else {
-            console.log('is file')
-            return callback('singleFile', false)
+            const stats = fs.statSync(file.path)
+            const isDirectory = stats.isDirectory()
+
+            if (isDirectory) {
+
+                // Read files in directory
+                fs.readdir(file.path, (error, filesInDirectory) => {
+
+                    filesInDirectory.map(fileInDirectory => {
+
+                        // Map and push the file object in array
+                        const fileObject = {
+                            name: fileInDirectory,
+                            path: `${file.path}/${fileInDirectory}`
+                        }
+
+                        files.push(fileObject)
+
+                    })
+                })
+            }
+            else {
+
+                // If file is just a file, push the file object in array
+                const fileObject = {
+                    name: file.name,
+                    path: file.path
+                }
+
+                files.push(fileObject)
+
+            }
         }
 
     }
+
+    callback(files)
 }
 
 const toBuffer = (arrayBuffer) => {
     const buf = new Buffer(arrayBuffer.byteLength)
     const view = new Uint8Array(arrayBuffer)
 
-    for (let i = 0; i < buf.length; ++i) {
+    for (let i = 0; i < buf.length; i++) {
         buf[i] = view[i]
     }
 
     return buf
+}
+
+const downloadSubtitle = (subDownloadLink, file, subFileName, newFilename, callback) => {
+
+    // Download the subtitle
+    fetch(subDownloadLink).then(response => {
+
+        // Get arrayBuffer
+        return response.arrayBuffer()
+    }).then(arrayBuffer => {
+
+        // Convert to Buffer
+        return toBuffer(arrayBuffer)
+    }).then(buffer => {
+
+        // Process file
+        const zip = new AdmZip(buffer)
+        const zipEntries = zip.getEntries()
+
+        // Map files in zip
+        zipEntries.map(zipEntry => {
+
+            // Search for the .srt file inside the zip
+            if (zipEntry.entryName === subFileName) {
+
+                // remove file.name from file.path to get the right directoryPath
+                const directoryPath = file.path.replace(file.name, '')
+
+                // Extract srt file
+                zip.extractEntryTo(zipEntry.entryName, directoryPath, false, true)
+
+                // Rename subtitle file to the same filename as the video
+                fs.rename(`${directoryPath}/${subFileName}`, `${directoryPath}/${newFilename}.srt`)
+
+                callback()
+            }
+
+        })
+    })
 }
 
 export default class Home extends Component {
@@ -48,9 +115,8 @@ export default class Home extends Component {
         this.state = {
             results: [],
             lang: 'eng',
-            query: null,
+            query: '',
             files: null,
-            filePath: null,
             loading: false,
             visibleDropArea: true
         }
@@ -64,15 +130,11 @@ export default class Home extends Component {
     }
 
     searchForFiles() {
-        const path = this.state.filePath
         const files = this.state.files
 
         this.setState({
             loading: true
         })
-
-        console.log(files)
-        console.log(files.length)
 
         OpenSubtitles.api.login().then(token => {
 
@@ -80,51 +142,21 @@ export default class Home extends Component {
             files.map((file, index) => {
 
                 // Search by file
-                OpenSubtitles.api.searchForFile(token, this.state.lang, `${path}/${file}`).then(results => {
-
-                    console.log(results)
+                OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
 
                     // If results, get download link and filename
                     const subDownloadLink = results[0].ZipDownloadLink
                     const subFileName = results[0].SubFileName
 
                     // Remove extention from video filename so we can use this as the new subtitle filename
-                    const extention = file.substr(file.lastIndexOf('.') + 1)
-                    const newFilename = file.replace(`.${extention}`, '')
+                    const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
+                    const newFilename = file.name.replace(`.${extention}`, '')
 
-                    // Download the subtitle
-                    fetch(subDownloadLink).then(response => {
-
-                        // Get arrayBuffer
-                        return response.arrayBuffer()
-                    }).then(arrayBuffer => {
-
-                        // Convert to Buffer
-                        return toBuffer(arrayBuffer)
-                    }).then(buffer => {
-
-                        // Process file
-                        const zip = new AdmZip(buffer)
-                        const zipEntries = zip.getEntries()
-
-                        // Map files in zip
-                        zipEntries.map(zipEntry => {
-
-                            // Search for the .srt file inside the zip
-                            if (zipEntry.entryName === subFileName) {
-
-                                // Extract srt file
-                                zip.extractEntryTo(zipEntry.entryName, path, false, true)
-
-                                // Rename subtitle file to the same filename as the video
-                                fs.rename(`${path}/${subFileName}`, `${path}/${newFilename}.srt`)
-
-                                // Done.
-                                this.setState({
-                                    loading: false
-                                })
-                            }
-
+                    // Download
+                    downloadSubtitle(subDownloadLink, file, subFileName, newFilename, () => {
+                        // Done.
+                        this.setState({
+                            loading: false
                         })
                     })
 
@@ -181,35 +213,14 @@ export default class Home extends Component {
         const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
         // Process dropped path
-        checkFiles(filesDropped[0].path, (type, files) => {
-            if (type === 'directory') {
+        checkFiles(filesDropped, (files) => {
 
-                this.setState({
-                    filePath: filesDropped[0].path,
-                    files: files
-                })
-
+            this.setState({
+                files: files
+            }, () => {
                 this.searchForFiles()
-            }
-            else {
-                // single file
-                const filePath = filesDropped[0].path
-                const fileDirectory = filePath.replace(`/${filesDropped[0].name}`, '')
+            })
 
-                this.setState({
-                    filePath: fileDirectory,
-                    files: [filesDropped[0].name]
-                }, () => {
-                    this.searchForFiles()
-                })
-
-                // setTimeout(() => {
-                //     this.searchForFiles()
-                // }, 1000)
-
-
-
-            }
         })
     }
 
@@ -217,11 +228,18 @@ export default class Home extends Component {
         this.setState({
             lang: lang
         })
-        this.searchForTitle()
+
+        if (this.state.files) {
+            this.searchForFiles()
+        }
+        else {
+            this.searchForTitle()
+        }
     }
 
     onQueryChange(query) {
         this.setState({
+            files: null,
             query: query,
             visibleDropArea: false
         })
@@ -229,10 +247,9 @@ export default class Home extends Component {
 
     resetList() {
         this.setState({
-            query: null,
+            query: '',
             results: [],
             files: null,
-            filePath: null,
             loading: false,
             visibleDropArea: true
         })
@@ -250,7 +267,7 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} />
+                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} defaultValue={this.state.query} />
                 {
                     this.state.loading ?
                     <Loading /> :
