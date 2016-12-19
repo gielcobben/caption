@@ -6,7 +6,7 @@
 
 ## Get Caption
 
-**[Download the latest release](http://getcaption.com/)** (macOS only)
+**[Download the latest release](http://getcaption.co/)** (macOS only)
 
 ## Contribute
 
