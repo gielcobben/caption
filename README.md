@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="http://captionformac.com/icon.png" height="64">
+  <img src="http://getcaption.co/icon.png" height="64">
   <h3 align="center">Caption</h3>
   <p align="center">An open-source subtitle app built with web technology<p>
 </p>
 
 ## Get Caption
 
-**[Download the latest release](http://captionformac.com/)** (macOS only)
+**[Download the latest release](http://getcaption.com/)** (macOS only)
 
 ## Contribute
 
@@ -24,7 +24,7 @@ After that, you'll see the binary in the `./release` folder :smile:
 
 ## Related Repositories
 
-- [Website](http://captionformac.com/)
+- [Website](http://getcaption.co/)
 
 ## Thanks
 
