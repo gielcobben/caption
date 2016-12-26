@@ -13,7 +13,7 @@ export default class Home extends Component {
 
         this.state = {
             query: '',
-            lang: 'eng',
+            lang: 'all',
             files: null,
             results: [],
             loading: false,
@@ -22,6 +22,7 @@ export default class Home extends Component {
 
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
+        this.onKeyPress = this.onKeyPress.bind(this)
         this.onQueryChange = this.onQueryChange.bind(this)
         this.searchForFiles = this.searchForFiles.bind(this)
         this.searchForTitle = this.searchForTitle.bind(this)
@@ -149,6 +150,12 @@ export default class Home extends Component {
         })
     }
 
+    onKeyPress(event) {
+        if (event.keyCode === 27) {
+            this.resetList()
+        }
+    }
+
     resetList() {
         this.setState({
             query: '',
@@ -167,6 +174,14 @@ export default class Home extends Component {
         })
     }
 
+    componentDidMount() {
+        document.addEventListener('keydown', this.onKeyPress)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.onKeyPress)
+    }
+
     render() {
 
         // Construct circle icon
@@ -179,8 +194,21 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} defaultValue={this.state.query} />
-                <Content loading={this.state.loading} visibleDropArea={this.state.visibleDropArea} onDrop={this.onDrop} results={this.state.results} />
+                <SearchField
+                    selectedLanguage={this.state.lang}
+                    resetList={this.resetList}
+                    submitForm={this.searchForTitle}
+                    changeQuery={this.onQueryChange}
+                    changeLanguage={this.onLanguageChange}
+                    defaultValue={this.state.query}
+                    showReset={!this.state.visibleDropArea}
+                />
+                <Content
+                    loading={this.state.loading}
+                    visibleDropArea={this.state.visibleDropArea}
+                    onDrop={this.onDrop}
+                    results={this.state.results}
+                />
             </div>
         )
     }

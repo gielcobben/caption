@@ -6,10 +6,6 @@ export default class SearchField extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            showReset: false
-        }
-        this.handleReset = this.handleReset.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleLanguageChange = this.handleLanguageChange.bind(this)
     }
@@ -17,27 +13,14 @@ export default class SearchField extends Component {
     componentDidMount() {
         // Focus on mount
         this.textInput.focus()
-
-        // Always focus
-        // this.textInput.onblur = () => {
-        //     setTimeout(() => {
-        //         this.textInput.focus()
-        //     })
-        // }
     }
 
     handleInputChange(event) {
         if (event.target.value === '') {
             this.props.resetList()
-            this.setState({
-                showReset: false
-            })
         }
         else {
             this.props.changeQuery(event.target.value)
-            this.setState({
-                showReset: true
-            })
         }
     }
 
@@ -45,14 +28,9 @@ export default class SearchField extends Component {
         this.props.changeLanguage(event.target.value)
     }
 
-    handleReset() {
-        this.setState({
-            showReset: false
-        })
-        this.props.resetList()
-    }
-
     render() {
+        const {submitForm, showReset, resetList, defaultValue, selectedLanguage} = this.props
+
         const resetIcon = (
             <svg x="0px" y="0px" width="14" height="14" viewBox="0 0 14 14" data-radium="true">
                 <circle cx="7" cy="7" r="7" fill="gray"/>
@@ -62,15 +40,21 @@ export default class SearchField extends Component {
 
         return (
             <div className='search-field'>
-                <form onSubmit={this.props.submitForm}>
+                <form onSubmit={submitForm}>
                     {
-                        this.state.showReset ?
-                        <span className="reset" onClick={this.handleReset}>{resetIcon}</span> :
+                        showReset ?
+                        <span className="reset" onClick={resetList}>{resetIcon}</span> :
                         ''
                     }
-                    <input ref={(input) => { this.textInput = input }} type="text" onChange={this.handleInputChange} value={this.props.defaultValue} placeholder="Search..." />
+                    <input
+                        ref={(input) => { this.textInput = input }}
+                        type="text"
+                        onChange={this.handleInputChange}
+                        value={defaultValue}
+                        placeholder="Search..."
+                    />
                     <label>Language:</label>
-                    <select value={this.props.selectedLanguage} onChange={this.handleLanguageChange}>
+                    <select value={selectedLanguage} onChange={this.handleLanguageChange}>
                         <option value='all'>ALL</option>
                         <option value='afr'>Afrikaans</option>
                         <option value='alb'>Albanian</option>
