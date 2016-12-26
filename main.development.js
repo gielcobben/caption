@@ -92,8 +92,9 @@ const createMainWindow = () => {
         show: false,
         width: 360,
         height: 440,
+        minWidth: 300,
+        minHeight: 300,
         vibrancy: 'ultra-dark',
-        // vibrancy: 'dark',
         frame: false,
         transparent: true
     });
