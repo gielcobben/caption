@@ -17,14 +17,17 @@ export default class SearchField extends Component {
 
     handleInputChange(event) {
         if (event.target.value === '') {
+            // If input is empty, reset list
             this.props.resetList()
         }
         else {
+            // Change query on every keypress
             this.props.changeQuery(event.target.value)
         }
     }
 
     handleLanguageChange(event) {
+        // Handle language change
         this.props.changeLanguage(event.target.value)
     }
 

@@ -125,7 +125,6 @@ export default class Home extends Component {
     }
 
     onLanguageChange(lang) {
-
         Storage.set('language', lang, (error) => {
             if (error) throw error
         })
@@ -134,10 +133,7 @@ export default class Home extends Component {
             lang: lang
         })
 
-        if (this.state.files) {
-            this.searchForFiles()
-        }
-        else {
+        if (!this.state.files) {
             this.searchForTitle()
         }
     }
