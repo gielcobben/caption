@@ -5,7 +5,6 @@ import Header from '../components/Header'
 export default class App extends Component {
 
     componentWillMount() {
-
         // Prevent window from loading the dropped file
         window.addEventListener("dragenter", (event) => {
             event.preventDefault()

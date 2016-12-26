@@ -10,7 +10,6 @@ export default class Home extends Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
             query: '',
             lang: 'all',
@@ -19,7 +18,6 @@ export default class Home extends Component {
             loading: false,
             visibleDropArea: true
         }
-
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
         this.onKeyPress = this.onKeyPress.bind(this)
