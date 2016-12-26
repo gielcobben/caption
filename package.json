@@ -2,7 +2,7 @@
   "name": "caption",
   "productName": "Caption",
   "version": "v0.1.0",
-  "description": "Caption for Mac",
+  "description": "Find the right subtitles. Easy.",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.spec.js",
@@ -43,7 +43,7 @@
     "subtitles",
     "download"
   ],
-  "homepage": "http://captionformac.com/",
+  "homepage": "http://getcaption.co/",
   "devDependencies": {
     "asar": "^0.12.3",
     "babel-core": "^6.17.0",
@@ -113,7 +113,6 @@
     "npm": "^3.10.9",
     "postcss": "^5.2.4",
     "react": "^15.3.2",
-    "react-desktop": "^0.2.14",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
     "source-map-support": "^0.4.3",

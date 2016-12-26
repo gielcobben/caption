@@ -14,13 +14,17 @@
 </head>
 <body>
     <div id="app"></div>
+    <script src="scripts/GALocalStorage.js"></script>
+    <script>
+        ga_storage._setAccount('UA-89238300-2')
+        ga_storage._trackPageview('/app.html')
+    </script>
     <script>
     {
         const script = document.createElement('script')
         const port = process.env.PORT || 3000
         script.async = ''
         script.src = (process.env.HOT) ? `http://localhost:${port}/dist/bundle.js` : '../dist/bundle.js'
-        // document.write(script.outerHTML)
         document.body.appendChild(script)
     }
     </script>
