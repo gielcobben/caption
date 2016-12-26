@@ -1,111 +1,10 @@
-import fs from 'fs'
-import AdmZip from 'adm-zip'
 import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
+import Storage from 'electron-json-storage'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
 import SearchField from '../components/SearchField'
-
-const checkFiles = (filesDropped, callback) => {
-
-    const files = []
-
-    // Loop trough each dropped file
-    for (let i = 0; i < filesDropped.length; i++) {
-
-        const file = filesDropped[i]
-
-        // Check if path exists
-        if (fs.existsSync(file.path)) {
-
-            const stats = fs.statSync(file.path)
-            const isDirectory = stats.isDirectory()
-
-            if (isDirectory) {
-
-                // Read files in directory
-                fs.readdir(file.path, (error, filesInDirectory) => {
-
-                    filesInDirectory.map(fileInDirectory => {
-
-                        // Map and push the file object in array
-                        const fileObject = {
-                            name: fileInDirectory,
-                            path: `${file.path}/${fileInDirectory}`
-                        }
-
-                        files.push(fileObject)
-
-                    })
-                })
-            }
-            else {
-
-                // If file is just a file, push the file object in array
-                const fileObject = {
-                    name: file.name,
-                    path: file.path
-                }
-
-                files.push(fileObject)
-
-            }
-        }
-
-    }
-
-    callback(files)
-}
-
-const toBuffer = (arrayBuffer) => {
-    const buf = new Buffer(arrayBuffer.byteLength)
-    const view = new Uint8Array(arrayBuffer)
-
-    for (let i = 0; i < buf.length; i++) {
-        buf[i] = view[i]
-    }
-
-    return buf
-}
-
-const downloadSubtitle = (subDownloadLink, file, subFileName, newFilename, callback) => {
-
-    // Download the subtitle
-    fetch(subDownloadLink).then(response => {
-
-        // Get arrayBuffer
-        return response.arrayBuffer()
-    }).then(arrayBuffer => {
-
-        // Convert to Buffer
-        return toBuffer(arrayBuffer)
-    }).then(buffer => {
-
-        // Process file
-        const zip = new AdmZip(buffer)
-        const zipEntries = zip.getEntries()
-
-        // Map files in zip
-        zipEntries.map(zipEntry => {
-
-            // Search for the .srt file inside the zip
-            if (zipEntry.entryName === subFileName) {
-
-                // remove file.name from file.path to get the right directoryPath
-                const directoryPath = file.path.replace(file.name, '')
-
-                // Extract srt file
-                zip.extractEntryTo(zipEntry.entryName, directoryPath, false, true)
-
-                // Rename subtitle file to the same filename as the video
-                fs.rename(`${directoryPath}/${subFileName}`, `${directoryPath}/${newFilename}.srt`)
-
-                callback()
-            }
-
-        })
-    })
-}
+import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
 
 export default class Home extends Component {
 
@@ -113,16 +12,17 @@ export default class Home extends Component {
         super(props)
 
         this.state = {
-            results: [],
-            lang: 'eng',
             query: '',
+            lang: 'all',
             files: null,
+            results: [],
             loading: false,
             visibleDropArea: true
         }
 
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
+        this.onKeyPress = this.onKeyPress.bind(this)
         this.onQueryChange = this.onQueryChange.bind(this)
         this.searchForFiles = this.searchForFiles.bind(this)
         this.searchForTitle = this.searchForTitle.bind(this)
@@ -153,7 +53,7 @@ export default class Home extends Component {
                     const newFilename = file.name.replace(`.${extention}`, '')
 
                     // Download
-                    downloadSubtitle(subDownloadLink, file, subFileName, newFilename, () => {
+                    DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
                         // Done.
                         this.setState({
                             loading: false
@@ -213,7 +113,7 @@ export default class Home extends Component {
         const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
         // Process dropped path
-        checkFiles(filesDropped, (files) => {
+        CheckFiles(filesDropped, (files) => {
 
             this.setState({
                 files: files
@@ -225,14 +125,15 @@ export default class Home extends Component {
     }
 
     onLanguageChange(lang) {
+        Storage.set('language', lang, (error) => {
+            if (error) throw error
+        })
+
         this.setState({
             lang: lang
         })
 
-        if (this.state.files) {
-            this.searchForFiles()
-        }
-        else {
+        if (!this.state.files) {
             this.searchForTitle()
         }
     }
@@ -245,6 +146,12 @@ export default class Home extends Component {
         })
     }
 
+    onKeyPress(event) {
+        if (event.keyCode === 27) {
+            this.resetList()
+        }
+    }
+
     resetList() {
         this.setState({
             query: '',
@@ -253,6 +160,22 @@ export default class Home extends Component {
             loading: false,
             visibleDropArea: true
         })
+    }
+
+    componentWillMount() {
+        Storage.get('language', (error, lang) => {
+            this.setState({
+                lang: lang
+            })
+        })
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.onKeyPress)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.onKeyPress)
     }
 
     render() {
@@ -267,8 +190,21 @@ export default class Home extends Component {
         // Render
         return (
             <div className="wrapper">
-                <SearchField selectedLanguage={this.state.lang} resetList={this.resetList} submitForm={this.searchForTitle} changeQuery={this.onQueryChange} changeLanguage={this.onLanguageChange} defaultValue={this.state.query} />
-                <Content loading={this.state.loading} visibleDropArea={this.state.visibleDropArea} onDrop={this.onDrop} results={this.state.results} />
+                <SearchField
+                    selectedLanguage={this.state.lang}
+                    resetList={this.resetList}
+                    submitForm={this.searchForTitle}
+                    changeQuery={this.onQueryChange}
+                    changeLanguage={this.onLanguageChange}
+                    defaultValue={this.state.query}
+                    showReset={!this.state.visibleDropArea}
+                />
+                <Content
+                    loading={this.state.loading}
+                    visibleDropArea={this.state.visibleDropArea}
+                    onDrop={this.onDrop}
+                    results={this.state.results}
+                />
             </div>
         )
     }

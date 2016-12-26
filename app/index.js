@@ -1,6 +1,5 @@
-// @flow
-import './reset.scss';
-import './global.scss';
+import './reset.scss'
+import './global.scss'
 
 import React from "react"
 import {render} from "react-dom"
