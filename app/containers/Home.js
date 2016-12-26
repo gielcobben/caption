@@ -1,5 +1,6 @@
 import OpenSubtitles from 'subtitler'
 import React, {Component} from 'react'
+import Storage from 'electron-json-storage'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
 import SearchField from '../components/SearchField'
@@ -123,6 +124,11 @@ export default class Home extends Component {
     }
 
     onLanguageChange(lang) {
+
+        Storage.set('language', lang, (error) => {
+            if (error) throw error
+        })
+
         this.setState({
             lang: lang
         })
@@ -150,6 +156,14 @@ export default class Home extends Component {
             files: null,
             loading: false,
             visibleDropArea: true
+        })
+    }
+
+    componentWillMount() {
+        Storage.get('language', (error, lang) => {
+            this.setState({
+                lang: lang
+            })
         })
     }
 
