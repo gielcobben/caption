@@ -1,7 +1,7 @@
 <p align="center">
   <img src="http://getcaption.co/icon.png" height="64">
   <h3 align="center">Caption</h3>
-  <p align="center">An open-source subtitle app built with web technology<p>
+  <p align="center">Find the right subtitles. Easy.<p>
 </p>
 
 ## Get Caption
