@@ -17,7 +17,7 @@ autoUpdater.on('update-not-available', () => {
 
 autoUpdater.on('update-downloaded', (e) => {
     console.log(`update-downloaded`);
-    // autoUpdater.quitAndInstall();
+    autoUpdater.quitAndInstall();
 });
 
 autoUpdater.on('error', (error) => {
@@ -29,27 +29,27 @@ autoUpdater.on('update-available', () => {
 
     console.log('New Update Available!');
 
-    const options = {
-        type: 'question',
-        buttons: ['Restart', 'Later'],
-        title: "Update Available",
-        message: 'The new version has been downloaded. Restart the application to apply the updates.',
-        detail: `Caption ${pkg.version}`
-    }
-
-    dialog.showMessageBox(options, function(response) {
-        if (response == 0) {
-            autoUpdater.quitAndInstall();
-        }
-    });
+    // const options = {
+    //     type: 'question',
+    //     buttons: ['Restart', 'Later'],
+    //     title: "Update Available",
+    //     message: 'The new version has been downloaded. Restart the application to apply the updates.',
+    //     detail: `Caption ${pkg.version}`
+    // }
+    //
+    // dialog.showMessageBox(options, function(response) {
+    //     if (response == 0) {
+    //         autoUpdater.quitAndInstall();
+    //     }
+    // });
 
 });
 
 try {
-    autoUpdater.setFeedURL(updateURL);
+    autoUpdater.setFeedURL(updateURL)
 }
 catch (error) {
-    console.log(error);
+    console.log(error)
 }
 // -----
 
