@@ -1,52 +1,83 @@
 import os from 'os'
 import path from 'path'
-import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog } from 'electron';
+import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray} from 'electron';
 import pkg from './package.json'
 
-
 // -----
-// const platform = os.platform() + '_' + os.arch();
-// const version = app.getVersion();
-// const updateURL = `http://localhost:6000/update/${os.platform()}?version=${pkg.version}`;
-//
-// autoUpdater.setFeedURL(updateURL);
-//
-// autoUpdater.on('checking-for-update', () => {
-//     console.log('Checking for updates...');
-// });
-//
-// autoUpdater.on('update-available', () => {
-//
-//     console.log('New Update Available!');
-//
-//     const options = {
-//         type: 'question',
-//         buttons: ['Restart', 'Later'],
-//         title: "Update Available",
-//         message: 'The new version has been downloaded. Restart the application to apply the updates.',
-//         detail: `Caption ${pkg.version}`
-//     }
-//
-//     dialog.showMessageBox(options, function(response) {
-//         if (response == 0) {
-//             autoUpdater.quitAndInstall();
-//         }
-//     });
-//
-// });
-//
-// autoUpdater.on('update-not-available', () => {
-//     console.log(`You've got the latest version.`);
-// });
-//
-// autoUpdater.on('update-downloaded', (e) => {
-//     console.log(`update-downloaded`);
-//     // autoUpdater.quitAndInstall();
-// });
-//
-// autoUpdater.on('error', (error) => {
-//     console.log(error)
-// });
+const platform = os.platform() + '_' + os.arch(); // darwin_x64
+const updateURL = `http://updates.getcaption.co/update/${platform}/${pkg.version}`;
+
+autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for updates...');
+});
+
+autoUpdater.on('update-not-available', () => {
+    console.log(`You've got the latest version.`)
+
+    const options = {
+        type: 'info',
+        buttons: ['Ok'],
+        title: "Caption",
+        message: `You've got the latest version.`,
+        detail: `Caption ${pkg.version}`
+    }
+
+    dialog.showMessageBox(options)
+})
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) => {
+    console.log(`update-downloaded`);
+    console.log(event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate);
+
+    const options = {
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: "Caption",
+        message: `The new version has been downloaded. Please restart the application to apply the updates.`,
+        detail: releaseName + "\n\n" + releaseNotes
+    }
+    const index = dialog.showMessageBox(options)
+
+    if (index === 1) {
+        return;
+    }
+
+    // restart app, then update will be applied
+    quitAndUpdate();
+});
+
+autoUpdater.on('error', (error) => {
+    console.log(error)
+});
+
+
+autoUpdater.on('update-available', () => {
+
+    console.log('New Update Available!');
+
+    // const options = {
+    //     type: 'question',
+    //     buttons: ['Restart', 'Later'],
+    //     title: "Update Available",
+    //     message: 'The new version has been downloaded. Restart the application to apply the updates.',
+    //     detail: `Caption ${pkg.version}`
+    // }
+    //
+    // dialog.showMessageBox(options, function(response) {
+    //     if (response == 0) {
+    //         autoUpdater.quitAndInstall();
+    //     }
+    // });
+
+});
+
+try {
+    autoUpdater.setFeedURL(updateURL)
+    autoUpdater.checkForUpdates()
+}
+catch (error) {
+    console.log(error)
+}
 // -----
 
 let menu;
