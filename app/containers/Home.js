@@ -42,21 +42,31 @@ export default class Home extends Component {
                 // Search by file
                 OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
 
-                    // If results, get download link and filename
-                    const subDownloadLink = results[0].ZipDownloadLink
-                    const subFileName = results[0].SubFileName
+                    if (results.length !== 0) {
 
-                    // Remove extention from video filename so we can use this as the new subtitle filename
-                    const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
-                    const newFilename = file.name.replace(`.${extention}`, '')
+                        // If results, get download link and filename
+                        const subDownloadLink = results[0].ZipDownloadLink
+                        const subFileName = results[0].SubFileName
 
-                    // Download
-                    DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
-                        // Done.
-                        this.setState({
-                            loading: false
+                        // Remove extention from video filename so we can use this as the new subtitle filename
+                        const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
+                        const newFilename = file.name.replace(`.${extention}`, '')
+
+                        // Download
+                        DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
+                            // Done.
+                            this.setState({
+                                loading: false
+                            })
                         })
-                    })
+                    }
+                    else {
+                        this.resetList()
+                        // this.setState({
+                        //     loading: false,
+                        //     // visibleDropArea: false
+                        // })
+                    }
 
                 })
 
