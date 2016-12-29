@@ -19,7 +19,8 @@
     "package-all": "npm run package -- --all",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
-    "cleanup": "mop -v"
+    "cleanup": "mop -v",
+    "sign": "electron-osx-sign ./release/darwin-x64/Caption-darwin-x64/Caption.app"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"

@@ -150,9 +150,6 @@ function pack(plat, arch, cb) {
     prune: true,
     'app-version': pkg.version || DEFAULT_OPTS.version,
     out: `release/${plat}-${arch}`,
-    // 'osx-sign': {
-    //     identity: config.cosign
-    // },
     overwrite: true
   });
 
