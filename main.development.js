@@ -14,15 +14,15 @@ autoUpdater.on('checking-for-update', () => {
 autoUpdater.on('update-not-available', () => {
     console.log(`You've got the latest version.`)
 
-    const options = {
-        type: 'info',
-        buttons: ['Ok'],
-        title: "Caption",
-        message: `You've got the latest version.`,
-        detail: `Caption ${pkg.version}`
-    }
-
-    dialog.showMessageBox(options)
+    // const options = {
+    //     type: 'info',
+    //     buttons: ['Ok'],
+    //     title: "Caption",
+    //     message: `You've got the latest version.`,
+    //     detail: `Caption ${pkg.version}`
+    // }
+    //
+    // dialog.showMessageBox(options)
 })
 
 autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) => {
