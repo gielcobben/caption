@@ -13,7 +13,6 @@ const packager = require('electron-packager');
 const del = require('del');
 const exec = require('child_process').exec;
 const pkg = require('./package.json');
-const config = require('./config.json');
 
 /**
  * First two values are node path and current script path
