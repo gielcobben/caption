@@ -1,6 +1,6 @@
 import os from 'os'
 import path from 'path'
-import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog } from 'electron';
+import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray} from 'electron';
 import pkg from './package.json'
 
 // -----
@@ -12,12 +12,37 @@ autoUpdater.on('checking-for-update', () => {
 });
 
 autoUpdater.on('update-not-available', () => {
-    console.log(`You've got the latest version.`);
-});
+    console.log(`You've got the latest version.`)
+    const options = {
+        type: 'info',
+        buttons: ['Ok'],
+        title: "Caption",
+        message: `You've got the latest version.`,
+        detail: `Caption ${pkg.version}`
+    }
+    dialog.showMessageBox(options)
+})
 
-autoUpdater.on('update-downloaded', (e) => {
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) => {
     console.log(`update-downloaded`);
-    autoUpdater.quitAndInstall();
+    console.log(event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate);
+
+
+    // confirm install or not to user
+    var index = dialog.showMessageBox(mainWindow, {
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: "Typetalk",
+        message: `The new version has been downloaded. Please restart the application to apply the updates.`,
+        detail: releaseName + "\n\n" + releaseNotes
+    })
+
+    if (index === 1) {
+        return;
+    }
+
+    // restart app, then update will be applied
+    quitAndUpdate();
 });
 
 autoUpdater.on('error', (error) => {
