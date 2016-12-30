@@ -3,14 +3,15 @@
     -webkit-user-select: none;
     cursor: default;
     box-sizing: border-box;
+    text-rendering: geometricPrecision;
 }
 
 html,
 body {
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
+    // -webkit-font-smoothing: antialiased;
+	// text-rendering: optimizeLegibility;
     background: none;
 }
 
