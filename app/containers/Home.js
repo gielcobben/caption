@@ -154,12 +154,6 @@ export default class Home extends Component {
         })
     }
 
-    onKeyPress(event) {
-        if (event.keyCode === 27) {
-            this.resetList()
-        }
-    }
-
     resetList() {
         this.setState({
             query: '',
@@ -168,6 +162,12 @@ export default class Home extends Component {
             loading: false,
             visibleDropArea: true
         })
+    }
+
+    onKeyPress(event) {
+        if (event.keyCode === 27) {
+            this.resetList()
+        }
     }
 
     componentWillMount() {

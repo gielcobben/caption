@@ -8,15 +8,19 @@ import Loading from './Loading'
 const Content = ({loading, results, visibleDropArea, onDrop}) => {
     return (
         <section className={`content-wrapper`}>
-            {
-                loading ?
-                <Loading /> :
-                results.length > 0 ?
-                <List /> :
-                visibleDropArea ?
-                <Dropzone onDrop={onDrop} /> :
-                <EmptyList />
+            {loading &&
+                <Loading />
             }
+
+            {results.length > 0 &&
+                <List />
+            }
+
+            {visibleDropArea &&
+                <Dropzone onDrop={onDrop} />
+            }
+
+            <EmptyList />
         </section>
     )
 }
