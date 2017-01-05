@@ -13,11 +13,21 @@ export default class ListItem extends Component {
     }
 
     render() {
+        let title
         const {handleClick, item, selected, index} = this.props
+
+        if (item.MovieReleaseName) {
+            title = item.MovieReleaseName
+        }
+        else {
+            title = item.name
+        }
+
+        console.log(title);
 
         return (
             <li className={`list-item ${index == selected ? 'selected' : ''}`} onClick={handleClick} onDoubleClick={this.handleDoubleClick}>
-                {item.MovieReleaseName}
+                {title}
             </li>
         )
     }

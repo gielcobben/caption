@@ -5,7 +5,7 @@ import Dropzone from './Dropzone'
 import EmptyList from './EmptyList'
 import Loading from './Loading'
 
-const Content = ({loading, results, visibleDropArea, onDrop}) => {
+const Content = ({loading, results, files, visibleDropArea, onDrop, showFiles}) => {
     return (
         <section className={`content-wrapper`}>
             {loading &&
@@ -13,14 +13,18 @@ const Content = ({loading, results, visibleDropArea, onDrop}) => {
             }
 
             {results.length > 0 &&
-                <List />
+                <List textSearch={true} results={results} />
             }
 
             {visibleDropArea &&
                 <Dropzone onDrop={onDrop} />
             }
 
-            <EmptyList />
+            {showFiles &&
+                <List droppedFiles={true} files={files} />
+            }
+
+            {/* <EmptyList /> */}
         </section>
     )
 }

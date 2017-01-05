@@ -16,7 +16,8 @@ export default class Home extends Component {
             files: null,
             results: [],
             loading: false,
-            visibleDropArea: true
+            visibleDropArea: true,
+            showFiles: false
         }
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
@@ -31,53 +32,54 @@ export default class Home extends Component {
         const files = this.state.files
 
         this.setState({
-            loading: true
+            // loading: true,
+            showFiles: true
         })
 
-        OpenSubtitles.api.login().then(token => {
-
-            // Loop trough each dropped file
-            files.map((file, index) => {
-
-                // Search by file
-                OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
-
-                    if (results.length !== 0) {
-
-                        // If results, get download link and filename
-                        const subDownloadLink = results[0].ZipDownloadLink
-                        const subFileName = results[0].SubFileName
-
-                        // Remove extention from video filename so we can use this as the new subtitle filename
-                        const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
-                        const newFilename = file.name.replace(`.${extention}`, '')
-
-                        // Download
-                        DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
-                            // Done.
-                            this.setState({
-                                loading: false
-                            })
-                        })
-                    }
-                    else {
-                        this.resetList()
-                        // this.setState({
-                        //     loading: false,
-                        //     // visibleDropArea: false
-                        // })
-                    }
-
-                })
-
-                // Logout when the last result is in.
-                if (index === files.length - 1) {
-                    OpenSubtitles.api.logout(token)
-                }
-
-            })
-
-        })
+        // OpenSubtitles.api.login().then(token => {
+        //
+        //     // Loop trough each dropped file
+        //     files.map((file, index) => {
+        //
+        //         // Search by file
+        //         OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
+        //
+        //             if (results.length !== 0) {
+        //
+        //                 // If results, get download link and filename
+        //                 const subDownloadLink = results[0].ZipDownloadLink
+        //                 const subFileName = results[0].SubFileName
+        //
+        //                 // Remove extention from video filename so we can use this as the new subtitle filename
+        //                 const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
+        //                 const newFilename = file.name.replace(`.${extention}`, '')
+        //
+        //                 // Download
+        //                 DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
+        //                     // Done.
+        //                     this.setState({
+        //                         loading: false
+        //                     })
+        //                 })
+        //             }
+        //             else {
+        //                 this.resetList()
+        //                 // this.setState({
+        //                 //     loading: false,
+        //                 //     // visibleDropArea: false
+        //                 // })
+        //             }
+        //
+        //         })
+        //
+        //         // Logout when the last result is in.
+        //         if (index === files.length - 1) {
+        //             OpenSubtitles.api.logout(token)
+        //         }
+        //
+        //     })
+        //
+        // })
 
     }
 
@@ -124,7 +126,9 @@ export default class Home extends Component {
         CheckFiles(filesDropped, (files) => {
 
             this.setState({
-                files: files
+                files: files,
+                visibleDropArea: false,
+                showFiles: true
             }, () => {
                 this.searchForFiles()
             })
@@ -212,6 +216,8 @@ export default class Home extends Component {
                     visibleDropArea={this.state.visibleDropArea}
                     onDrop={this.onDrop}
                     results={this.state.results}
+                    files={this.state.files}
+                    showFiles={this.state.showFiles}
                 />
             </div>
         )
