@@ -22,8 +22,19 @@
         position: absolute;
         top: 50%;
         right: 15px;
-        width: 20px;
-        height: 20px;
+        width: 6px;
+        height: 6px;
+        border-radius: 4px;
         transform: translate3d(0, -50%, 0);
+
+        &.done {
+            background: #4CD964;
+            margin: 0 9px 0 0;
+        }
+
+        &.failed {
+            background: #FF3B30;
+            margin: 0 9px 0 0;
+        }
     }
 }

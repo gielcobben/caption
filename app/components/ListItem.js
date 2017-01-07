@@ -47,10 +47,10 @@ export default class ListItem extends Component {
 
         // Check status of file
         if (item.status === 'done') {
-            status = <span className='status'>√</span>
+            status = <span className='status done'></span>
         }
         else if (item.status === 'failed') {
-            status = <span className='status'>x</span>
+            status = <span className='status failed'></span>
         }
         else if (item.status === 'loading') {
             status = <Loading small={true} />

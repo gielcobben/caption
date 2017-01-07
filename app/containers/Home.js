@@ -1,12 +1,12 @@
 import OpenSubtitles from 'subtitler'
+import List from '../components/List'
 import React, {Component} from 'react'
 import Storage from 'electron-json-storage'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
-import SearchField from '../components/SearchField'
 import Dropzone from '../components/Dropzone'
 import EmptyList from '../components/EmptyList'
-import List from '../components/List'
+import SearchField from '../components/SearchField'
 import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
 
 export default class Home extends Component {
