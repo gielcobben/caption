@@ -42,6 +42,7 @@ export default class SearchField extends Component {
             </svg>
         )
 
+        // Check if the is an value, if so show reset button
         if (defaultValue !== '') {
             reset = <span className="reset" onClick={resetList}>{resetIcon}</span>
         }
