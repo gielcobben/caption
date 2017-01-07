@@ -1,5 +1,6 @@
 import "./ListItem.scss"
 import React, {Component} from 'react'
+import {shell} from 'electron'
 import Loading from './Loading'
 import {humanFileSize} from '../scripts/Utility'
 
@@ -11,7 +12,19 @@ export default class ListItem extends Component {
 
     handleDoubleClick() {
         const {item} = this.props
-        window.location.assign(item.ZipDownloadLink)
+
+        if (item.MovieReleaseName) {
+            window.location.assign(item.ZipDownloadLink)
+        }
+        else {
+            const extention = item.path.substr(item.path.lastIndexOf('.') + 1)
+            if (extention === 'mp4' || extention === 'mkv') {
+                shell.openItem(item.path)
+            }
+            else {
+                shell.showItemInFolder(item.path)
+            }
+        }
     }
 
     render() {
