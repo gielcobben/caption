@@ -1,8 +1,11 @@
 import OpenSubtitles from 'subtitler'
+import List from '../components/List'
 import React, {Component} from 'react'
 import Storage from 'electron-json-storage'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
+import Dropzone from '../components/Dropzone'
+import EmptyList from '../components/EmptyList'
 import SearchField from '../components/SearchField'
 import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
 
@@ -13,10 +16,9 @@ export default class Home extends Component {
         this.state = {
             query: '',
             lang: 'all',
-            files: null,
+            files: [],
             results: [],
-            loading: false,
-            visibleDropArea: true
+            loading: false
         }
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
@@ -29,10 +31,6 @@ export default class Home extends Component {
 
     searchForFiles() {
         const files = this.state.files
-
-        this.setState({
-            loading: true
-        })
 
         OpenSubtitles.api.login().then(token => {
 
@@ -54,18 +52,21 @@ export default class Home extends Component {
 
                         // Download
                         DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
-                            // Done.
+                            // Set loading for specific file to false
+                            this.state.files[index].status = 'done'
+
+                            // Update whole state with the false set to the item
                             this.setState({
-                                loading: false
+                                files: this.state.files
                             })
                         })
                     }
                     else {
-                        this.resetList()
-                        // this.setState({
-                        //     loading: false,
-                        //     // visibleDropArea: false
-                        // })
+                        // Nothing found for the specific file, set status to 'failed'
+                        this.state.files[index].status = 'failed'
+                        this.setState({
+                            files: this.state.files
+                        })
                     }
 
                 })
@@ -102,8 +103,9 @@ export default class Home extends Component {
 
                     // Store results in state
                     this.setState({
+                        files: [],
+                        loading: false,
                         results: results,
-                        loading: false
                     })
 
                     // And logout when we've results
@@ -124,6 +126,8 @@ export default class Home extends Component {
         CheckFiles(filesDropped, (files) => {
 
             this.setState({
+                query: '',
+                results: [],
                 files: files
             }, () => {
                 this.searchForFiles()
@@ -141,16 +145,40 @@ export default class Home extends Component {
             lang: lang
         })
 
-        if (!this.state.files) {
+        // Search again
+        if (this.state.results.length > 0) {
             this.searchForTitle()
+        }
+        else {
+
+            // Set file status to loading for each file
+            this.state.files.map((file) => {
+                file.status = 'loading'
+            })
+
+            // Set the new loading state and search again
+            this.setState({
+                files: this.state.files
+            }, () => {
+                this.searchForFiles()
+            })
+
         }
     }
 
     onQueryChange(query) {
         this.setState({
-            files: null,
+            files: [],
             query: query,
-            visibleDropArea: false
+        })
+    }
+
+    resetList() {
+        this.setState({
+            files: [],
+            query: '',
+            results: [],
+            loading: false,
         })
     }
 
@@ -158,16 +186,6 @@ export default class Home extends Component {
         if (event.keyCode === 27) {
             this.resetList()
         }
-    }
-
-    resetList() {
-        this.setState({
-            query: '',
-            results: [],
-            files: null,
-            loading: false,
-            visibleDropArea: true
-        })
     }
 
     componentWillMount() {
@@ -187,6 +205,8 @@ export default class Home extends Component {
     }
 
     render() {
+        // Content
+        let content
 
         // Construct circle icon
         const circle = (
@@ -194,6 +214,32 @@ export default class Home extends Component {
                 <circle cx="12.5" cy="12.5" r="12.5"/>
             </svg>
         )
+
+        // If loading is true or if there are results and loading is true
+        // (Loading state)
+        if (this.state.loading) {
+            content = <Loading />
+        }
+        // If there are results show the list with results
+        // (TextSearch State)
+        else if (this.state.results.length > 0) {
+            content = <List textSearch={true} results={this.state.results} />
+        }
+        // If there are files dropped show the list with files
+        // (FileSearch state)
+        else if (this.state.files.length > 0 && this.state.query === '') {
+            content = <List fileSearch={true} results={this.state.files} />
+        }
+        // If the query is empty show the dropzone
+        // (Home state)
+        else if (this.state.query === '') {
+            content = <Dropzone onDrop={this.onDrop} />
+        }
+        // Everything else, show an empty list
+        // (Typing... state)
+        else {
+            content = <EmptyList />
+        }
 
         // Render
         return (
@@ -207,12 +253,9 @@ export default class Home extends Component {
                     defaultValue={this.state.query}
                     showReset={!this.state.visibleDropArea}
                 />
-                <Content
-                    loading={this.state.loading}
-                    visibleDropArea={this.state.visibleDropArea}
-                    onDrop={this.onDrop}
-                    results={this.state.results}
-                />
+                <section className={`content-wrapper`}>
+                    {content}
+                </section>
             </div>
         )
     }

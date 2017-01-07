@@ -11,4 +11,30 @@
         display: table-cell;
         vertical-align: middle;
     }
+
+    .size {
+        font-size: 11px;
+        color: rgba(255, 255, 255, .6);
+        padding: 2px 0;
+    }
+
+    .status {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        width: 6px;
+        height: 6px;
+        border-radius: 4px;
+        transform: translate3d(0, -50%, 0);
+
+        &.done {
+            background: #4CD964;
+            margin: 0 9px 0 0;
+        }
+
+        &.failed {
+            background: #FF3B30;
+            margin: 0 9px 0 0;
+        }
+    }
 }
