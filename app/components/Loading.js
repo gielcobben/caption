@@ -46,9 +46,9 @@ export default class Loading extends Component {
         )
 
         return (
-            <div className="loading">
+            <span className={`loading ${this.props.small ? 'small' : ''}`}>
                 {spinner}
-            </div>
+            </span>
         )
     }
 }

@@ -4,6 +4,9 @@ import Storage from 'electron-json-storage'
 import Loading from '../components/Loading'
 import Content from '../components/Content'
 import SearchField from '../components/SearchField'
+import Dropzone from '../components/Dropzone'
+import EmptyList from '../components/EmptyList'
+import List from '../components/List'
 import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
 
 export default class Home extends Component {
@@ -13,11 +16,9 @@ export default class Home extends Component {
         this.state = {
             query: '',
             lang: 'all',
-            files: null,
+            files: [],
             results: [],
-            loading: false,
-            visibleDropArea: true,
-            showFiles: false
+            loading: false
         }
         this.onDrop = this.onDrop.bind(this)
         this.resetList = this.resetList.bind(this)
@@ -31,55 +32,60 @@ export default class Home extends Component {
     searchForFiles() {
         const files = this.state.files
 
-        this.setState({
-            // loading: true,
-            showFiles: true
-        })
+        OpenSubtitles.api.login().then(token => {
 
-        // OpenSubtitles.api.login().then(token => {
-        //
-        //     // Loop trough each dropped file
-        //     files.map((file, index) => {
-        //
-        //         // Search by file
-        //         OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
-        //
-        //             if (results.length !== 0) {
-        //
-        //                 // If results, get download link and filename
-        //                 const subDownloadLink = results[0].ZipDownloadLink
-        //                 const subFileName = results[0].SubFileName
-        //
-        //                 // Remove extention from video filename so we can use this as the new subtitle filename
-        //                 const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
-        //                 const newFilename = file.name.replace(`.${extention}`, '')
-        //
-        //                 // Download
-        //                 DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
-        //                     // Done.
-        //                     this.setState({
-        //                         loading: false
-        //                     })
-        //                 })
-        //             }
-        //             else {
-        //                 this.resetList()
-        //                 // this.setState({
-        //                 //     loading: false,
-        //                 //     // visibleDropArea: false
-        //                 // })
-        //             }
-        //
-        //         })
-        //
-        //         // Logout when the last result is in.
-        //         if (index === files.length - 1) {
-        //             OpenSubtitles.api.logout(token)
-        //         }
-        //
-        //     })
-        //
-        // })
+            // Loop trough each dropped file
+            files.map((file, index) => {
+
+                // Search by file
+                OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
+
+                    if (results.length !== 0) {
+
+                        // If results, get download link and filename
+                        const subDownloadLink = results[0].ZipDownloadLink
+                        const subFileName = results[0].SubFileName
+
+                        // Remove extention from video filename so we can use this as the new subtitle filename
+                        const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
+                        const newFilename = file.name.replace(`.${extention}`, '')
+
+                        // Download
+                        DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
+                            // Set loading for specific file to false
+                            this.state.files[index].status = 'done'
+
+                            // Update whole state with the false set to the item
+                            this.setState({
+                                files: this.state.files
+                            })
+                        })
+                    }
+                    else {
+
+                        this.state.files[index].status = 'failed'
+
+                        this.setState({
+                            files: this.state.files
+                        })
+
+                        // this.resetList()
+                        // this.setState({
+                        //     loading: false,
+                        //     // visibleDropArea: false
+                        // })
+                    }
+
+                })
+
+                // Logout when the last result is in.
+                if (index === files.length - 1) {
+                    OpenSubtitles.api.logout(token)
+                }
+
+            })
+
+        })
 
     }
 
@@ -104,8 +110,9 @@ export default class Home extends Component {
 
                     // Store results in state
                     this.setState({
+                        files: [],
+                        loading: false,
                         results: results,
-                        loading: false
                     })
 
                     // And logout when we've results
@@ -126,9 +133,9 @@ export default class Home extends Component {
         CheckFiles(filesDropped, (files) => {
 
             this.setState({
-                files: files,
-                visibleDropArea: false,
-                showFiles: true
+                query: '',
+                results: [],
+                files: files
             }, () => {
                 this.searchForFiles()
             })
@@ -152,19 +159,17 @@ export default class Home extends Component {
 
     onQueryChange(query) {
         this.setState({
-            files: null,
+            files: [],
             query: query,
-            visibleDropArea: false
         })
     }
 
     resetList() {
         this.setState({
+            files: [],
             query: '',
             results: [],
-            files: null,
             loading: false,
-            visibleDropArea: true
         })
     }
 
@@ -191,6 +196,8 @@ export default class Home extends Component {
     }
 
     render() {
+        // Content
+        let content
 
         // Construct circle icon
         const circle = (
@@ -198,6 +205,32 @@ export default class Home extends Component {
                 <circle cx="12.5" cy="12.5" r="12.5"/>
             </svg>
         )
+
+        // If loading is true or if there are results and loading is true
+        // (Loading state)
+        if (this.state.loading) {
+            content = <Loading />
+        }
+        // If there are results show the list with results
+        // (TextSearch State)
+        else if (this.state.results.length > 0) {
+            content = <List textSearch={true} results={this.state.results} />
+        }
+        // If there are files dropped show the list with files
+        // (FileSearch state)
+        else if (this.state.files.length > 0 && this.state.query === '') {
+            content = <List fileSearch={true} results={this.state.files} />
+        }
+        // If the query is empty show the dropzone
+        // (Home state)
+        else if (this.state.query === '') {
+            content = <Dropzone onDrop={this.onDrop} />
+        }
+        // Everything else, show an empty list
+        // (Typing... state)
+        else {
+            content = <EmptyList />
+        }
 
         // Render
         return (
@@ -211,14 +244,9 @@ export default class Home extends Component {
                     defaultValue={this.state.query}
                     showReset={!this.state.visibleDropArea}
                 />
-                <Content
-                    loading={this.state.loading}
-                    visibleDropArea={this.state.visibleDropArea}
-                    onDrop={this.onDrop}
-                    results={this.state.results}
-                    files={this.state.files}
-                    showFiles={this.state.showFiles}
-                />
+                <section className={`content-wrapper`}>
+                    {content}
+                </section>
             </div>
         )
     }

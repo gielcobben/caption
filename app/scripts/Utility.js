@@ -16,6 +16,8 @@ const CheckFiles = (filesDropped, callback) => {
 
         const file = filesDropped[i]
 
+        console.log(file);
+
         // Check if path exists
         if (fs.existsSync(file.path)) {
 
@@ -31,8 +33,10 @@ const CheckFiles = (filesDropped, callback) => {
 
                         // Map and push the file object in array
                         const fileObject = {
+                            size: file.size,
                             name: fileInDirectory,
-                            path: `${file.path}/${fileInDirectory}`
+                            path: `${file.path}/${fileInDirectory}`,
+                            status: 'loading'
                         }
 
                         files.push(fileObject)
@@ -44,8 +48,10 @@ const CheckFiles = (filesDropped, callback) => {
 
                 // If file is just a file, push the file object in array
                 const fileObject = {
+                    size: file.size,
                     name: file.name,
-                    path: file.path
+                    path: file.path,
+                    status: 'loading'
                 }
 
                 files.push(fileObject)
@@ -114,7 +120,28 @@ const DownloadSubtitles = (subDownloadLink, file, subFileName, newFilename, call
     })
 }
 
+const humanFileSize = (bytes, si) => {
+    let thresh = si ? 1000 : 1024
+
+    if (Math.abs(bytes) < thresh) {
+        return `${bytes} B`
+    }
+
+    const units = si ?
+        ['kB','MB','GB','TB','PB','EB','ZB','YB'] :
+        ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB']
+
+    let u = -1
+
+    do {
+        bytes /= thresh
+        ++u
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1)
+
+    return `${bytes.toFixed(1)} ${units[u]}`
+}
+
 /*
  * Export all functions
  */
-export {CheckFiles, ToBuffer, DownloadSubtitles}
+export {CheckFiles, ToBuffer, DownloadSubtitles, humanFileSize}

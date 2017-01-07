@@ -17,11 +17,11 @@ export default class List extends Component {
     }
 
     render() {
-        const {textSearch, droppedFiles, results, files} = this.props
+        const {textSearch, fileSearch, results} = this.props
 
         return (
             <div className='inner'>
-                <ul className='list'>
+                <ul className={`list ${textSearch ? 'text' : 'file'}`}>
                     {textSearch &&
                         results.map((result, index) => {
                             return (
@@ -35,11 +35,8 @@ export default class List extends Component {
                             )
                         })
                     }
-                    {droppedFiles &&
-                        files.map((file, index) => {
-
-                            console.log(file)
-
+                    {fileSearch &&
+                        results.map((file, index) => {
                             return (
                                 <ListItem
                                     key={index}
