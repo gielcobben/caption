@@ -13,11 +13,15 @@ export default class ListItem extends Component {
     handleDoubleClick() {
         const {item} = this.props
 
+        // Check if it's a textsearch or filesearch with a variable
         if (item.MovieReleaseName) {
+            // Text search so download the srt file
             window.location.assign(item.ZipDownloadLink)
         }
         else {
+            // FileSearch so open or show the file when doubleclick
             const extention = item.path.substr(item.path.lastIndexOf('.') + 1)
+
             if (extention === 'mp4' || extention === 'mkv') {
                 shell.openItem(item.path)
             }

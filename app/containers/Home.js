@@ -62,18 +62,11 @@ export default class Home extends Component {
                         })
                     }
                     else {
-
+                        // Nothing found for the specific file, set status to 'failed'
                         this.state.files[index].status = 'failed'
-
                         this.setState({
                             files: this.state.files
                         })
-
-                        // this.resetList()
-                        // this.setState({
-                        //     loading: false,
-                        //     // visibleDropArea: false
-                        // })
                     }
 
                 })
@@ -152,8 +145,24 @@ export default class Home extends Component {
             lang: lang
         })
 
-        if (!this.state.files) {
+        // Search again
+        if (this.state.results.length > 0) {
             this.searchForTitle()
+        }
+        else {
+
+            // Set file status to loading for each file
+            this.state.files.map((file) => {
+                file.status = 'loading'
+            })
+
+            // Set the new loading state and search again
+            this.setState({
+                files: this.state.files
+            }, () => {
+                this.searchForFiles()
+            })
+
         }
     }
 
