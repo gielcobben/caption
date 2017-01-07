@@ -32,7 +32,8 @@ export default class SearchField extends Component {
     }
 
     render() {
-        const {submitForm, showReset, resetList, defaultValue, selectedLanguage} = this.props
+        let reset
+        const {submitForm, resetList, defaultValue, selectedLanguage} = this.props
 
         const resetIcon = (
             <svg x="0px" y="0px" width="14" height="14" viewBox="0 0 14 14" data-radium="true">
@@ -41,14 +42,17 @@ export default class SearchField extends Component {
             </svg>
         )
 
+        if (defaultValue !== '') {
+            reset = <span className="reset" onClick={resetList}>{resetIcon}</span>
+        }
+        else {
+            reset = ''
+        }
+
         return (
             <div className='search-field'>
                 <form onSubmit={submitForm}>
-                    {
-                        showReset ?
-                        <span className="reset" onClick={resetList}>{resetIcon}</span> :
-                        ''
-                    }
+                    {reset}
                     <input
                         ref={(input) => { this.textInput = input }}
                         type="text"
