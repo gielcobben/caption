@@ -21,7 +21,7 @@ export default class Header extends Component {
 
         return (
             <header>
-                <Controls type={title} />
+                {/* <Controls type={title} /> */}
                 <Title title={title} />
             </header>
         );
