@@ -44,7 +44,7 @@
     "subtitles",
     "download"
   ],
-  "homepage": "http://getcaption.co/",
+  "homepage": "https://getcaption.co/",
   "devDependencies": {
     "asar": "^0.12.3",
     "babel-core": "^6.17.0",
@@ -110,6 +110,7 @@
     "css-modules-require-hook": "^4.0.5",
     "electron-debug": "^1.0.1",
     "electron-json-storage": "^2.0.3",
+    "electron-lets-move": "0.0.4",
     "install": "^0.8.2",
     "npm": "^3.10.9",
     "postcss": "^5.2.4",

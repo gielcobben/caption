@@ -1,11 +1,13 @@
 import os from 'os'
 import path from 'path'
 import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray} from 'electron';
+import {moveToApplications} from 'electron-lets-move';
 import pkg from './package.json'
+import Storage from 'electron-json-storage'
 
 /*
- * Basics
- */
+* Basics
+*/
 let menu;
 let mainWindow = null;
 let settingsWindow = null;
@@ -19,8 +21,8 @@ app.on('window-all-closed', () => {
 });
 
 /*
- * autoUpdater
- */
+* autoUpdater
+*/
 const menuTemplate = require('./menu');
 const platform = os.platform() + '_' + os.arch(); // darwin_x64
 const updateURL = `https://download.getcaption.co/update/${platform}/${pkg.version}`;
@@ -81,8 +83,8 @@ catch (error) {
 }
 
 /*
- * Extentions
- */
+* Extentions
+*/
 const installExtensions = async () => {
     if (process.env.NODE_ENV === 'development') {
         // eslint-disable-line global-require
@@ -114,11 +116,10 @@ const createMainWindow = () => {
         height: 440,
         minWidth: 300,
         minHeight: 300,
-        // vibrancy: 'ultra-dark',
-        vibrancy: 'light',
+        vibrancy: 'ultra-dark',
+        // vibrancy: 'light',
         titleBarStyle: 'hidden-inset',
-        transparent: true,
-        // frame: false
+        transparent: true
     });
 
     // Set URL
@@ -138,18 +139,40 @@ const createMainWindow = () => {
 app.on('ready', async () => {
 
     /*
-     * Extentions
-     */
+    * Let's Move
+    */
+    Storage.get('do-not-move', async (doNotMove) => {
+
+        if (!doNotMove) {
+            try {
+                const moved = await moveToApplications();
+                if (!moved) {
+                    // the user asked not to move the app, it's up to the parent application
+                    // to store this information and not hassle them again.
+                    Storage.set('do-not-move', true, (error) => {
+                        if (error) throw error
+                    })
+                }
+            } catch (error) {
+                // log error, something went wrong whilst moving the app.
+                console.log(error);
+            }
+        }
+    });
+
+    /*
+    * Extentions
+    */
     await installExtensions();
 
     /*
-     * MainWindow
-     */
+    * MainWindow
+    */
     createMainWindow();
 
     /*
-     * IPC's
-     */
+    * IPC's
+    */
     ipcMain.on('close-main', () => {
         mainWindow.close();
         app.quit();
@@ -160,8 +183,8 @@ app.on('ready', async () => {
     })
 
     /*
-     * Downloads
-     */
+    * Downloads
+    */
     mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
         item.on('updated', (event, state) => {
             if (state === 'interrupted') {
@@ -185,8 +208,8 @@ app.on('ready', async () => {
     });
 
     /*
-     * Development
-     */
+    * Development
+    */
     if (process.env.NODE_ENV === 'development') {
         mainWindow.openDevTools();
         mainWindow.webContents.on('context-menu', (e, props) => {
@@ -202,8 +225,8 @@ app.on('ready', async () => {
     }
 
     /*
-     * Menu
-     */
+    * Menu
+    */
     menu = Menu.buildFromTemplate(menuTemplate);
     mainWindow.setMenu(menu);
 
