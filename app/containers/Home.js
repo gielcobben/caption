@@ -237,7 +237,7 @@ export default class Home extends Component {
         // If the query is empty show the dropzone
         // (Home state)
         else if (this.state.query === '') {
-            content = <Dropzone onDrop={this.onDrop} />
+            content = <Dropzone onDrop={this.onDrop} onDragEnter={this.onDragEnter} />
         }
         // Everything else, show an empty list
         // (Typing... state)
