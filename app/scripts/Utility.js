@@ -16,8 +16,6 @@ const CheckFiles = (filesDropped, callback) => {
 
         const file = filesDropped[i]
 
-        console.log(file);
-
         // Check if path exists
         if (fs.existsSync(file.path)) {
 
@@ -31,9 +29,12 @@ const CheckFiles = (filesDropped, callback) => {
 
                     filesInDirectory.map(fileInDirectory => {
 
+                        // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
+                        const fileInDirectoryStats = fs.statSync(`${file.path}/${fileInDirectory}`)
+
                         // Map and push the file object in array
                         const fileObject = {
-                            size: file.size,
+                            size: fileInDirectoryStats.size,
                             name: fileInDirectory,
                             path: `${file.path}/${fileInDirectory}`,
                             status: 'loading'
