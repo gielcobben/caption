@@ -121,6 +121,9 @@ const DownloadSubtitles = (subDownloadLink, file, subFileName, newFilename, call
     })
 }
 
+/*
+ * Human File Size
+ */
 const humanFileSize = (bytes, si) => {
     let thresh = si ? 1000 : 1024
 

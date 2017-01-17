@@ -2,7 +2,6 @@ import './Header.scss';
 import React, { Component } from 'react'
 import {ipcRenderer} from 'electron'
 import Title from '../components/Title'
-import Controls from '../components/Controls'
 
 const getTitle = pathname => {
     switch (pathname) {
@@ -21,7 +20,6 @@ export default class Header extends Component {
 
         return (
             <header>
-                {/* <Controls type={title} /> */}
                 <Title title={title} />
             </header>
         );
