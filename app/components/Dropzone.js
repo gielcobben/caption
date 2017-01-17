@@ -5,7 +5,7 @@ const Dropzone = ({onDrop}) => {
     return (
         <section className='dropzone' onDrop={onDrop}>
             <div className='zone'>
-                <h2>Or drop an episode or season…</h2>
+                <h2>Drop an episode or season…</h2>
             </div>
         </section>
     )

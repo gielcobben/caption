@@ -69,6 +69,8 @@ export default class Home extends Component {
                         })
                     }
 
+                }).catch(error => {
+                    console.log(error)
                 })
 
                 // Logout when the last result is in.
@@ -78,6 +80,8 @@ export default class Home extends Component {
 
             })
 
+        }).catch(error => {
+            console.log(error)
         })
 
     }
