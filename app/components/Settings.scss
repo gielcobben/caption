@@ -1,0 +1,27 @@
+.settings {
+    padding: 10px 20px;
+    width: 100%;
+    background: rgba(255, 255, 255, .5);
+
+    label {
+        color: rgba(0, 0, 0, .5);
+        font-size: 12px;
+    }
+
+    select {
+        border: none;
+        background: none;
+        appearance: none;
+        -webkit-appearance: none;
+        color: #000;
+        font-size: 12px;
+        margin-left: 5px;
+        font-weight: 500;
+        outline: none;
+    }
+
+    .length {
+        float: right;
+    }
+
+}
