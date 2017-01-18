@@ -138,27 +138,29 @@ const createMainWindow = () => {
 
 app.on('ready', async () => {
 
-    /*
-    * Let's Move
-    */
-    Storage.get('do-not-move', async (doNotMove) => {
+    if (process.env.NODE_ENV !== 'development') {
+        /*
+        * Let's Move
+        */
+        Storage.get('do-not-move', async (doNotMove) => {
 
-        if (!doNotMove) {
-            try {
-                const moved = await moveToApplications();
-                if (!moved) {
-                    // the user asked not to move the app, it's up to the parent application
-                    // to store this information and not hassle them again.
-                    Storage.set('do-not-move', true, (error) => {
-                        if (error) throw error
-                    })
+            if (!doNotMove) {
+                try {
+                    const moved = await moveToApplications();
+                    if (!moved) {
+                        // the user asked not to move the app, it's up to the parent application
+                        // to store this information and not hassle them again.
+                        Storage.set('do-not-move', true, (error) => {
+                            if (error) throw error
+                        })
+                    }
+                } catch (error) {
+                    // log error, something went wrong whilst moving the app.
+                    console.log(error);
                 }
-            } catch (error) {
-                // log error, something went wrong whilst moving the app.
-                console.log(error);
             }
-        }
-    });
+        });
+    }
 
     /*
     * Extentions

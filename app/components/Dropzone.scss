@@ -4,6 +4,18 @@
     height: 100%;
     padding: 25px;
 
+    &.dragging {
+        cursor: grabbing;
+
+        .zone {
+            border: 1px dashed rgba(255, 255, 255, .7);
+        }
+
+        h2 {
+            color: rgba(255, 255, 255, .7)
+        }
+    }
+
     h2 {
         position: absolute;
         top: 50%;
@@ -12,11 +24,13 @@
         color: rgba(255, 255, 255, .3);
         transform: translate3d(0, -7px, 0);
         text-align: center;
+        transition: all .1s ease-out;
     }
 
     .zone {
         width: 100%;
         height: 100%;
-        border: 1px dashed rgba(255, 255, 255, .2);
+        border: 1px dashed rgba(255, 255, 255, .3);
+        transition: all .1s ease-out;
     }
 }
