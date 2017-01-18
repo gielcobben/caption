@@ -112,6 +112,7 @@
     "electron-json-storage": "^2.0.3",
     "electron-lets-move": "0.0.4",
     "install": "^0.8.2",
+    "junk": "^2.0.0",
     "npm": "^3.10.9",
     "postcss": "^5.2.4",
     "react": "^15.3.2",

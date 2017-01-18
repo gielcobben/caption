@@ -227,12 +227,12 @@ export default class Home extends Component {
         // If there are results show the list with results
         // (TextSearch State)
         else if (this.state.results.length > 0) {
-            content = <List textSearch={true} results={this.state.results} />
+            content = <List textSearch={true} results={this.state.results} resetList={this.resetList} />
         }
         // If there are files dropped show the list with files
         // (FileSearch state)
         else if (this.state.files.length > 0 && this.state.query === '') {
-            content = <List fileSearch={true} results={this.state.files} />
+            content = <List fileSearch={true} results={this.state.files} resetList={this.resetList} />
         }
         // If the query is empty show the dropzone
         // (Home state)

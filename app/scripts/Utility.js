@@ -3,6 +3,7 @@
  */
 import fs from 'fs'
 import AdmZip from 'adm-zip'
+import Junk from 'junk'
 
 /*
  * Process Files
@@ -28,6 +29,11 @@ const CheckFiles = (filesDropped, callback) => {
                 fs.readdir(file.path, (error, filesInDirectory) => {
 
                     filesInDirectory.map(fileInDirectory => {
+
+                        // Check if file is junk (Think on files like DS_Store ect..)
+                        if (Junk.is(fileInDirectory)) {
+                            return
+                        }
 
                         // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
                         const fileInDirectoryStats = fs.statSync(`${file.path}/${fileInDirectory}`)

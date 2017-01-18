@@ -26,6 +26,7 @@
         height: 6px;
         border-radius: 4px;
         transform: translate3d(0, -50%, 0);
+        z-index: 2;
 
         &.done {
             background: #4CD964;
