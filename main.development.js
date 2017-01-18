@@ -116,10 +116,9 @@ const createMainWindow = () => {
         height: 440,
         minWidth: 300,
         minHeight: 300,
-        vibrancy: 'ultra-dark',
-        // vibrancy: 'light',
-        titleBarStyle: 'hidden-inset',
-        transparent: true
+        vibrancy: 'dark',
+        transparent: true,
+        titleBarStyle: 'hidden-inset'
     });
 
     // Set URL
