@@ -5,6 +5,7 @@ import Loading from './Loading'
 import {humanFileSize} from '../scripts/Utility'
 
 export default class ListItem extends Component {
+
     constructor(props) {
         super(props)
         this.handleDoubleClick = this.handleDoubleClick.bind(this)
@@ -34,7 +35,7 @@ export default class ListItem extends Component {
     render() {
         let title
         let status
-        const {handleClick, item, selected, index} = this.props
+        const {handleClick, handleContextMenu, item, selected, index} = this.props
 
         // Title is the name of the subtitle files (movie release name)
         if (item.MovieReleaseName) {
