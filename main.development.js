@@ -159,12 +159,9 @@ app.on('ready', async () => {
                 }
             }
         });
-    }
 
-    /*
-    * Extentions
-    */
-    await installExtensions();
+        await installExtensions();
+    }
 
     /*
     * MainWindow

@@ -34,23 +34,23 @@ const CheckFiles = (filesDropped, callback) => {
 
                         // Check if file is junk (Think on files like DS_Store ect..)
                         if (Junk.is(fileInDirectory)) {
-                            return
+                            return false
                         }
 
                         // Check file size and exclude text files or images
-                        if (fileInDirectoryStats.size < 100000) {
-                            return
-                        }
+                        if (fileInDirectoryStats.size > 100000) {
 
-                        // Map and push the file object in array
-                        const fileObject = {
-                            size: fileInDirectoryStats.size,
-                            name: fileInDirectory,
-                            path: `${file.path}/${fileInDirectory}`,
-                            status: 'loading'
-                        }
+                            // Map and push the file object in array
+                            const fileObject = {
+                                size: fileInDirectoryStats.size,
+                                name: fileInDirectory,
+                                path: `${file.path}/${fileInDirectory}`,
+                                status: 'loading'
+                            }
 
-                        files.push(fileObject)
+                            // Push
+                            files.push(fileObject)
+                        }
 
                     })
                 })
@@ -58,19 +58,22 @@ const CheckFiles = (filesDropped, callback) => {
             else {
 
                 // Check file size and exclude text files or images
-                if (file.size < 100000) {
-                    return
-                }
+                if (file.size > 100000) {
 
-                // If file is just a file, push the file object in array
-                const fileObject = {
-                    size: file.size,
-                    name: file.name,
-                    path: file.path,
-                    status: 'loading'
-                }
+                    // If file is just a file, push the file object in array
+                    const fileObject = {
+                        size: file.size,
+                        name: file.name,
+                        path: file.path,
+                        status: 'loading'
+                    }
 
-                files.push(fileObject)
+                    // Push
+                    files.push(fileObject)
+                }
+                else {
+                    files.push(false)
+                }
 
             }
         }
