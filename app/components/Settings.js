@@ -20,6 +20,9 @@ export default class Settings extends Component {
         this.props.changeLanguage(event.target.value)
     }
 
+    /*
+     * Count Status
+     */
     countStatus(file) {
         return file.status === 'done'
     }

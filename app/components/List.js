@@ -1,42 +1,80 @@
 import "./List.scss"
 import React, {Component} from 'react'
 import ListItem from './ListItem'
-// import {remote} from 'electron'
-
-// const {Menu, MenuItem} = remote
-// const menu = new Menu()
+import {remote, shell} from 'electron'
+const {Menu, MenuItem} = remote
 
 export default class List extends Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
             selected: null
         }
     }
 
-    // componentWillMount() {
-    //     window.addEventListener('contextmenu', (event) => {
-    //         event.preventDefault()
-    //         menu.popup(remote.getCurrentWindow())
-    //     })
-    // }
-
-    // componentDidMount() {
-    //     const menuItem = new MenuItem({
-    //         label: 'Download',
-    //         click: () => {
-    //             console.log(this.state.selected);
-    //         }
-    //     })
-    //     menu.append(menuItem)
-    // }
+    componentWillMount() {
+        window.addEventListener('contextmenu', (event) => {
+            event.preventDefault()
+        })
+    }
 
     handleClick(index) {
         this.setState({
             selected: index
         })
+    }
+
+    handleContextMenu(index) {
+        const {results} = this.props
+        const item = results[index]
+
+        this.setState({
+            selected: index
+        })
+
+        // If TextSearch
+        if (item.MovieReleaseName) {
+            // Menu with Download
+            Menu.buildFromTemplate([{
+                label: 'Download',
+                click: () => {
+                    window.location.assign(item.ZipDownloadLink)
+                }
+            }]).popup(remote.getCurrentWindow())
+        }
+        // Else DroppedFiles
+        else {
+            // FileSearch so open or show the file when doubleclick
+            const extention = item.path.substr(item.path.lastIndexOf('.') + 1)
+
+            if (extention === 'mp4' || extention === 'mkv') {
+                // Menu with Play and Reveal in Finder
+                Menu.buildFromTemplate([
+                    {
+                        label: 'Play',
+                        click: () => {
+                            shell.openItem(item.path)
+                        }
+                    },
+                    {
+                        label: 'Reveal in Finder',
+                        click: () => {
+                            shell.showItemInFolder(item.path)
+                        }
+                    }
+                ]).popup(remote.getCurrentWindow())
+            }
+            else {
+                // Menu with Reveal in Finder
+                Menu.buildFromTemplate([{
+                    label: 'Reveal in Finder',
+                    click: () => {
+                        shell.showItemInFolder(item.path)
+                    }
+                }]).popup(remote.getCurrentWindow())
+            }
+        }
     }
 
     render() {
@@ -52,6 +90,7 @@ export default class List extends Component {
                                     key={index}
                                     item={result}
                                     handleClick={this.handleClick.bind(this, index)}
+                                    handleContextMenu={this.handleContextMenu.bind(this, index)}
                                     selected={this.state.selected}
                                     index={index}
                                 />
@@ -66,6 +105,7 @@ export default class List extends Component {
                                     key={index}
                                     item={file}
                                     handleClick={this.handleClick.bind(this, index)}
+                                    handleContextMenu={this.handleContextMenu.bind(this, index)}
                                     selected={this.state.selected}
                                     index={index}
                                 />
