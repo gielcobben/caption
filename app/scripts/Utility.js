@@ -29,14 +29,18 @@ const CheckFiles = (filesDropped, callback) => {
                 fs.readdir(file.path, (error, filesInDirectory) => {
 
                     filesInDirectory.map(fileInDirectory => {
+                        // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
+                        const fileInDirectoryStats = fs.statSync(`${file.path}/${fileInDirectory}`)
 
                         // Check if file is junk (Think on files like DS_Store ect..)
                         if (Junk.is(fileInDirectory)) {
                             return
                         }
 
-                        // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
-                        const fileInDirectoryStats = fs.statSync(`${file.path}/${fileInDirectory}`)
+                        // Check file size and exclude text files or images
+                        if (fileInDirectoryStats.size < 100000) {
+                            return
+                        }
 
                         // Map and push the file object in array
                         const fileObject = {
@@ -52,6 +56,11 @@ const CheckFiles = (filesDropped, callback) => {
                 })
             }
             else {
+
+                // Check file size and exclude text files or images
+                if (file.size < 100000) {
+                    return
+                }
 
                 // If file is just a file, push the file object in array
                 const fileObject = {

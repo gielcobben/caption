@@ -257,11 +257,12 @@ export default class Home extends Component {
                     showReset={!this.state.visibleDropArea}
                 />
                 <Settings
+                    query={this.state.query}
                     selectedLanguage={this.state.lang}
                     changeLanguage={this.onLanguageChange}
                     results={this.state.results}
                     files={this.state.files}
-                    reset={this.state.resetList}
+                    resetList={this.resetList}
                 />
                 <section className={`content-wrapper`}>
                     {content}

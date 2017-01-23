@@ -1,4 +1,5 @@
 .settings {
+    // position: relative;
     padding: 10px 20px;
     width: 100%;
     background: rgba(255, 255, 255, .8);
@@ -24,7 +25,8 @@
         float: right;
     }
 
-    .reset {
+    .reset-button {
+        position: static;
         margin-left: 15px;
         height: 14px;
     }
