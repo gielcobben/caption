@@ -5,6 +5,7 @@ import React, {Component} from 'react'
 import Storage from 'electron-json-storage'
 import Loading from '../components/Loading'
 import Dropzone from '../components/Dropzone'
+import Settings from '../components/Settings'
 import EmptyList from '../components/EmptyList'
 import SearchField from '../components/SearchField'
 import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
@@ -249,13 +250,18 @@ export default class Home extends Component {
         return (
             <div className="wrapper">
                 <SearchField
-                    selectedLanguage={this.state.lang}
                     resetList={this.resetList}
                     submitForm={this.searchForTitle}
                     changeQuery={this.onQueryChange}
-                    changeLanguage={this.onLanguageChange}
                     defaultValue={this.state.query}
                     showReset={!this.state.visibleDropArea}
+                />
+                <Settings
+                    selectedLanguage={this.state.lang}
+                    changeLanguage={this.onLanguageChange}
+                    results={this.state.results}
+                    files={this.state.files}
+                    reset={this.state.resetList}
                 />
                 <section className={`content-wrapper`}>
                     {content}

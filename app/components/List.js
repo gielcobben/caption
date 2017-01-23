@@ -1,7 +1,6 @@
 import "./List.scss"
 import React, {Component} from 'react'
 import ListItem from './ListItem'
-import ListTitle from './ListTitle'
 
 export default class List extends Component {
     constructor(props) {
@@ -22,12 +21,6 @@ export default class List extends Component {
 
         return (
             <div className='inner'>
-                {fileSearch &&
-                    <ListTitle 
-                        length={results.length} 
-                        resetList={resetList}
-                    />
-                }
                 <ul className={`list ${textSearch ? 'text' : 'file'}`}>
                     {textSearch &&
                         results.map((result, index) => {

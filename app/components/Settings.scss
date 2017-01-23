@@ -1,0 +1,32 @@
+.settings {
+    padding: 10px 20px;
+    width: 100%;
+    background: rgba(255, 255, 255, .8);
+    color: #000;
+    font-size: 12px;
+
+    label {
+        color: rgba(0, 0, 0, .5);
+        font-size: 12px;
+    }
+
+    select {
+        border: none;
+        background: none;
+        appearance: none;
+        -webkit-appearance: none;
+        margin-left: 5px;
+        font-weight: 500;
+        outline: none;
+    }
+
+    .info {
+        float: right;
+    }
+
+    .reset {
+        margin-left: 15px;
+        height: 14px;
+    }
+
+}
