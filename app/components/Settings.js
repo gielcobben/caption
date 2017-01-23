@@ -8,6 +8,7 @@ export default class Settings extends Component {
      */
     constructor(props) {
         super(props)
+        this.countStatus = this.countStatus.bind(this)
         this.handleLanguageChange = this.handleLanguageChange.bind(this)
     }
 
@@ -18,11 +19,29 @@ export default class Settings extends Component {
         this.props.changeLanguage(event.target.value)
     }
 
+    countStatus(file) {
+        return file.status === 'done'
+    }
+
     /*
      * Render
      */
     render() {
-        const {selectedLanguage, results} = this.props
+        const {selectedLanguage, results, files, reset} = this.props
+        const filesDone = files.filter(this.countStatus).length
+        const filesLength = files.length
+        let show = false
+
+        if (results.length > 0 || files.length > 0) {
+            show = true
+        }
+
+        const resetIcon = (
+            <svg x="0px" y="0px" width="14" height="14" viewBox="0 0 14 14" data-radium="true">
+                <circle cx="7" cy="7" r="7" fill="gray"/>
+                <path fill="#FFF" d="M8 7l2-2-1-1-2 2-2-2-1 1 2 2-2 2 1 1 2-2 2 2 1-1-2-2z"/>
+            </svg>
+        )
 
         return (
             <section className="settings">
@@ -101,11 +120,18 @@ export default class Settings extends Component {
                     <option value='urd'>Urdu</option>
                     <option value='vie'>Vietnamese</option>
                 </select>
-                <span className="length">
-                    {results > 0 &&
-                        `Results: ${results < 10 ? `0${results}` : results}`
-                    }
-                </span>
+                {show &&
+                    <div className="info" onClick={reset}>
+                        <label>Results: </label>
+                        {results.length > 0 &&
+                            `${results.length < 10 ? `0${results.length}` : results.length}`
+                        }
+                        {files.length > 0 &&
+                            `${filesDone < 10 ? `0${filesDone}` : filesDone} / ${filesLength < 10 ? `0${filesLength}` : filesLength}`
+                        }
+                        <span className="reset">{resetIcon}</span>
+                    </div>
+                }
             </section>
         )
     }

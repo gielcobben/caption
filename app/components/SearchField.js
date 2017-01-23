@@ -45,7 +45,7 @@ export default class SearchField extends Component {
         }
 
         return (
-            <div className='search-field'>
+            <section className='search-field'>
                 <form onSubmit={submitForm}>
                     {reset}
                     <input
@@ -56,7 +56,7 @@ export default class SearchField extends Component {
                         placeholder="Search..."
                     />
                 </form>
-            </div>
+            </section>
         )
     }
 

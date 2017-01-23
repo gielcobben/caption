@@ -1,7 +1,9 @@
 .settings {
     padding: 10px 20px;
     width: 100%;
-    background: rgba(255, 255, 255, .5);
+    background: rgba(255, 255, 255, .8);
+    color: #000;
+    font-size: 12px;
 
     label {
         color: rgba(0, 0, 0, .5);
@@ -13,15 +15,18 @@
         background: none;
         appearance: none;
         -webkit-appearance: none;
-        color: #000;
-        font-size: 12px;
         margin-left: 5px;
         font-weight: 500;
         outline: none;
     }
 
-    .length {
+    .info {
         float: right;
+    }
+
+    .reset {
+        margin-left: 15px;
+        height: 14px;
     }
 
 }

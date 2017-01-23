@@ -259,7 +259,9 @@ export default class Home extends Component {
                 <Settings
                     selectedLanguage={this.state.lang}
                     changeLanguage={this.onLanguageChange}
-                    results={this.state.results.length}
+                    results={this.state.results}
+                    files={this.state.files}
+                    reset={this.state.resetList}
                 />
                 <section className={`content-wrapper`}>
                     {content}
