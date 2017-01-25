@@ -159,16 +159,23 @@ export default class Home extends Component {
             // If files
             if (files) {
 
-                this.setState({
-                    query: '',
-                    results: [],
-                    files: files,
-                    dragging: false
-                }, () => {
-                    this.searchForFiles()
-                })
+                if (this.state.files) {
+                    // Add to current array
+                }
+                else {
+                    // New Array with files
+                    this.setState({
+                        query: '',
+                        results: [],
+                        files: files,
+                        dragging: false
+                    }, () => {
+                        this.searchForFiles()
+                    })
+                }
 
             }
+            // If the file is too small, do nothing
             else {
                 this.setState({
                     dragging: false
@@ -265,12 +272,12 @@ export default class Home extends Component {
         // If there are results show the list with results
         // (TextSearch State)
         else if (this.state.results.length > 0) {
-            content = <List textSearch={true} results={this.state.results} resetList={this.resetList} />
+            content = <List textSearch={true} results={this.state.results} resetList={this.resetList} onDrop={this.onDrop} />
         }
         // If there are files dropped show the list with files
         // (FileSearch state)
         else if (this.state.files.length > 0 && this.state.query === '') {
-            content = <List fileSearch={true} results={this.state.files} resetList={this.resetList} />
+            content = <List fileSearch={true} results={this.state.files} resetList={this.resetList} onDrop={this.onDrop} />
         }
         // If the query is empty show the dropzone
         // (Home state)

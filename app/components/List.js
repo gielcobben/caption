@@ -78,10 +78,10 @@ export default class List extends Component {
     }
 
     render() {
-        const {textSearch, fileSearch, results, resetList} = this.props
+        const {textSearch, fileSearch, results, resetList, onDrop} = this.props
 
         return (
-            <div className='inner'>
+            <div className='inner' onDrop={onDrop}>
                 <ul className={`list ${textSearch ? 'text' : 'file'}`}>
                     {textSearch &&
                         results.map((result, index) => {
