@@ -34,7 +34,7 @@ const CheckFiles = (filesDropped, callback) => {
 
                         // Check if file is junk (Think on files like DS_Store ect..)
                         if (Junk.is(fileInDirectory)) {
-                            return false
+                            callback(false)
                         }
 
                         // Check file size and exclude text files or images
@@ -72,7 +72,7 @@ const CheckFiles = (filesDropped, callback) => {
                     files.push(fileObject)
                 }
                 else {
-                    files.push(false)
+                    callback(false)
                 }
 
             }

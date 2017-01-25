@@ -5,10 +5,8 @@
     padding: 25px;
 
     &.dragging {
-        cursor: grabbing;
-
         .zone {
-            border: 1px dashed rgba(255, 255, 255, .7);
+            border: 1px dashed rgba(255, 255, 255, .8);
         }
 
         h2 {

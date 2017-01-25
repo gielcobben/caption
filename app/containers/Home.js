@@ -19,9 +19,13 @@ export default class Home extends Component {
             lang: 'all',
             files: [],
             results: [],
-            loading: false
+            loading: false,
+            dragging: false
         }
         this.onDrop = this.onDrop.bind(this)
+        this.onDragEnter = this.onDragEnter.bind(this)
+        this.onDragLeave = this.onDragLeave.bind(this)
+        this.onDragOver = this.onDragOver.bind(this)
         this.resetList = this.resetList.bind(this)
         this.onKeyPress = this.onKeyPress.bind(this)
         this.onQueryChange = this.onQueryChange.bind(this)
@@ -120,6 +124,28 @@ export default class Home extends Component {
         }
     }
 
+    onDragEnter(event) {
+        this.setState({
+            dragging: true
+        }) 
+    }
+
+    onDragLeave() {
+        if (this.state.dragging) {
+            this.setState({
+                dragging: false
+            })
+        }
+    }
+
+    onDragOver() {
+        if (!this.state.dragging) {
+            this.setState({
+                dragging: true
+            })
+        }
+    }
+
     onDrop(event) {
         // Prevent Default
         event.preventDefault()
@@ -130,13 +156,24 @@ export default class Home extends Component {
         // Process dropped path
         CheckFiles(filesDropped, (files) => {
 
-            this.setState({
-                query: '',
-                results: [],
-                files: files
-            }, () => {
-                this.searchForFiles()
-            })
+            // If files
+            if (files) {
+
+                this.setState({
+                    query: '',
+                    results: [],
+                    files: files,
+                    dragging: false
+                }, () => {
+                    this.searchForFiles()
+                })
+
+            }
+            else {
+                this.setState({
+                    dragging: false
+                })
+            }
 
         })
     }
@@ -238,7 +275,7 @@ export default class Home extends Component {
         // If the query is empty show the dropzone
         // (Home state)
         else if (this.state.query === '') {
-            content = <Dropzone onDrop={this.onDrop} onDragEnter={this.onDragEnter} />
+            content = <Dropzone onDrop={this.onDrop} onDragEnter={this.onDragEnter} onDragLeave={this.onDragLeave} onDragOver={this.onDragOver} dragging={this.state.dragging} />
         }
         // Everything else, show an empty list
         // (Typing... state)
