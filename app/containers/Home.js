@@ -159,13 +159,21 @@ export default class Home extends Component {
             // If files
             if (files) {
 
-                if (this.state.files) {
-                    // Add to current array
+                if (this.state.files.length > 0) {
+                    //Add to current array
+                    this.setState({
+                        query: '',
+                        results: [],
+                        files: this.state.files.push(...files),
+                        dragging: false
+                    }, () => {
+                        console.log('searching for new files')
+                    })
                 }
                 else {
                     // New Array with files
                     this.setState({
-                        query: '',
+                        query: filesDropped[0].path,
                         results: [],
                         files: files,
                         dragging: false
@@ -276,7 +284,7 @@ export default class Home extends Component {
         }
         // If there are files dropped show the list with files
         // (FileSearch state)
-        else if (this.state.files.length > 0 && this.state.query === '') {
+        else if (this.state.files.length > 0) {
             content = <List fileSearch={true} results={this.state.files} resetList={this.resetList} onDrop={this.onDrop} />
         }
         // If the query is empty show the dropzone

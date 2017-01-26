@@ -22,20 +22,20 @@
         position: absolute;
         top: 50%;
         right: 15px;
-        width: 6px;
-        height: 6px;
+        width: 12px;
+        height: 10px;
         border-radius: 4px;
         transform: translate3d(0, -50%, 0);
         z-index: 2;
 
         &.done {
-            background: #4CD964;
-            margin: 0 9px 0 0;
+            // background: #4CD964;
+            margin: 0 5px 0 0;
         }
 
         &.failed {
-            background: #FF3B30;
-            margin: 0 9px 0 0;
+            // background: #FF3B30;
+            margin: 0 5px 0 0;
         }
     }
 }

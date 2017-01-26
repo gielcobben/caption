@@ -36,6 +36,16 @@ export default class ListItem extends Component {
         let title
         let status
         const {handleClick, handleContextMenu, item, selected, index} = this.props
+        const successIcon = (
+            <svg width="12" height="10">
+                <path fill="#4BD964" d="M4.172 6.414l-2.83-2.828L-.07 5 4.17 9.243l7.07-7.07L9.83.756"/>
+            </svg>
+        )
+        const failedIcon = (
+            <svg width="10" height="10">
+                <path fill="#FF3B30" d="M6.414 5l2.83-2.828L7.827.757 5 3.587 2.172.756.757 2.172 3.587 5 .756 7.828l1.415 1.415L5 6.413l2.828 2.83 1.415-1.415"/>
+            </svg>
+        )
 
         // Title is the name of the subtitle files (movie release name)
         if (item.MovieReleaseName) {
@@ -48,10 +58,10 @@ export default class ListItem extends Component {
 
         // Check status of file
         if (item.status === 'done') {
-            status = <span className='status done'></span>
+            status = <span className='status done'>{successIcon}</span>
         }
         else if (item.status === 'failed') {
-            status = <span className='status failed'></span>
+            status = <span className='status failed'>{failedIcon}</span>
         }
         else if (item.status === 'loading') {
             status = <Loading small={true} />
