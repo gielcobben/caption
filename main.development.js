@@ -4,6 +4,7 @@ import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray} fro
 import {moveToApplications} from 'electron-lets-move';
 import pkg from './package.json'
 import Storage from 'electron-json-storage'
+import menuTemplate from './menu'
 
 /*
 * Basics
@@ -23,7 +24,6 @@ app.on('window-all-closed', () => {
 /*
 * autoUpdater
 */
-const menuTemplate = require('./menu');
 const platform = os.platform() + '_' + os.arch(); // darwin_x64
 const updateURL = `https://download.getcaption.co/update/${platform}/${pkg.version}`;
 
@@ -33,22 +33,9 @@ autoUpdater.on('checking-for-update', () => {
 
 autoUpdater.on('update-not-available', () => {
     console.log(`You've got the latest version.`)
-
-    // const options = {
-    //     type: 'info',
-    //     buttons: ['Ok'],
-    //     title: "Caption",
-    //     message: `You've got the latest version.`,
-    //     detail: `Caption ${pkg.version}`
-    // }
-    //
-    // dialog.showMessageBox(options)
 })
 
 autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) => {
-    console.log(`update-downloaded`);
-    console.log(event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate);
-
     const options = {
         type: 'info',
         buttons: ['Restart', 'Later'],
@@ -61,7 +48,6 @@ autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDa
     if (index === 1) {
         return;
     }
-
     // restart app, then update will be applied
     quitAndUpdate();
 });
@@ -159,9 +145,9 @@ app.on('ready', async () => {
                 }
             }
         });
-
-        await installExtensions();
     }
+
+    await installExtensions();
 
     /*
     * MainWindow

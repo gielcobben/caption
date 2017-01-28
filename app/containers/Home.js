@@ -169,22 +169,23 @@ export default class Home extends Component {
 
             // If files
             if (files) {
+                const filePath = this.getFilePath(isDirectory, filesDropped[0])
+                const query = filePath.substr(filePath.lastIndexOf('/') + 1)
+
+                console.log(files)
 
                 if (this.state.files.length > 0) {
                     //Add to current array
                     this.setState({
-                        query: '',
+                        query: query,
                         results: [],
-                        files: this.state.files.push(...files),
+                        files: files,
                         dragging: false
                     }, () => {
                         console.log('searching for new files')
                     })
                 }
                 else {
-                    const filePath = this.getFilePath(isDirectory, filesDropped[0])
-                    const query = filePath.substr(filePath.lastIndexOf('/') + 1)
-
                     // New Array with files
                     this.setState({
                         query: query,
