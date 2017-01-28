@@ -11,6 +11,7 @@ import Junk from 'junk'
 const CheckFiles = (filesDropped, callback) => {
 
     const files = []
+    let isDirectory
 
     // Loop trough each dropped file
     for (let i = 0; i < filesDropped.length; i++) {
@@ -21,7 +22,7 @@ const CheckFiles = (filesDropped, callback) => {
         if (fs.existsSync(file.path)) {
 
             const stats = fs.statSync(file.path)
-            const isDirectory = stats.isDirectory()
+            isDirectory = stats.isDirectory()
 
             if (isDirectory) {
 
@@ -80,7 +81,7 @@ const CheckFiles = (filesDropped, callback) => {
 
     }
 
-    return callback(files)
+    return callback(files, isDirectory)
 }
 
 /*

@@ -1,4 +1,5 @@
 import './Home.scss'
+import path from 'path'
 import OpenSubtitles from 'subtitler'
 import List from '../components/List'
 import React, {Component} from 'react'
@@ -147,6 +148,15 @@ export default class Home extends Component {
         }
     }
 
+    getFilePath(isDirectory, fileDropped) {
+        if (isDirectory) {
+            return fileDropped.path
+        }
+        else {
+            return path.dirname(fileDropped.path)
+        }
+    }
+
     onDrop(event) {
         // Prevent Default
         event.preventDefault()
@@ -155,7 +165,7 @@ export default class Home extends Component {
         const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
         // Process dropped path
-        CheckFiles(filesDropped, (files) => {
+        CheckFiles(filesDropped, (files, isDirectory) => {
 
             // If files
             if (files) {
@@ -172,9 +182,12 @@ export default class Home extends Component {
                     })
                 }
                 else {
+                    const filePath = this.getFilePath(isDirectory, filesDropped[0])
+                    const query = filePath.substr(filePath.lastIndexOf('/') + 1)
+
                     // New Array with files
                     this.setState({
-                        query: filesDropped[0].path,
+                        query: query,
                         results: [],
                         files: files,
                         dragging: false

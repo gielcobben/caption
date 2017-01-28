@@ -27,11 +27,11 @@ export default class EmptyList extends Component {
     }
 
     render() {
-        const lis = [...Array(this.state.amount).keys()]
+        const list = [...Array(this.state.amount).keys()]
 
         return (
             <ul className="list">
-                {lis.map((li, index) => {
+                {list.map((li, index) => {
                     return <li key={index}></li>
                 })}
             </ul>
