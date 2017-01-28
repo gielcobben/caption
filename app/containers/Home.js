@@ -20,7 +20,8 @@ export default class Home extends Component {
             files: [],
             results: [],
             loading: false,
-            dragging: false
+            dragging: false,
+            dropzoneText: 'Drop an episode or season…'
         }
         this.onDrop = this.onDrop.bind(this)
         this.onDragEnter = this.onDragEnter.bind(this)
@@ -127,7 +128,7 @@ export default class Home extends Component {
     onDragEnter(event) {
         this.setState({
             dragging: true
-        }) 
+        })
     }
 
     onDragLeave() {
