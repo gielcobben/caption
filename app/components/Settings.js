@@ -31,15 +31,36 @@ export default class Settings extends Component {
      * Render
      */
     render() {
+        // Variables
+        let info
         const {selectedLanguage, results, files, resetList} = this.props
         const filesDone = files.filter(this.countStatus).length
         const filesLength = files.length
-        let show = false
 
-        if (results.length > 0 || files.length > 0) {
-            show = true
+        // Set info
+        if (results.length > 0) {
+            info = (
+                <div className="info">
+                    <span>
+                        <label>Results: </label>
+                        {results.length}
+                    </span>
+                </div>
+            )
         }
 
+        if (files.length > 0) {
+            info = (
+                <div className="info">
+                    <span>
+                        <label>Done: </label>
+                        {filesDone} / {files.length}
+                    </span>
+                </div> 
+            )
+        }
+
+        // Render
         return (
             <section className="settings">
                 <div className="language">
@@ -119,16 +140,7 @@ export default class Settings extends Component {
                         <option value='vie'>Vietnamese</option>
                     </select>
                 </div>
-                {show &&
-                    <div className="info">
-                        {results.length > 0 &&
-                            <span>
-                                <label>Results: </label>
-                                {results.length}
-                            </span>
-                        }
-                    </div>
-                }
+                {info}
             </section>
         )
     }
