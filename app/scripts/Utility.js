@@ -41,7 +41,6 @@ const CheckFiles = (filesDropped, callback) => {
                         const fileExtention = fileName.substr(fileName.lastIndexOf('.') + 1)
 
                         if (Junk.is(fileInDirectory)) {
-                            
                             // Check if file is junk (Think on files like DS_Store ect..)
                             return false
                         }
@@ -67,6 +66,7 @@ const CheckFiles = (filesDropped, callback) => {
             // It's a file
             else {
 
+                // Get extention for file name
                 const fileExtention = file.name.substr(file.name.lastIndexOf('.') + 1)
 
                 // If file is just a file, push the file object in array

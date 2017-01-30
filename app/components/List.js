@@ -48,7 +48,7 @@ export default class List extends Component {
             // FileSearch so open or show the file when doubleclick
             const extention = item.path.substr(item.path.lastIndexOf('.') + 1)
 
-            if (extention === 'mp4' || extention === 'mkv') {
+            if (extention === 'mp4' || extention === 'mkv' || extention === 'avi') {
                 // Menu with Play and Reveal in Finder
                 Menu.buildFromTemplate([
                     {
