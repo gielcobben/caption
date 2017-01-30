@@ -211,6 +211,7 @@ app.on('ready', async () => {
     /*
     * Menu
     */
+    console.log(menuTemplate);
     menu = Menu.buildFromTemplate(menuTemplate);
     mainWindow.setMenu(menu);
 

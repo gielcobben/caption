@@ -21,60 +21,65 @@ const CheckFiles = (filesDropped, callback) => {
         // Check if path exists
         if (fs.existsSync(file.path)) {
 
+            // Check if it's a directory
             const stats = fs.statSync(file.path)
             isDirectory = stats.isDirectory()
 
+            // It's a directory
             if (isDirectory) {
 
                 // Read files in directory
                 fs.readdir(file.path, (error, filesInDirectory) => {
 
                     filesInDirectory.map(fileInDirectory => {
+                        
                         // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
-                        const fileInDirectoryStats = fs.statSync(`${file.path}/${fileInDirectory}`)
+                        const fileName = fileInDirectory
+                        const filePath = `${file.path}/${fileInDirectory}`
+                        const fileInDirectoryStats = fs.statSync(filePath)
+                        const fileSize = fileInDirectoryStats.size
+                        const fileExtention = fileName.substr(fileName.lastIndexOf('.') + 1)
 
-                        // Check if file is junk (Think on files like DS_Store ect..)
                         if (Junk.is(fileInDirectory)) {
-                            callback(false)
+                            
+                            // Check if file is junk (Think on files like DS_Store ect..)
+                            return false
                         }
-
-                        // Check file size and exclude text files or images
-                        if (fileInDirectoryStats.size > 100000) {
+                        else {
 
                             // Map and push the file object in array
                             const fileObject = {
-                                size: fileInDirectoryStats.size,
-                                name: fileInDirectory,
-                                path: `${file.path}/${fileInDirectory}`,
+                                extention: fileExtention,
+                                size: fileSize,
+                                name: fileName,
+                                path: filePath,
                                 status: 'loading'
                             }
 
                             // Push
                             files.push(fileObject)
+
                         }
 
                     })
                 })
             }
+            // It's a file
             else {
 
-                // Check file size and exclude text files or images
-                if (file.size > 100000) {
+                const fileExtention = file.name.substr(file.name.lastIndexOf('.') + 1)
 
-                    // If file is just a file, push the file object in array
-                    const fileObject = {
-                        size: file.size,
-                        name: file.name,
-                        path: file.path,
-                        status: 'loading'
-                    }
+                // If file is just a file, push the file object in array
+                const fileObject = {
+                    extention: fileExtention,
+                    size: file.size,
+                    name: file.name,
+                    path: file.path,
+                    status: 'loading'
+                }
 
-                    // Push
-                    files.push(fileObject)
-                }
-                else {
-                    callback(false)
-                }
+                // Push
+                files.push(fileObject)
 
             }
         }

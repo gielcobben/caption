@@ -74,7 +74,11 @@ export default class ListItem extends Component {
             <li className={`list-item ${index == selected ? 'selected' : ''}`} onClick={handleClick} onContextMenu={handleContextMenu} onDoubleClick={this.handleDoubleClick}>
                 {title}
                 {item.size &&
-                    <span className='size'>{humanFileSize(item.size, true)}</span>
+                    <span className='size'>
+                        {item.extention} 
+                        <span className='dot'></span> 
+                        {humanFileSize(item.size, true)}
+                    </span>
                 }
                 {status}
             </li>
