@@ -27,40 +27,35 @@ const CheckFiles = (filesDropped, callback) => {
 
             // It's a directory
             if (isDirectory) {
+                fs.readdirSync(file.path).map(fileInDirectory => {
+                    
+                    // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
+                    const fileName = fileInDirectory
+                    const filePath = `${file.path}/${fileInDirectory}`
+                    const fileInDirectoryStats = fs.statSync(filePath)
+                    const fileSize = fileInDirectoryStats.size
+                    const fileExtention = fileName.substr(fileName.lastIndexOf('.') + 1)
 
-                // Read files in directory
-                fs.readdir(file.path, (error, filesInDirectory) => {
+                    if (Junk.is(fileInDirectory)) {
+                        // Check if file is junk (Think on files like DS_Store ect..)
+                        return false
+                    }
+                    else {
 
-                    filesInDirectory.map(fileInDirectory => {
-                        
-                        // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
-                        const fileName = fileInDirectory
-                        const filePath = `${file.path}/${fileInDirectory}`
-                        const fileInDirectoryStats = fs.statSync(filePath)
-                        const fileSize = fileInDirectoryStats.size
-                        const fileExtention = fileName.substr(fileName.lastIndexOf('.') + 1)
-
-                        if (Junk.is(fileInDirectory)) {
-                            // Check if file is junk (Think on files like DS_Store ect..)
-                            return false
-                        }
-                        else {
-
-                            // Map and push the file object in array
-                            const fileObject = {
-                                extention: fileExtention,
-                                size: fileSize,
-                                name: fileName,
-                                path: filePath,
-                                status: 'loading'
-                            }
-
-                            // Push
-                            files.push(fileObject)
-
+                        // Map and push the file object in array
+                        const fileObject = {
+                            extention: fileExtention,
+                            size: fileSize,
+                            name: fileName,
+                            path: filePath,
+                            status: 'loading'
                         }
 
-                    })
+                        // Push
+                        files.push(fileObject)
+
+                    }
+
                 })
             }
             // It's a file
@@ -86,7 +81,7 @@ const CheckFiles = (filesDropped, callback) => {
 
     }
 
-    return callback(files, isDirectory)
+    return { files, isDirectory }
 }
 
 /*

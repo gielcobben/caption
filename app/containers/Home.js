@@ -36,11 +36,20 @@ export default class Home extends Component {
         this.onLanguageChange = this.onLanguageChange.bind(this)
     }
 
+    setFileStatus(index, status) {
+        this.setState({
+            files: [ 
+                ...this.state.files.slice(0, index),
+                { ...this.state.files[index], status },
+                ...this.state.files.slice(index + 1),
+            ]
+        })
+    }
+
     searchForFiles() {
         const files = this.state.files
 
         OpenSubtitles.api.login().then(token => {
-
             // Loop trough each dropped file
             files.map((file, index) => {
 
@@ -48,7 +57,6 @@ export default class Home extends Component {
                 OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
 
                     if (results.length !== 0) {
-
                         // If results, get download link and filename
                         const subDownloadLink = results[0].ZipDownloadLink
                         const subFileName = results[0].SubFileName
@@ -59,34 +67,20 @@ export default class Home extends Component {
 
                         // Download
                         DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
-                            // Set loading for specific file to false
-                            this.state.files[index].status = 'done'
-
-                            // Update whole state with the false set to the item
-                            this.setState({
-                                files: this.state.files
-                            })
+                            this.setFileStatus(index, 'done');
                         })
                     }
                     else {
-                        // Nothing found for the specific file, set status to 'failed'
-                        this.state.files[index].status = 'failed'
-                        this.setState({
-                            files: this.state.files
-                        })
+                        this.setFileStatus(index, 'failed');
                     }
 
                 }).catch(error => {
                     console.log(error)
                 })
-
-                // Logout when the last result is in.
-                if (index === files.length - 1) {
-                    OpenSubtitles.api.logout(token)
-                }
-
             })
-
+            return token
+        }).then(token => {
+             OpenSubtitles.api.logout(token)
         }).catch(error => {
             console.log(error)
         })
@@ -111,7 +105,6 @@ export default class Home extends Component {
             // Use the opensubtitles API to search for subtitles
             OpenSubtitles.api.login().then((token) => {
                 OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
-
                     // Store results in state
                     this.setState({
                         files: [],
@@ -165,47 +158,43 @@ export default class Home extends Component {
         const filesDropped = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
         // Process dropped path
-        CheckFiles(filesDropped, (files, isDirectory) => {
+        const { files, isDirectory } = CheckFiles(filesDropped)
 
-            // If files
-            if (files) {
-                const filePath = this.getFilePath(isDirectory, filesDropped[0])
-                const query = filePath.substr(filePath.lastIndexOf('/') + 1)
+        // If files
+        if (files.length > 0) {
+            const filePath = this.getFilePath(isDirectory, filesDropped[0])
+            const query = filePath.substr(filePath.lastIndexOf('/') + 1)
 
-                console.log(files)
-
-                if (this.state.files.length > 0) {
-                    //Add to current array
-                    this.setState({
-                        query: query,
-                        results: [],
-                        files: files,
-                        dragging: false
-                    }, () => {
-                        console.log('searching for new files')
-                    })
-                }
-                else {
-                    // New Array with files
-                    this.setState({
-                        query: query,
-                        results: [],
-                        files: files,
-                        dragging: false
-                    }, () => {
-                        this.searchForFiles()
-                    })
-                }
-
-            }
-            // If the file is too small, do nothing
-            else {
+            if (this.state.files.length > 0) {
+                //Add to current array
                 this.setState({
+                    query: query,
+                    results: [],
+                    files: files,
                     dragging: false
+                }, () => {
+                    this.searchForFiles()
+                })
+            }
+            else {
+                // New Array with files
+                this.setState({
+                    query: query,
+                    results: [],
+                    files: files,
+                    dragging: false
+                }, () => {
+                    this.searchForFiles()
                 })
             }
 
-        })
+        }
+        // If the file is too small, do nothing
+        else {
+            this.setState({
+                dragging: false
+            })
+        }
     }
 
     onLanguageChange(lang) {
@@ -214,7 +203,7 @@ export default class Home extends Component {
         })
 
         this.setState({
-            lang: lang
+            lang
         })
 
         // Search again
@@ -222,15 +211,11 @@ export default class Home extends Component {
             this.searchForTitle()
         }
         else {
-
-            // Set file status to loading for each file
-            this.state.files.map((file) => {
-                file.status = 'loading'
-            })
-
             // Set the new loading state and search again
             this.setState({
-                files: this.state.files
+                files: this.state.files.map((file) => {
+                    return { ...file, status: 'loading' }
+                })
             }, () => {
                 this.searchForFiles()
             })

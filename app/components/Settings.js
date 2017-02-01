@@ -53,7 +53,7 @@ export default class Settings extends Component {
             info = (
                 <div className="info">
                     <span>
-                        <label>Done: </label>
+                        <label>Results: </label>
                         {filesDone} / {files.length}
                     </span>
                 </div> 
