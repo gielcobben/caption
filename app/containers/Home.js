@@ -37,13 +37,15 @@ export default class Home extends Component {
     }
 
     setFileStatus(index, status) {
-        this.setState({
-            files: [ 
-                ...this.state.files.slice(0, index),
-                { ...this.state.files[index], status },
-                ...this.state.files.slice(index + 1),
-            ]
-        })
+        if (this.state.files.length > 0) {
+            this.setState({
+                files: [
+                    ...this.state.files.slice(0, index),
+                    { ...this.state.files[index], status },
+                    ...this.state.files.slice(index + 1),
+                ]
+            })
+        }
     }
 
     searchForFiles() {
