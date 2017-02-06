@@ -23,14 +23,28 @@ app.on('window-all-closed', () => {
 /*
 * autoUpdater
 */
+let firstRun = true
+let downloadUpdate = true
 const platform = os.platform() + '_' + os.arch(); // darwin_x64
 const updateURL = `https://download.getcaption.co/update/${platform}/${pkg.version}`;
 
 autoUpdater.on('checking-for-update', () => {
     console.log('Checking for updates...');
+    downloadUpdate = true;
 });
 
 autoUpdater.on('update-not-available', () => {
+    if (!firstRun) {
+        const options = {
+            type: 'info',
+            buttons: ['OK'],
+            title: 'Caption',
+            message: `You’re up-to-date!`,
+            detail: `Caption v${pkg.version} is currently the newest version available.`
+        }
+        dialog.showMessageBox(options)
+    }
+    firstRun = false;
     console.log(`You've got the latest version.`)
 })
 
@@ -48,15 +62,34 @@ autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDa
         return;
     }
     // restart app, then update will be applied
-    quitAndUpdate();
+    if (downloadUpdate) {
+        quitAndUpdate();
+    }
+
+    firstRun = false;
 });
 
 autoUpdater.on('error', (error) => {
     console.log(error)
+    firstRun = false;
 });
 
 autoUpdater.on('update-available', () => {
     console.log('New Update Available!');
+    const options = {
+        type: 'info',
+        buttons: ['Download', 'Later'],
+        title: 'Caption',
+        message: 'There is a new update available.'
+    }
+    const index = dialog.showMessageBox(options)
+
+    if (index === 1) {
+        return;
+        downloadUpdate = false;
+    }
+
+    firstRun = false;
 });
 
 try {
@@ -117,6 +150,7 @@ const createMainWindow = () => {
 
     mainWindow.on('closed', () => {
         mainWindow = null;
+        app.quit();
     });
 }
 
@@ -306,7 +340,9 @@ app.on('ready', async () => {
         }, {
             label: 'Close',
             accelerator: 'Command+W',
-            selector: 'performClose:'
+            click() {
+                app.quit();
+            }
         }, {
             type: 'separator'
         }, {
