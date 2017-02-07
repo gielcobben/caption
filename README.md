@@ -6,8 +6,8 @@
 
 ## Get Caption
 
-**[Download the latest release](http://getcaption.co/)** (macOS only)
-[Go to the website](https://getcaption.co/)
+- **[Download the latest release](http://getcaption.co/)** (macOS only)
+- [Getcaption.co](https://getcaption.co/)
 
 ## Contribute
 
