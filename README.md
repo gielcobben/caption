@@ -26,6 +26,7 @@ After that, you'll see the binary in the `./release` folder :smile:
 
 - [Website](http://getcaption.co/)
 
-## Thanks
+## Heroes
 
-- [Rick Wong](https://github.com/RickWong) for helping me out sometimes. 😎
+- [Rick Wong](https://github.com/RickWong)
+- [Lennard van Gunst](https://github.com/lvgunst)
