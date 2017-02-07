@@ -17,7 +17,7 @@ export default class Home extends Component {
         super(props)
         this.state = {
             query: '',
-            lang: 'all',
+            lang: 'eng',
             files: [],
             results: [],
             loading: false,
