@@ -7,6 +7,7 @@
 ## Get Caption
 
 **[Download the latest release](http://getcaption.co/)** (macOS only)
+[Go to the website](https://getcaption.co/)
 
 ## Contribute
 
@@ -24,9 +25,9 @@ After that, you'll see the binary in the `./release` folder :smile:
 
 ## Related Repositories
 
-- [Website](http://getcaption.co/)
+- [Website](https://github.com/gielcobben/CaptionWebsite)
 
-## Heroes
+## Thanks 🙏🏻
 
 - [Rick Wong](https://github.com/RickWong)
 - [Lennard van Gunst](https://github.com/lvgunst)
