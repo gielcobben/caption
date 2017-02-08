@@ -249,9 +249,17 @@ export default class Home extends Component {
 
     componentWillMount() {
         Storage.get('language', (error, lang) => {
-            this.setState({
-                lang: lang
-            })
+
+            if (Object.keys(lang).length === 0 && lang.constructor === Object) {
+                this.setState({
+                    lang: 'eng'
+                })
+            }
+            else {
+                this.setState({
+                    lang: lang
+                })
+            }
         })
     }
 
