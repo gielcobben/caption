@@ -65,7 +65,7 @@ export default class Settings extends Component {
             <section className="settings">
                 <div className="language">
                     <label>Language:</label>
-                    <select defaultValue={selectedLanguage} onChange={this.handleLanguageChange}>
+                    <select value={selectedLanguage} onChange={this.handleLanguageChange}>
                         <option value='afr'>Afrikaans</option>
                         <option value='alb'>Albanian</option>
                         <option value='ara'>Arabic</option>
