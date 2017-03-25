@@ -57,7 +57,7 @@ ajv-keywords@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.2.0.tgz#676c4f087bfe1e8b12dca6fda2f3c74f417b099c"
 
-ajv@^4.7.0:
+ajv@^4.7.0, ajv@^4.9.1:
   version "4.10.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.10.0.tgz#7ae6169180eb199192a8b9a19fd0f47fc9ac8764"
   dependencies:
@@ -1233,9 +1233,9 @@ bluebird@^2.9.30:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
 
-bluebird@^3.1.1, bluebird@^3.3.5:
-  version "3.4.6"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+bluebird@^3.1.1, bluebird@^3.3.5, bluebird@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.6"
@@ -1426,6 +1426,10 @@ caniuse-db@^1.0.30000539, caniuse-db@^1.0.30000597:
 caseless@~0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.11.0.tgz#715b96ea9841593cc33067923f5ec60ebda4f7d7"
+
+caseless@~0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
 caseless@~0.9.0:
   version "0.9.0"
@@ -3500,6 +3504,10 @@ gulplog@^1.0.0:
   dependencies:
     glogg "^1.0.0"
 
+har-schema@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-1.0.5.tgz#d263135f43307c02c602afc8fe95970c0151369e"
+
 har-validator@^1.4.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/har-validator/-/har-validator-1.8.0.tgz#d83842b0eb4c435960aeb108a067a3aa94c0eeb2"
@@ -3517,6 +3525,13 @@ har-validator@~2.0.6:
     commander "^2.9.0"
     is-my-json-valid "^2.12.4"
     pinkie-promise "^2.0.0"
+
+har-validator@~4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/har-validator/-/har-validator-4.2.1.tgz#33481d0f1bbff600dd203d75812a6a5fba002e2a"
+  dependencies:
+    ajv "^4.9.1"
+    har-schema "^1.0.5"
 
 has-ansi@^0.1.0:
   version "0.1.0"
@@ -4697,7 +4712,7 @@ lodash@^3.10.1, lodash@^3.5.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.0.1, lodash@^4.14.0, lodash@^4.16.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.1, lodash@^4.8.0:
+lodash@^4.0.0, lodash@^4.0.1, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.1, lodash@^4.8.0:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -5398,6 +5413,13 @@ opener@~1.4.2:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/opener/-/opener-1.4.2.tgz#b32582080042af8680c389a499175b4c54fff523"
 
+opensubtitles-api@^4.0.0-rc1:
+  version "4.0.0-rc1"
+  resolved "https://registry.yarnpkg.com/opensubtitles-api/-/opensubtitles-api-4.0.0-rc1.tgz#2283db6728c35120301a1200a684323fd2ddb7eb"
+  dependencies:
+    urijs "1.x.x"
+    xmlrpc "1.x.x"
+
 optimist@^0.6.1, optimist@~0.6.0:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.6.1.tgz#da3ea74686fa21a19a111c326e90eb15a0196686"
@@ -5566,6 +5588,10 @@ pbkdf2@^3.0.3:
 pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
+
+performance-now@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
 pify@^2.0.0:
   version "2.3.0"
@@ -5983,9 +6009,9 @@ qs@~2.4.0:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-2.4.2.tgz#f7ce788e5777df0b5010da7f7c4e73ba32470f5a"
 
-qs@~6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.0.tgz#f403b264f23bc01228c74131b407f18d5ea5d442"
+qs@~6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
 query-string@^3.0.0:
   version "3.0.3"
@@ -6349,31 +6375,46 @@ replace-ext@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-0.0.1.tgz#29bbd92078a739f0bcce2b4ee41e837953522924"
 
-request@2, request@2.x, request@^2.45.0, request@^2.55.0, request@^2.61.0, request@^2.65.0, request@^2.72.0, request@^2.74.0, request@~2.75.0:
-  version "2.75.0"
-  resolved "https://registry.yarnpkg.com/request/-/request-2.75.0.tgz#d2b8268a286da13eaa5d01adf5d18cc90f657d93"
+request-promise-core@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/request-promise-core/-/request-promise-core-1.1.1.tgz#3eee00b2c5aa83239cfb04c5700da36f81cd08b6"
+  dependencies:
+    lodash "^4.13.1"
+
+request-promise@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.0.tgz#684f77748d6b4617bee6a4ef4469906e6d074720"
+  dependencies:
+    bluebird "^3.5.0"
+    request-promise-core "1.1.1"
+    stealthy-require "^1.0.0"
+
+request@2, request@2.x, request@^2.45.0, request@^2.55.0, request@^2.61.0, request@^2.65.0, request@^2.72.0, request@^2.74.0, request@^2.79.0, request@^2.81.0:
+  version "2.81.0"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:
     aws-sign2 "~0.6.0"
     aws4 "^1.2.1"
-    bl "~1.1.2"
-    caseless "~0.11.0"
+    caseless "~0.12.0"
     combined-stream "~1.0.5"
     extend "~3.0.0"
     forever-agent "~0.6.1"
-    form-data "~2.0.0"
-    har-validator "~2.0.6"
+    form-data "~2.1.1"
+    har-validator "~4.2.1"
     hawk "~3.1.3"
     http-signature "~1.1.0"
     is-typedarray "~1.0.0"
     isstream "~0.1.2"
     json-stringify-safe "~5.0.1"
     mime-types "~2.1.7"
-    node-uuid "~1.4.7"
     oauth-sign "~0.8.1"
-    qs "~6.2.0"
+    performance-now "^0.2.0"
+    qs "~6.4.0"
+    safe-buffer "^5.0.1"
     stringstream "~0.0.4"
     tough-cookie "~2.3.0"
-    tunnel-agent "~0.4.1"
+    tunnel-agent "^0.6.0"
+    uuid "^3.0.0"
 
 request@2.55.0:
   version "2.55.0"
@@ -6424,17 +6465,18 @@ request@2.74.0:
     tough-cookie "~2.3.0"
     tunnel-agent "~0.4.1"
 
-request@^2.79.0:
-  version "2.79.0"
-  resolved "https://registry.yarnpkg.com/request/-/request-2.79.0.tgz#4dfe5bf6be8b8cdc37fcf93e04b65577722710de"
+request@~2.75.0:
+  version "2.75.0"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.75.0.tgz#d2b8268a286da13eaa5d01adf5d18cc90f657d93"
   dependencies:
     aws-sign2 "~0.6.0"
     aws4 "^1.2.1"
+    bl "~1.1.2"
     caseless "~0.11.0"
     combined-stream "~1.0.5"
     extend "~3.0.0"
     forever-agent "~0.6.1"
-    form-data "~2.1.1"
+    form-data "~2.0.0"
     har-validator "~2.0.6"
     hawk "~3.1.3"
     http-signature "~1.1.0"
@@ -6442,12 +6484,12 @@ request@^2.79.0:
     isstream "~0.1.2"
     json-stringify-safe "~5.0.1"
     mime-types "~2.1.7"
+    node-uuid "~1.4.7"
     oauth-sign "~0.8.1"
-    qs "~6.3.0"
+    qs "~6.2.0"
     stringstream "~0.0.4"
     tough-cookie "~2.3.0"
     tunnel-agent "~0.4.1"
-    uuid "^3.0.0"
 
 require-main-filename@^1.0.1:
   version "1.0.1"
@@ -6542,6 +6584,10 @@ rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
 
+safe-buffer@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
+
 samsam@1.1.2, samsam@~1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.1.2.tgz#bec11fdc83a9fda063401210e40176c3024d1567"
@@ -6568,13 +6614,13 @@ sass-loader@^4.0.2:
     loader-utils "^0.2.15"
     object-assign "^4.1.0"
 
+sax@1.2.x, sax@^1.1.4, sax@~1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+
 sax@=0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/sax/-/sax-0.4.2.tgz#39f3b601733d6bec97105b242a2a40fd6978ac3c"
-
-sax@^1.1.4, sax@~1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
 seek-bzip@^1.0.3:
   version "1.0.5"
@@ -6841,6 +6887,10 @@ stat-mode@^0.2.0:
 "statuses@>= 1.3.1 < 2", statuses@~1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
+
+stealthy-require@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.0.0.tgz#1a8ed8fc19a8b56268f76f5a1a3e3832b0c26200"
 
 stream-browserify@^2.0.1:
   version "2.0.1"
@@ -7206,6 +7256,12 @@ tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
 
+tunnel-agent@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
+  dependencies:
+    safe-buffer "^5.0.1"
+
 tunnel-agent@~0.4.0, tunnel-agent@~0.4.1:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.4.3.tgz#6373db76909fe570e08d73583365ed828a74eeeb"
@@ -7324,6 +7380,10 @@ unused-filename@^0.1.0:
   dependencies:
     modify-filename "^1.1.0"
     path-exists "^3.0.0"
+
+urijs@1.x.x:
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.18.9.tgz#06d503d4f1907dcbd906fbd808b38457ec40dee6"
 
 urix@^0.1.0, urix@~0.1.0:
   version "0.1.0"
@@ -7710,13 +7770,20 @@ xmlbuilder@4.0.0:
   dependencies:
     lodash "^3.5.0"
 
-xmlbuilder@8.2.2:
+xmlbuilder@8.2.2, xmlbuilder@8.2.x:
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-8.2.2.tgz#69248673410b4ba42e1a6136551d2922335aa773"
 
 xmldom@0.1.x:
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
+
+xmlrpc@1.x.x:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/xmlrpc/-/xmlrpc-1.3.2.tgz#26b2ea347848d028aac7e7514b5351976de3e83d"
+  dependencies:
+    sax "1.2.x"
+    xmlbuilder "8.2.x"
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@~4.0.0, xtend@~4.0.1:
   version "4.0.1"

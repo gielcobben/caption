@@ -24,13 +24,11 @@ app.on('window-all-closed', () => {
 * autoUpdater
 */
 let firstRun = true
-let downloadUpdate = true
 const platform = os.platform() + '_' + os.arch(); // darwin_x64
 const updateURL = `https://download.getcaption.co/update/${platform}/${pkg.version}`;
 
 autoUpdater.on('checking-for-update', () => {
     console.log('Checking for updates...');
-    downloadUpdate = true;
 });
 
 autoUpdater.on('update-not-available', () => {
@@ -61,11 +59,8 @@ autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDa
     if (index === 1) {
         return;
     }
-    // restart app, then update will be applied
-    if (downloadUpdate) {
-        quitAndUpdate();
-    }
 
+    quitAndUpdate();
     firstRun = false;
 });
 
@@ -75,21 +70,13 @@ autoUpdater.on('error', (error) => {
 });
 
 autoUpdater.on('update-available', () => {
-    console.log('New Update Available!');
-    const options = {
-        type: 'info',
-        buttons: ['Download', 'Later'],
-        title: 'Caption',
-        message: 'There is a new update available.'
-    }
-    const index = dialog.showMessageBox(options)
-
-    if (index === 1) {
-        return;
-        downloadUpdate = false;
-    }
-
+    console.log('update available')
     firstRun = false;
+
+    setInterval(() => {
+        console.log(autoUpdater.status);
+    }, 5000);
+
 });
 
 try {

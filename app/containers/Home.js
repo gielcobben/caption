@@ -11,6 +11,9 @@ import EmptyList from '../components/EmptyList'
 import SearchField from '../components/SearchField'
 import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
 
+import Promise from 'bluebird';
+import { opensubtitles, addic7ed } from '../sources'
+
 export default class Home extends Component {
 
     constructor(props) {
@@ -104,20 +107,32 @@ export default class Home extends Component {
                 loading: true
             })
 
-            // Use the opensubtitles API to search for subtitles
-            OpenSubtitles.api.login().then((token) => {
-                OpenSubtitles.api.searchForTitle(token, this.state.lang, this.state.query).then((results) => {
-                    // Store results in state
-                    this.setState({
-                        files: [],
-                        loading: false,
-                        results: results,
-                    })
+            const s1 = opensubtitles.search(this.state.query, this.state.lang)
+            // const s1 = addic7ed.search(this.state.query)
 
-                    // And logout when we've results
-                    OpenSubtitles.api.logout(token)
+            Promise.any([s1])
+            .then(({ subtitles, source }) => {
+                switch (source) {
+                    case 'opensubtitles':
+                        return subtitles
+                    case 'addic7ed':
+                        console.log(subtitles)
+                        return console.log('Downloading from addic7ed...')
+                    default:
+                        throw new Error('No subtitle downloaded.')
+                }
+            })
+            .then(subtitles => {
+                this.setState({
+                    files: [],
+                    loading: false,
+                    results: subtitles
                 })
             })
+            .catch(err => {
+                console.error(err);
+            })
+
         }
     }
 

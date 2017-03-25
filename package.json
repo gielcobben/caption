@@ -107,6 +107,8 @@
   },
   "dependencies": {
     "adm-zip": "^0.4.7",
+    "bluebird": "^3.5.0",
+    "cheerio": "^0.22.0",
     "css-modules-require-hook": "^4.0.5",
     "electron-debug": "^1.0.1",
     "electron-json-storage": "^2.0.3",
@@ -114,10 +116,13 @@
     "install": "^0.8.2",
     "junk": "^2.0.0",
     "npm": "^3.10.9",
+    "opensubtitles-api": "^4.0.0-rc1",
     "postcss": "^5.2.4",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.0",
     "source-map-support": "^0.4.3",
     "subtitler": "^2.6.0",
     "unused-filename": "^0.1.0"
