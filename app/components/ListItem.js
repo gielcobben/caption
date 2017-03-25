@@ -19,9 +19,9 @@ export default class ListItem extends Component {
         if (item.title) {
             switch (item.source) {
                 case 'opensubtitles':
-                    return opensubtitles.download(item)
+                    return opensubtitles.downloadQuery(item)
                 case 'addic7ed':
-                    return addic7ed.download(item)
+                    return addic7ed.downloadQuery(item)
                 default:
                     return null
             }

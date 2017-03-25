@@ -3,7 +3,7 @@ import { remote } from 'electron'
 
 const { dialog } = remote
 
-function search(query, language) {
+function searchQuery(query, language) {
     return new Promise((resolve, reject) => {
         
         const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i)
@@ -43,7 +43,7 @@ function search(query, language) {
 
 }
 
-function download(item) {
+function downloadQuery(item) {
     const currentWindow = remote.getCurrentWindow()
     dialog.showSaveDialog(currentWindow, {
         title: 'Download',
@@ -55,4 +55,4 @@ function download(item) {
     })
 }
 
-export default { search, download }
+export default { searchQuery, downloadQuery }

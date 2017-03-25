@@ -53,41 +53,63 @@ export default class Home extends Component {
     searchForFiles() {
         const files = this.state.files
 
-        OpenSubtitles.api.login().then(token => {
-            // Loop trough each dropped file
-            files.map((file, index) => {
+        files.map((file, index) => {
+            // Construct multiple sources
+            const s1 = opensubtitles.searchFile(file, this.state.lang)
 
-                // Search by file
-                OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
-
-                    if (results.length !== 0) {
-                        // If results, get download link and filename
-                        const subDownloadLink = results[0].ZipDownloadLink
-                        const subFileName = results[0].SubFileName
-
-                        // Remove extention from video filename so we can use this as the new subtitle filename
-                        const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
-                        const newFilename = file.name.replace(`.${extention}`, '')
-
-                        // Download
-                        DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
+            // The first source who comes with an results
+            Promise.any([s1])
+            .then(({ subtitles, file, source }) => {
+                switch (source) {
+                    case 'addic7ed':
+                        console.log('Downloading from addic7ed...')
+                        return addic7ed.downloadFile(subtitles, file)
+                    case 'opensubtitles':
+                        console.log('Downloading from opensubtitles...')
+                        return opensubtitles.downloadFile(subtitles, file, () => {
                             this.setFileStatus(index, 'done');
                         })
-                    }
-                    else {
-                        this.setFileStatus(index, 'failed');
-                    }
-
-                }).catch(error => {
-                    console.log(error)
-                })
+                    default:
+                        throw new Error('No subtitle downloaded.');
+                }
             })
-            return token
-        }).then(token => {
-             OpenSubtitles.api.logout(token)
-        }).catch(error => {
-            console.log(error)
         })
+
+        // OpenSubtitles.api.login().then(token => {
+        //     // Loop trough each dropped file
+        //     files.map((file, index) => {
+
+        //         // Search by file
+        //         OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
+
+        //             if (results.length !== 0) {
+        //                 // If results, get download link and filename
+        //                 const subDownloadLink = results[0].ZipDownloadLink
+        //                 const subFileName = results[0].SubFileName
+
+        //                 // Remove extention from video filename so we can use this as the new subtitle filename
+        //                 const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
+        //                 const newFilename = file.name.replace(`.${extention}`, '')
+
+        //                 // Download
+        //                 DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
+        //                     this.setFileStatus(index, 'done');
+        //                 })
+        //             }
+        //             else {
+        //                 this.setFileStatus(index, 'failed');
+        //             }
+
+        //         }).catch(error => {
+        //             console.log(error)
+        //         })
+        //     })
+        //     return token
+        // }).then(token => {
+        //      OpenSubtitles.api.logout(token)
+        // }).catch(error => {
+        //     console.log(error)
+        // })
 
     }
 
@@ -108,7 +130,7 @@ export default class Home extends Component {
             })
 
             // Construct multiple sources
-            const s1 = opensubtitles.search(this.state.query, this.state.lang)
+            const s1 = opensubtitles.searchQuery(this.state.query, this.state.lang)
             .then((results => {
                 this.setState((prevState, props) => ({
                     results: [
@@ -119,7 +141,7 @@ export default class Home extends Component {
                 }))
             }))
 
-            const s2 = addic7ed.search(this.state.query, this.state.lang)
+            const s2 = addic7ed.searchQuery(this.state.query, this.state.lang)
             .then((results => {
                 this.setState((prevState, props) => ({
                     results: [

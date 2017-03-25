@@ -101,43 +101,48 @@ const ToBuffer = (arrayBuffer) => {
 /*
  * Download Subtitle
  */
-const DownloadSubtitles = (subDownloadLink, file, subFileName, newFilename, callback) => {
+function DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, callback) {
 
-    // Download the subtitle
-    fetch(subDownloadLink).then(response => {
+    return new Promise((resolve, reject) => {
+        fetch(subDownloadLink)
+            .then(response => {
 
-        // Get arrayBuffer
-        return response.arrayBuffer()
-    }).then(arrayBuffer => {
+                // Get arrayBuffer
+                return response.arrayBuffer()
+            })
+            .then(arrayBuffer => {
 
-        // Convert to Buffer
-        return ToBuffer(arrayBuffer)
-    }).then(buffer => {
+                // Convert to Buffer
+                return ToBuffer(arrayBuffer)
+            })
+            .then(buffer => {
 
-        // Process file
-        const zip = new AdmZip(buffer)
-        const zipEntries = zip.getEntries()
+                // Process file
+                const zip = new AdmZip(buffer)
+                const zipEntries = zip.getEntries()
 
-        // Map files in zip
-        zipEntries.map(zipEntry => {
+                // Map files in zip
+                zipEntries.map(zipEntry => {
 
-            // Search for the .srt file inside the zip
-            if (zipEntry.entryName === subFileName) {
+                    // Search for the .srt file inside the zip
+                    if (zipEntry.entryName === subFileName) {
 
-                // remove file.name from file.path to get the right directoryPath
-                const directoryPath = file.path.replace(file.name, '')
+                        // remove file.name from file.path to get the right directoryPath
+                        const directoryPath = file.path.replace(file.name, '')
 
-                // Extract srt file
-                zip.extractEntryTo(zipEntry.entryName, directoryPath, false, true)
+                        // Extract srt file
+                        zip.extractEntryTo(zipEntry.entryName, directoryPath, false, true)
 
-                // Rename subtitle file to the same filename as the video
-                fs.rename(`${directoryPath}/${subFileName}`, `${directoryPath}/${newFilename}.srt`)
+                        // Rename subtitle file to the same filename as the video
+                        fs.rename(`${directoryPath}/${subFileName}`, `${directoryPath}/${newFilename}.srt`)
+                    }
 
-                return callback()
-            }
-
-        })
+                })
+            })
+            .then(resolve)
+            .catch(reject)
     })
+
 }
 
 /*
