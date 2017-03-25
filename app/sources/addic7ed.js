@@ -46,11 +46,11 @@ function search(query, language) {
 function download(item) {
     const currentWindow = remote.getCurrentWindow()
     dialog.showSaveDialog(currentWindow, {
-        title: 'Download'
+        title: 'Download',
+        defaultPath: `${item.title}.srt`
     }, (savePath) => {
-        const path = `${savePath}/${item.title}.srt`
-        Addic7ed.download(item.download, path).then(function () {
-            return console.log('Subtitles file saved.');
+        return Addic7ed.download(item.download, savePath).then(function () {
+            console.log('Subtitles file saved.');
         })
     })
 }
