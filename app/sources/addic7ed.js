@@ -1,39 +1,58 @@
-import request from 'request-promise'
-import $ from 'cheerio'
+import Addic7ed from 'addic7ed-api'
+import { remote } from 'electron'
 
-const URL = 'http://www.addic7ed.com'
+const { dialog } = remote
 
-function search(query) {
-	return new Promise((resolve, reject) => {
-		// search addic7ed
-		request({
-			uri: `${URL}/search.php?search=${encodeURIComponent('New Girl S01E02')}`,
-		})
-		.then((html) => {
-			const urlRegexp = new RegExp(/(?:href="(\/(?:original).+)")/g)
-			const subtitles = []
-			let urlMatch
+function search(query, language) {
+    return new Promise((resolve, reject) => {
+        
+        const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i)
+        
+        if (splitQuery) {
+            const serie = query.replace(splitQuery[0], '')
+            const season = parseInt(splitQuery[1], 10)
+            const episode = parseInt(splitQuery[2], 10)
 
-			while ((urlMatch = urlRegexp.exec(html)) !== null) {
-				subtitles.push({ url: `${URL}${urlMatch[1]}` })
-			}
+            Addic7ed.search(serie, season, episode, language)
+            .then(subtitleList => {
+                const subtitles = []
+                subtitleList.map(subtitle => {
+                    subtitles.push({
+                        title: `${query}.${subtitle.distribution}.${subtitle.team}`,
+                        download: subtitle,
+                        extention: '',
+                        source: 'addic7ed',
+                        size: ''
+                    })
+                })
+                console.log(subtitles)
+                return subtitles
+            })
+            .then(subtitles => ({
+                subtitles,
+                source: 'addic7ed'
+            }))
+            .then(resolve)
+            .catch(reject)
+        }
+        else {
+            throw new Error('No subtitles found.');
+        }
 
-			console.log($(html).find('td[class="NewsTitle"]'))
+    })
 
-			if (!subtitles.length) {
-				throw new Error('No subtitles found.')
-			}
-
-			// console.log(html)
-
-			return {
-				subtitles,
-				source: 'addic7ed',
-			}
-		})
-		.then(resolve)
-		.catch(reject);
-	})
 }
 
-export default { search };
+function download(item) {
+    const currentWindow = remote.getCurrentWindow()
+    dialog.showSaveDialog(currentWindow, {
+        title: 'Download'
+    }, (savePath) => {
+        const path = `${savePath}/${item.title}.srt`
+        Addic7ed.download(item.download, path).then(function () {
+            return console.log('Subtitles file saved.');
+        })
+    })
+}
+
+export default { search, download }

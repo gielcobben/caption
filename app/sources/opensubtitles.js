@@ -15,6 +15,20 @@ function search(query, language) {
                 return subtitles
             })
             .then(subtitles => {
+                const processedSubtitles = []
+                subtitles.map(subtitle => {
+                    processedSubtitles.push({
+                        title: subtitle.MovieReleaseName,
+                        download: subtitle.ZipDownloadLink,
+                        source: 'opensubtitles',
+                        extention: '',
+                        size: ''
+                    })
+                })
+                return processedSubtitles
+            })
+            .then(subtitles => {
+                console.log(subtitles)
                 OpenSubtitles.api.logout(token)
                 return subtitles
             })
@@ -29,4 +43,8 @@ function search(query, language) {
     
 }
 
-export default { search }
+function download(item) {
+    return window.location.assign(item.download)
+}
+
+export default { search, download }

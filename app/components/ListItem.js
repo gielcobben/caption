@@ -1,8 +1,9 @@
 import "./ListItem.scss"
-import React, {Component} from 'react'
-import {shell} from 'electron'
+import React, { Component } from 'react'
+import { shell } from 'electron'
+import { humanFileSize } from '../scripts/Utility'
+import { opensubtitles, addic7ed } from '../sources'
 import Loading from './Loading'
-import {humanFileSize} from '../scripts/Utility'
 
 export default class ListItem extends Component {
 
@@ -14,10 +15,16 @@ export default class ListItem extends Component {
     handleDoubleClick() {
         const {item} = this.props
 
-        // Check if it's a textsearch or filesearch with a variable
-        if (item.MovieReleaseName) {
-            // Text search so download the srt file
-            window.location.assign(item.ZipDownloadLink)
+        // Check if it's a textsearch or filesearch with a variable (item.title)
+        if (item.title) {
+            switch (item.source) {
+                case 'opensubtitles':
+                    return opensubtitles.download(item)
+                case 'addic7ed':
+                    return addic7ed.download(item)
+                default:
+                    return null
+            }
         }
         else {
             // FileSearch so open or show the file when doubleclick
@@ -48,8 +55,8 @@ export default class ListItem extends Component {
         )
 
         // Title is the name of the subtitle files (movie release name)
-        if (item.MovieReleaseName) {
-            title = item.MovieReleaseName
+        if (item.title) {
+            title = item.title
         }
         // Title is the name of the dropped files
         else {

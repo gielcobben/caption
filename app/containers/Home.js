@@ -1,17 +1,16 @@
 import './Home.scss'
 import path from 'path'
 import OpenSubtitles from 'subtitler'
-import List from '../components/List'
 import React, {Component} from 'react'
+import Promise from 'bluebird';
 import Storage from 'electron-json-storage'
+import List from '../components/List'
 import Loading from '../components/Loading'
 import Dropzone from '../components/Dropzone'
 import Settings from '../components/Settings'
 import EmptyList from '../components/EmptyList'
 import SearchField from '../components/SearchField'
 import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
-
-import Promise from 'bluebird';
 import { opensubtitles, addic7ed } from '../sources'
 
 export default class Home extends Component {
@@ -104,33 +103,41 @@ export default class Home extends Component {
 
             // Enable loading
             this.setState({
-                loading: true
+                loading: true,
+                results: []
             })
 
+            // Construct multiple sources
             const s1 = opensubtitles.search(this.state.query, this.state.lang)
-            // const s1 = addic7ed.search(this.state.query)
+            .then((results => {
+                this.setState((prevState, props) => ({
+                    results: [
+                        ...prevState.results,
+                        ...results.subtitles
+                    ],
+                    loading: false
+                }))
+            }))
 
-            Promise.any([s1])
-            .then(({ subtitles, source }) => {
-                switch (source) {
-                    case 'opensubtitles':
-                        return subtitles
-                    case 'addic7ed':
-                        console.log(subtitles)
-                        return console.log('Downloading from addic7ed...')
-                    default:
-                        throw new Error('No subtitle downloaded.')
-                }
-            })
-            .then(subtitles => {
-                this.setState({
-                    files: [],
-                    loading: false,
-                    results: subtitles
-                })
-            })
-            .catch(err => {
-                console.error(err);
+            const s2 = addic7ed.search(this.state.query, this.state.lang)
+            .then((results => {
+                this.setState((prevState, props) => ({
+                    results: [
+                        ...prevState.results,
+                        ...results.subtitles
+                    ],
+                    loading: false
+                }))
+            }))
+
+            Promise.all([s1, s2])
+            // .then(() => {
+            //     this.setState({
+            //         loading: false
+            //     })
+            // })
+            .catch(error => {
+                console.error(error)
             })
 
         }
