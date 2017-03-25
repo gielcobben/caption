@@ -29,6 +29,9 @@ node_modules
 # OSX
 .DS_Store
 
+# Editor
+.vscode
+
 # App packaged
 dist
 release
