@@ -56,22 +56,35 @@ export default class Home extends Component {
         files.map((file, index) => {
             // Construct multiple sources
             const s1 = opensubtitles.searchFile(file, this.state.lang)
+            const s2 = addic7ed.searchQuery(file, this.state.lang)
 
             // The first source who comes with an results
-            Promise.any([s1])
-            .then(({ subtitles, file, source }) => {
+            Promise.any([s2])
+            .then(({subtitles, source, file}) => {
+
+                // If no results found, set file to status: failed
+                if (!subtitles.length) {
+                    this.setFileStatus(index, 'failed')
+                    return
+                }
+
+                // Switch source for the right download function
                 switch (source) {
                     case 'addic7ed':
                         console.log('Downloading from addic7ed...')
                         return addic7ed.downloadFile(subtitles, file)
                     case 'opensubtitles':
                         console.log('Downloading from opensubtitles...')
-                        return opensubtitles.downloadFile(subtitles, file, () => {
-                            this.setFileStatus(index, 'done');
-                        })
+                        return opensubtitles.downloadFile(subtitles, file)
                     default:
                         throw new Error('No subtitle downloaded.');
                 }
+            })
+            .then(() => {
+                this.setFileStatus(index, 'done')
+            })
+            .catch(error => {
+                console.error(error)
             })
         })
 

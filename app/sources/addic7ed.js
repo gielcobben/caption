@@ -49,9 +49,14 @@ function downloadQuery(item) {
         title: 'Download',
         defaultPath: `${item.title}.srt`
     }, (savePath) => {
-        return Addic7ed.download(item.download, savePath).then(function () {
-            console.log('Subtitles file saved.');
-        })
+        if (savePath) {
+            return Addic7ed.download(item.download, savePath).then(function () {
+                console.log('Subtitles file saved.');
+            })
+        }
+        else {
+            return
+        }
     })
 }
 
