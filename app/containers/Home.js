@@ -59,14 +59,12 @@ export default class Home extends Component {
             const s2 = addic7ed.searchFile(file, this.state.lang)
 
             // The first source who comes with an results
-            Promise.any([s2])
+            Promise.any([s1, s2])
             .then(({subtitles, source, file}) => {
 
-                // If no results found, set file to status: failed
-                if (!subtitles.length > 0) {
-                    this.setFileStatus(index, 'failed')
-                    throw new Error('No Subtitles available')
-                }
+                console.log(subtitles)
+                console.log(source)
+                console.log(file)
 
                 // Switch source for the right download function
                 switch (source) {

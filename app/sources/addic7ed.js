@@ -17,6 +17,14 @@ function searchFile(file, language) {
             const episode = parseInt(splitFileName[2], 10)
 
             Addic7ed.search(serie, season, episode, language)
+            .then(subtitles => {
+                if (!subtitles.length > 0) {
+                    return reject(new Error('No Subtitles found...'))
+                }
+                else {
+                    return subtitles
+                }
+            })
             .then(subtitles => ({
                 subtitles,
                 file,

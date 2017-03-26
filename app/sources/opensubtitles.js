@@ -6,13 +6,22 @@ function searchFile(file, language) {
         OpenSubtitles.api.login()
         .then(token => {
             OpenSubtitles.api.searchForFile(token, language, file.path)
-                .then(subtitles => ({
-                    subtitles,
-                    file,
-                    source: 'opensubtitles',
-                }))
-                .then(resolve)
-                .catch(reject)
+            .then(subtitles => {
+                // If no results found, set file to status: failed
+                if (!subtitles.length > 0) {
+                    return reject(new Error('No Subtitles found...'))
+                }
+                else {
+                    return subtitles
+                }
+            })
+            .then(subtitles => ({
+                subtitles,
+                file,
+                source: 'opensubtitles',
+            }))
+            .then(resolve)
+            .catch(reject)
         })
     })
 }
