@@ -18,6 +18,7 @@ function searchFile(file, language) {
 
             Addic7ed.search(serie, season, episode, language)
             .then(subtitles => {
+                console.log(subtitles)
                 if (!subtitles.length > 0) {
                     return reject(new Error('No Subtitles found...'))
                 }
@@ -32,6 +33,9 @@ function searchFile(file, language) {
             }))
             .then(resolve)
             .catch(reject)
+        }
+        else {
+            return reject(new Error('No Subtitles found...'))
         }
     })
 }
