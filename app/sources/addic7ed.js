@@ -1,7 +1,32 @@
+import fs from 'fs'
+import request from 'request-promise'
 import Addic7ed from 'addic7ed-api'
 import { remote } from 'electron'
+import { ToBuffer } from '../scripts/Utility'
 
 const { dialog } = remote
+const URL = 'http://www.addic7ed.com'
+
+function searchFile(file, language) {
+    return new Promise((resolve, reject) => {
+        const splitFileName = file.name.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i)
+
+        if (splitFileName) {
+            const serie = splitFileName.input
+            const season = parseInt(splitFileName[1], 10)
+            const episode = parseInt(splitFileName[2], 10)
+
+            Addic7ed.search(serie, season, episode, language)
+            .then(subtitles => ({
+                subtitles,
+                file,
+                source: 'addic7ed'
+            }))
+            .then(resolve)
+            .catch(reject)
+        }
+    })
+}
 
 function searchQuery(query, language) {
     return new Promise((resolve, reject) => {
@@ -50,8 +75,8 @@ function downloadQuery(item) {
         defaultPath: `${item.title}.srt`
     }, (savePath) => {
         if (savePath) {
-            return Addic7ed.download(item.download, savePath).then(function () {
-                console.log('Subtitles file saved.');
+            return Addic7ed.download(item.download, savePath).then(() => {
+                console.log('Subtitles file saved.')
             })
         }
         else {
@@ -60,4 +85,12 @@ function downloadQuery(item) {
     })
 }
 
-export default { searchQuery, downloadQuery }
+function downloadFile(subtitle, file, language) {
+    const filePath = file.path
+    const fileName = `${filePath.slice(0, filePath.lastIndexOf('.'))}.srt`
+    return Addic7ed.download(subtitle, fileName).then((response) => {
+        console.log('Subtitles file saved.')
+    })
+}
+
+export default { searchQuery, searchFile, downloadQuery, downloadFile }

@@ -56,23 +56,23 @@ export default class Home extends Component {
         files.map((file, index) => {
             // Construct multiple sources
             const s1 = opensubtitles.searchFile(file, this.state.lang)
-            const s2 = addic7ed.searchQuery(file, this.state.lang)
+            const s2 = addic7ed.searchFile(file, this.state.lang)
 
             // The first source who comes with an results
             Promise.any([s2])
             .then(({subtitles, source, file}) => {
 
                 // If no results found, set file to status: failed
-                if (!subtitles.length) {
+                if (!subtitles.length > 0) {
                     this.setFileStatus(index, 'failed')
-                    return
+                    throw new Error('No Subtitles available')
                 }
 
                 // Switch source for the right download function
                 switch (source) {
                     case 'addic7ed':
                         console.log('Downloading from addic7ed...')
-                        return addic7ed.downloadFile(subtitles, file)
+                        return addic7ed.downloadFile(subtitles[0], file)
                     case 'opensubtitles':
                         console.log('Downloading from opensubtitles...')
                         return opensubtitles.downloadFile(subtitles, file)
@@ -84,45 +84,10 @@ export default class Home extends Component {
                 this.setFileStatus(index, 'done')
             })
             .catch(error => {
+                this.setFileStatus(index, 'failed')
                 console.error(error)
             })
         })
-
-        // OpenSubtitles.api.login().then(token => {
-        //     // Loop trough each dropped file
-        //     files.map((file, index) => {
-
-        //         // Search by file
-        //         OpenSubtitles.api.searchForFile(token, this.state.lang, file.path).then(results => {
-
-        //             if (results.length !== 0) {
-        //                 // If results, get download link and filename
-        //                 const subDownloadLink = results[0].ZipDownloadLink
-        //                 const subFileName = results[0].SubFileName
-
-        //                 // Remove extention from video filename so we can use this as the new subtitle filename
-        //                 const extention = file.name.substr(file.name.lastIndexOf('.') + 1)
-        //                 const newFilename = file.name.replace(`.${extention}`, '')
-
-        //                 // Download
-        //                 DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, () => {
-        //                     this.setFileStatus(index, 'done');
-        //                 })
-        //             }
-        //             else {
-        //                 this.setFileStatus(index, 'failed');
-        //             }
-
-        //         }).catch(error => {
-        //             console.log(error)
-        //         })
-        //     })
-        //     return token
-        // }).then(token => {
-        //      OpenSubtitles.api.logout(token)
-        // }).catch(error => {
-        //     console.log(error)
-        // })
 
     }
 

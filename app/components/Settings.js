@@ -70,6 +70,7 @@ export default class Settings extends Component {
                         <option value='alb'>Albanian</option>
                         <option value='ara'>Arabic</option>
                         <option value='arm'>Armenian</option>
+                        <option value='aze'>Azerbaijani</option>
                         <option value='baq'>Basque</option>
                         <option value='bel'>Belarusian</option>
                         <option value='ben'>Bengali</option>
@@ -88,6 +89,7 @@ export default class Settings extends Component {
                         <option value='eng'>English</option>
                         <option value='epo'>Esperanto</option>
                         <option value='est'>Estonian</option>
+                        <option value='eus'>Euskera</option>
                         <option value='fin'>Finnish</option>
                         <option value='fre'>French</option>
                         <option value='glg'>Galician</option>
