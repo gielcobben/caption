@@ -1,5 +1,5 @@
 import OpenSubtitles from 'subtitler'
-import Promise from 'bluebird';
+import Promise from 'bluebird'
 
 function searchFile(file, language) {
     return new Promise((resolve, reject) => {
