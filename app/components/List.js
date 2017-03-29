@@ -1,8 +1,10 @@
 import "./List.scss"
 import React, {Component} from 'react'
 import ListItem from './ListItem'
-import {remote, shell} from 'electron'
-const {Menu, MenuItem} = remote
+import { remote, shell } from 'electron'
+import { checkExtention, downloadSubtitleFile } from '../scripts/Utility'
+
+const { Menu, MenuItem } = remote
 
 export default class List extends Component {
 
@@ -34,17 +36,19 @@ export default class List extends Component {
         })
 
         // If TextSearch
-        if (item.MovieReleaseName) {
+        if (item.title) {
             // Menu with Download
             Menu.buildFromTemplate([{
                 label: 'Download',
                 click: () => {
-                    window.location.assign(item.ZipDownloadLink)
+                    // window.location.assign(item.ZipDownloadLink)
+                    downloadSubtitleFile(item)
                 }
             }]).popup(remote.getCurrentWindow())
         }
         // Else DroppedFiles
         else {
+
             // FileSearch so open or show the file when doubleclick
             const extention = item.path.substr(item.path.lastIndexOf('.') + 1)
 
