@@ -53,7 +53,7 @@ function searchQuery(query, language) {
                 return processedSubtitles
             })
             .then(subtitles => {
-                console.log(subtitles)
+                // console.log(subtitles)
                 OpenSubtitles.api.logout(token)
                 return subtitles
             })

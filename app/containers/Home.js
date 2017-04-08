@@ -62,9 +62,9 @@ export default class Home extends Component {
             Promise.any([s1, s2])
             .then(({subtitles, source, file}) => {
 
-                console.log(subtitles)
-                console.log(source)
-                console.log(file)
+                // console.log(subtitles)
+                // console.log(source)
+                // console.log(file)
 
                 // Switch source for the right download function
                 switch (source) {

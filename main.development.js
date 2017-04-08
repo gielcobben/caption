@@ -37,8 +37,8 @@ autoUpdater.on('update-not-available', () => {
             type: 'info',
             buttons: ['OK'],
             title: 'Caption',
-            message: `You’re up-to-date!`,
-            detail: `Caption v${pkg.version} is currently the newest version available.`
+            message: `Caption is up to date`,
+            detail: `It looks like you're already rocking the latest version!`
         }
         dialog.showMessageBox(options)
     }
@@ -73,9 +73,9 @@ autoUpdater.on('update-available', () => {
     console.log('update available')
     firstRun = false;
 
-    setInterval(() => {
-        console.log(autoUpdater.status);
-    }, 5000);
+    // setInterval(() => {
+    //     console.log(autoUpdater.status);
+    // }, 5000);
 
 });
 
