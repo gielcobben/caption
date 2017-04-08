@@ -113,6 +113,15 @@ const installExtensions = async () => {
 */
 const createMainWindow = () => {
 
+    let transparent = true
+    let backgroundColor = 'none'
+    const osVersion = os.release().split('.').join('')
+
+    if (osVersion < 1400) {
+        transparent = false
+        backgroundColor = '#474748'
+    }
+
     // Create the windows
     mainWindow = new BrowserWindow({
         center: true,
@@ -122,8 +131,9 @@ const createMainWindow = () => {
         minWidth: 300,
         minHeight: 300,
         vibrancy: 'dark',
-        transparent: true,
-        titleBarStyle: 'hidden-inset'
+        transparent: transparent,
+        titleBarStyle: 'hidden-inset',
+        backgroundColor: backgroundColor
     });
 
     // Set URL
