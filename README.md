@@ -1,8 +1,7 @@
 ![Caption for Mac](https://getcaption.co/cover.jpg)
 
 <p align="center">
-  <img src="http://getcaption.co/icon.png" height="64">
-  <h3 align="center">Caption</h3>
+  <h1 align="center">Caption</h1>
   <p align="center">Find the right subtitles. Easy.<p>
 </p>
 
