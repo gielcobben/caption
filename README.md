@@ -1,10 +1,5 @@
 ![Caption for Mac](https://getcaption.co/cover.jpg)
 
-<p align="center">
-  <h2 align="center">Caption</h2>
-  <p align="center">Find the right subtitles. Easy.<p>
-</p>
-
 ### Get Caption
 
 - **[Download the latest release](http://getcaption.co/)** (macOS only)
