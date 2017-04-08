@@ -4,6 +4,8 @@
   <p align="center">Find the right subtitles. Easy.<p>
 </p>
 
+![](https://getcaption.co/cover.jpg)
+
 ## Get Caption
 
 - **[Download the latest release](http://getcaption.co/)** (macOS only)
