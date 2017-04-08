@@ -162,40 +162,48 @@ const createMainWindow = () => {
 
 app.on('ready', async () => {
 
-    // if (process.env.NODE_ENV !== 'development') {
-    /*
-    * Let's Move
-    */
+    if (process.env.NODE_ENV !== 'development') {
+        /*
+        * Let's Move
+        */
 
-    Storage.has('moveApp', async (error, value) => {
-        if (!value) {
-            try {
-                const moved = await moveToApplications();
-                if (!moved) {
-                    Storage.set('moveApp', false);
-                }
-            }
-            catch (error) {
-                console.log(error);
-            }
-        }
-        else {
-            Storage.get('moveApp', async (error, value) => {
-                if (value) {
-                    try {
-                        const moved = await moveToApplications();
-                    }
-                    catch (error) {
-                        console.log(error);
+        Storage.has('moveApp', async (error, value) => {
+            if (!value) {
+                try {
+                    const moved = await moveToApplications();
+                    if (!moved) {
+                        Storage.set('moveApp', false);
                     }
                 }
-                else {
-                    console.log('user choosed to not move the app!');
+                catch (error) {
+                    console.log(error);
                 }
-            })
-        }
-    })
-    // }
+            }
+            else {
+                Storage.get('moveApp', async (error, value) => {
+                    if (value) {
+                        try {
+                            const moved = await moveToApplications();
+                        }
+                        catch (error) {
+                            console.log(error);
+                        }
+                    }
+                    else {
+                        console.log('user choosed to not move the app!');
+                    }
+                })
+            }
+        });
+    }
+
+    app.setAboutPanelOptions({
+        applicationName: 'Caption',
+        applicationVersion: pkg.version,
+        copyright: 'Made with 💖 by Giel Cobben. \n www.gielcobben.com',
+        credits: `With the invaluable help of: \n OpenSubtitles.org and Addic7ed.com`,
+        version: pkg.version
+    });
 
     await installExtensions();
 
