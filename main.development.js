@@ -4,6 +4,7 @@ import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray} fro
 import {moveToApplications} from 'electron-lets-move';
 import pkg from './package.json'
 import Storage from 'electron-json-storage'
+import windowStateKeeper from 'electron-window-state'
 
 /*
 * Basics
@@ -37,8 +38,8 @@ autoUpdater.on('update-not-available', () => {
             type: 'info',
             buttons: ['OK'],
             title: 'Caption',
-            message: `You’re up-to-date!`,
-            detail: `Caption v${pkg.version} is currently the newest version available.`
+            message: `Caption is up to date`,
+            detail: `It looks like you're already rocking the latest version!`
         }
         dialog.showMessageBox(options)
     }
@@ -73,9 +74,9 @@ autoUpdater.on('update-available', () => {
     console.log('update available')
     firstRun = false;
 
-    setInterval(() => {
-        console.log(autoUpdater.status);
-    }, 5000);
+    // setInterval(() => {
+    //     console.log(autoUpdater.status);
+    // }, 5000);
 
 });
 
@@ -112,19 +113,37 @@ const installExtensions = async () => {
 * Create Main Window
 */
 const createMainWindow = () => {
+    let mainWindowState = windowStateKeeper({
+        defaultWidth: 360,
+        defaultHeight: 440
+    });
+
+    let transparent = true
+    let backgroundColor = 'none'
+    const osVersion = os.release().split('.').join('')
+
+    if (osVersion < 1400) {
+        transparent = false
+        backgroundColor = '#474748'
+    }
 
     // Create the windows
     mainWindow = new BrowserWindow({
-        center: true,
-        show: true,
-        width: 360,
-        height: 440,
+        width: mainWindowState.width,
+        height: mainWindowState.height,
+        x: mainWindowState.x,
+        y: mainWindowState.y,
+        show: false,
         minWidth: 300,
         minHeight: 300,
         vibrancy: 'dark',
-        transparent: true,
-        titleBarStyle: 'hidden-inset'
+        transparent: transparent,
+        titleBarStyle: 'hidden-inset',
+        backgroundColor: backgroundColor
     });
+
+    // Manage window state
+    mainWindowState.manage(mainWindow);
 
     // Set URL
     mainWindow.loadURL(`file://${__dirname}/app/app.html`);
@@ -143,29 +162,34 @@ const createMainWindow = () => {
 
 app.on('ready', async () => {
 
-    if (process.env.NODE_ENV !== 'development') {
+    // if (process.env.NODE_ENV !== 'development') {
         /*
         * Let's Move
         */
         Storage.get('do-not-move', async (doNotMove) => {
 
+            console.log(doNotMove)
+
             if (!doNotMove) {
                 try {
                     const moved = await moveToApplications();
+
                     if (!moved) {
                         // the user asked not to move the app, it's up to the parent application
                         // to store this information and not hassle them again.
-                        Storage.set('do-not-move', true, (error) => {
-                            if (error) throw error
-                        })
+                        Storage.set('do-not-move', true);
                     }
+                    else {
+                        Storage.set('do-not-move', false);
+                    }
+                    
                 } catch (error) {
                     // log error, something went wrong whilst moving the app.
                     console.log(error);
                 }
             }
         });
-    }
+    // }
 
     await installExtensions();
 
