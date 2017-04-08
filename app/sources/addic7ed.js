@@ -36,7 +36,7 @@ export async function searchQuery(query, language) {
   const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i);
 
   if (!splitQuery) {
-    throw new Error('No subtitles found.');
+    return new Error('No subtitles found.');
   }
 
   const serie = query.replace(splitQuery[0], '');
