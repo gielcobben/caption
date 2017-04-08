@@ -1,7 +1,7 @@
 import os from 'os'
 import path from 'path'
-import {app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray} from 'electron';
-import {moveToApplications} from 'electron-lets-move';
+import { app, autoUpdater, BrowserWindow, Menu, shell, ipcMain, dialog, Tray } from 'electron';
+import { moveToApplications } from 'electron-lets-move';
 import pkg from './package.json'
 import Storage from 'electron-json-storage'
 import windowStateKeeper from 'electron-window-state'
@@ -104,7 +104,7 @@ const installExtensions = async () => {
         for (const name of extensions) {
             try {
                 await installer.default(installer[name], forceDownload);
-            } catch (e) {} // eslint-disable-line
+            } catch (e) { } // eslint-disable-line
         }
     }
 };
@@ -163,32 +163,38 @@ const createMainWindow = () => {
 app.on('ready', async () => {
 
     // if (process.env.NODE_ENV !== 'development') {
-        /*
-        * Let's Move
-        */
-        Storage.get('do-not-move', async (doNotMove) => {
+    /*
+    * Let's Move
+    */
 
-            console.log(doNotMove)
-
-            if (!doNotMove) {
-                try {
-                    const moved = await moveToApplications();
-
-                    if (!moved) {
-                        // the user asked not to move the app, it's up to the parent application
-                        // to store this information and not hassle them again.
-                        Storage.set('do-not-move', true);
-                    }
-                    else {
-                        Storage.set('do-not-move', false);
-                    }
-                    
-                } catch (error) {
-                    // log error, something went wrong whilst moving the app.
-                    console.log(error);
+    Storage.has('moveApp', async (error, value) => {
+        if (!value) {
+            try {
+                const moved = await moveToApplications();
+                if (!moved) {
+                    Storage.set('moveApp', false);
                 }
             }
-        });
+            catch (error) {
+                console.log(error);
+            }
+        }
+        else {
+            Storage.get('moveApp', async (error, value) => {
+                if (value) {
+                    try {
+                        const moved = await moveToApplications();
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                }
+                else {
+                    console.log('user choosed to not move the app!');
+                }
+            })
+        }
+    })
     // }
 
     await installExtensions();
