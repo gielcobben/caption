@@ -1,6 +1,7 @@
 import './Settings.scss'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ResetButton from './ResetButton'
+import Loading from './Loading'
 
 export default class Settings extends Component {
 
@@ -33,7 +34,7 @@ export default class Settings extends Component {
     render() {
         // Variables
         let info
-        const {selectedLanguage, results, files, resetList} = this.props
+        const { selectedLanguage, results, files, resetList, searching } = this.props
         const filesDone = files.filter(this.countStatus).length
         const filesLength = files.length
 
@@ -43,7 +44,7 @@ export default class Settings extends Component {
                 <div className="info">
                     <span>
                         <label>Results: </label>
-                        {results.length}
+                        {searching ? <Loading /> : results.length}
                     </span>
                 </div>
             )
@@ -56,7 +57,7 @@ export default class Settings extends Component {
                         <label>Results: </label>
                         {filesDone} / {files.length}
                     </span>
-                </div> 
+                </div>
             )
         }
 

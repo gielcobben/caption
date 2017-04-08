@@ -36,6 +36,10 @@ export default validate({
     externals: [
         // put your node 3rd party libraries which can't be built with webpack here
         // (mysql, mongodb, and so on..)
-        'subtitler'
+        'subtitler',
+        'addic7ed-api',
+        'request',
+        'request-promise',
+        'bluebird'
     ]
 });

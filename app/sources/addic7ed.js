@@ -18,22 +18,23 @@ function searchFile(rawFile, language) {
             const episode = parseInt(splitFileName[2], 10)
 
             Addic7ed.search(serie, season, episode, language)
-            .then(subtitles => {
-                // console.log(subtitles)
-                if (!subtitles.length > 0) {
-                    return reject(new Error('No Subtitles found...'))
-                }
-                else {
-                    return subtitles
-                }
-            })
-            .then(subtitles => ({
-                subtitles,
-                file,
-                source: 'addic7ed'
-            }))
-            .then(resolve)
-            .catch(reject)
+                .then(subtitles => {
+                    console.log(`Addic7ed found ${subtitles.length} subtitles.`);
+                    // console.log(subtitles)
+                    if (!subtitles.length > 0) {
+                        return reject(new Error('No Subtitles found...'))
+                    }
+                    else {
+                        return subtitles
+                    }
+                })
+                .then(subtitles => ({
+                    subtitles,
+                    file,
+                    source: 'addic7ed'
+                }))
+                .then(resolve)
+                .catch(reject)
         }
         else {
             return reject(new Error('No Subtitles found...'))
@@ -43,35 +44,36 @@ function searchFile(rawFile, language) {
 
 function searchQuery(query, language) {
     return new Promise((resolve, reject) => {
-        
+
         const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i)
-        
+
         if (splitQuery) {
             const serie = query.replace(splitQuery[0], '')
             const season = parseInt(splitQuery[1], 10)
             const episode = parseInt(splitQuery[2], 10)
 
             Addic7ed.search(serie, season, episode, language)
-            .then(subtitleList => {
-                const subtitles = []
-                subtitleList.map(subtitle => {
-                    subtitles.push({
-                        title: `${query}.${subtitle.distribution}.${subtitle.team}`,
-                        download: subtitle,
-                        extention: '',
-                        source: 'addic7ed',
-                        size: ''
+                .then(subtitleList => {
+                    console.log(`Addic7ed found ${subtitleList.length} subtitles.`);
+                    const subtitles = []
+                    subtitleList.map(subtitle => {
+                        subtitles.push({
+                            title: `${query}.${subtitle.distribution}.${subtitle.team}`,
+                            download: subtitle,
+                            extention: '',
+                            source: 'addic7ed',
+                            size: ''
+                        })
                     })
+                    // console.log(subtitles)
+                    return subtitles
                 })
-                // console.log(subtitles)
-                return subtitles
-            })
-            .then(subtitles => ({
-                subtitles,
-                source: 'addic7ed'
-            }))
-            .then(resolve)
-            .catch(reject)
+                .then(subtitles => ({
+                    subtitles,
+                    source: 'addic7ed'
+                }))
+                .then(resolve)
+                .catch(reject)
         }
         else {
             throw new Error('No subtitles found.');

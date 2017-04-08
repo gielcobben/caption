@@ -31,6 +31,23 @@
 
     .info {
         text-align: right;
+
+        span {
+            display: flex;
+            float: right;
+        }
+
+        .loading {
+            display: block;
+            width: 20px;
+            height: 10px;
+            margin: 0 0 0 3px;
+
+            svg {
+                width: 100%;
+                fill: black;
+            }
+        }
     }
 
     .reset-button {

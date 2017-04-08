@@ -1,7 +1,7 @@
 import './Home.scss'
 import path from 'path'
 import OpenSubtitles from 'subtitler'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Promise from 'bluebird';
 import Storage from 'electron-json-storage'
 import List from '../components/List'
@@ -10,7 +10,7 @@ import Dropzone from '../components/Dropzone'
 import Settings from '../components/Settings'
 import EmptyList from '../components/EmptyList'
 import SearchField from '../components/SearchField'
-import {CheckFiles, ToBuffer, DownloadSubtitles} from '../scripts/Utility'
+import { CheckFiles, ToBuffer, DownloadSubtitles } from '../scripts/Utility'
 import { opensubtitles, addic7ed } from '../sources'
 
 export default class Home extends Component {
@@ -24,6 +24,7 @@ export default class Home extends Component {
             results: [],
             loading: false,
             dragging: false,
+            searching: false,
             dropzoneText: 'Drop an episode or season…'
         }
         this.onDrop = this.onDrop.bind(this)
@@ -60,31 +61,31 @@ export default class Home extends Component {
 
             // The first source who comes with an results
             Promise.any([s1, s2])
-            .then(({subtitles, source, file}) => {
+                .then(({ subtitles, source, file }) => {
 
-                // console.log(subtitles)
-                // console.log(source)
-                // console.log(file)
+                    // console.log(subtitles)
+                    // console.log(source)
+                    // console.log(file)
 
-                // Switch source for the right download function
-                switch (source) {
-                    case 'addic7ed':
-                        console.log('Downloading from addic7ed...')
-                        return addic7ed.downloadFile(subtitles[0], file)
-                    case 'opensubtitles':
-                        console.log('Downloading from opensubtitles...')
-                        return opensubtitles.downloadFile(subtitles, file)
-                    default:
-                        throw new Error('No subtitle downloaded.');
-                }
-            })
-            .then(() => {
-                this.setFileStatus(index, 'done')
-            })
-            .catch(error => {
-                this.setFileStatus(index, 'failed')
-                console.error(error)
-            })
+                    // Switch source for the right download function
+                    switch (source) {
+                        case 'addic7ed':
+                            console.log('Downloading from addic7ed...')
+                            return addic7ed.downloadFile(subtitles[0], file)
+                        case 'opensubtitles':
+                            console.log('Downloading from opensubtitles...')
+                            return opensubtitles.downloadFile(subtitles, file)
+                        default:
+                            throw new Error('No subtitle downloaded.');
+                    }
+                })
+                .then(() => {
+                    this.setFileStatus(index, 'done')
+                })
+                .catch(error => {
+                    this.setFileStatus(index, 'failed')
+                    console.error(error)
+                })
         })
 
     }
@@ -102,41 +103,45 @@ export default class Home extends Component {
             // Enable loading
             this.setState({
                 loading: true,
+                searching: true,
                 results: []
             })
 
             // Construct multiple sources
             const s1 = opensubtitles.searchQuery(this.state.query, this.state.lang)
-            .then((results => {
-                this.setState((prevState, props) => ({
-                    results: [
-                        ...prevState.results,
-                        ...results.subtitles
-                    ],
-                    loading: false
+                .then((results => {
+                    this.setState((prevState, props) => ({
+                        results: [
+                            ...prevState.results,
+                            ...results.subtitles
+                        ],
+                        loading: false
+                    }))
                 }))
-            }))
 
             const s2 = addic7ed.searchQuery(this.state.query, this.state.lang)
-            .then((results => {
-                this.setState((prevState, props) => ({
-                    results: [
-                        ...prevState.results,
-                        ...results.subtitles
-                    ],
-                    loading: false
+                .then((results => {
+                    this.setState((prevState, props) => ({
+                        results: [
+                            ...prevState.results,
+                            ...results.subtitles
+                        ],
+                        loading: false
+                    }))
                 }))
-            }))
 
             Promise.all([s1, s2])
-            // .then(() => {
-            //     this.setState({
-            //         loading: false
-            //     })
-            // })
-            .catch(error => {
-                console.error(error)
-            })
+                .then(() => {
+                    this.setState({
+                        searching: false
+                    })
+                })
+                .catch(error => {
+                    this.setState({
+                        searching: false
+                    })
+                    console.error(error)
+                })
 
         }
     }
@@ -298,7 +303,7 @@ export default class Home extends Component {
         // Construct circle icon
         const circle = (
             <svg x="0px" y="0px" width="25px" height="25px" viewBox="0 0 25 25">
-                <circle cx="12.5" cy="12.5" r="12.5"/>
+                <circle cx="12.5" cy="12.5" r="12.5" />
             </svg>
         )
 
@@ -345,6 +350,7 @@ export default class Home extends Component {
                     results={this.state.results}
                     files={this.state.files}
                     resetList={this.resetList}
+                    searching={this.state.searching}
                 />
                 <section className={`content-wrapper`}>
                     {content}

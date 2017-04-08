@@ -36,7 +36,7 @@ const depsExternal = Object
 
 
 const appName = argv.name || argv.n || pkg.productName;
-const shouldUseAsar = argv.asar || argv.a || true;
+const shouldUseAsar = argv.asar || argv.a || false;
 const shouldBuildAll = argv.all || false;
 
 
@@ -49,8 +49,8 @@ const DEFAULT_OPTS = {
     '^/release($|/)',
     '^/main.development.js'
   ]
-  .concat(devDeps)
-  .concat(depsExternal)
+    .concat(devDeps)
+    .concat(depsExternal)
 };
 
 const icon = argv.icon || argv.i || 'app/app';
