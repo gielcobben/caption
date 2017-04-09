@@ -2,7 +2,7 @@
 
 ### Get Caption
 
-- **[Download the latest release](http://getcaption.co/)** (macOS only)
+- **[Download the latest release](https://github.com/gielcobben/Caption/releases/latest)** (macOS only)
 - [Getcaption.co](https://getcaption.co/)
 
 ### Contribute
