@@ -1,7 +1,7 @@
 {
   "name": "caption",
   "productName": "Caption",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Find the right subtitles. Easy.",
   "main": "main.js",
   "scripts": {
@@ -15,12 +15,13 @@
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env NODE_ENV=production electron ./",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./main.development",
-    "package": "npm run build && cross-env NODE_ENV=production node -r babel-register -r babel-polyfill package.js",
+    "package": "npm run build && cross-env NODE_ENV=production node -r babel-register -r babel-polyfill package.js && npm run sign && npm run create-dmg",
     "package-all": "npm run package -- --all",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
     "cleanup": "mop -v",
-    "sign": "electron-osx-sign ./release/darwin-x64/Caption-darwin-x64/Caption.app"
+    "sign": "electron-osx-sign ./release/darwin-x64/Caption-darwin-x64/Caption.app",
+    "create-dmg": "create-dmg ./release/darwin-x64/Caption-darwin-x64/Caption.app"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -121,8 +122,8 @@
     "npm": "^3.10.9",
     "opensubtitles-api": "^4.0.0-rc1",
     "postcss": "^5.2.4",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.5.0",
+    "react-dom": "^15.5.0",
     "react-router": "^2.8.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
