@@ -1,80 +1,54 @@
 import OpenSubtitles from 'subtitler'
-import Promise from 'bluebird'
 
-function searchFile(file, language) {
-    return new Promise((resolve, reject) => {
-        OpenSubtitles.api.login()
-            .then(token => {
-                OpenSubtitles.api.searchForFile(token, language, file.path)
-                    .then(subtitles => {
-                        console.log(`Opensubtitles found ${subtitles.length} subtitles.`);
-                        // If no results found, set file to status: failed
-                        if (!subtitles.length > 0) {
-                            return reject(new Error('No Subtitles found...'))
-                        }
-                        else {
-                            return subtitles
-                        }
-                    })
-                    .then(subtitles => ({
-                        subtitles,
-                        file,
-                        source: 'opensubtitles',
-                    }))
-                    .then(resolve)
-                    .catch(reject)
-            })
-    })
+export async function searchFile(file, language) {
+    const token = await OpenSubtitles.api.login()
+    const subtitles = await OpenSubtitles.api.searchForFile(token, language, file.path)
+
+    if (!subtitles.length > 0) {
+        throw new Error('No subtitles found.');
+    }
+
+    console.log(`Opensubtitles found ${subtitles.length} subtitles.`);
+
+    const logout = await OpenSubtitles.api.logout(token)
+
+    return {
+        subtitles,
+        file,
+        source: 'opensubtitles'
+    }
 }
 
-function searchQuery(query, language) {
-    return new Promise((resolve, reject) => {
-        OpenSubtitles.api.login()
-            .then(token => {
-                OpenSubtitles.api.search(token, language, {
-                    query: query
-                })
-                    .then(subtitles => {
-                        console.log(`Opensubtitles found ${subtitles.length} subtitles.`);
-                        if (!subtitles.length) {
-                            reject('No results')
-                        }
-                        return subtitles
-                    })
-                    .then(subtitles => {
-                        const processedSubtitles = []
-                        subtitles.map(subtitle => {
-                            processedSubtitles.push({
-                                title: subtitle.MovieReleaseName,
-                                download: subtitle.ZipDownloadLink,
-                                source: 'opensubtitles',
-                                extention: '',
-                                size: ''
-                            })
-                        })
-                        return processedSubtitles
-                    })
-                    .then(subtitles => {
-                        // console.log(subtitles)
-                        OpenSubtitles.api.logout(token)
-                        return subtitles
-                    })
-                    .then(subtitles => ({
-                        subtitles,
-                        source: 'opensubtitles',
-                    }))
-                    .then(resolve)
-                    .catch(reject)
-            })
-    })
+export async function searchQuery(query, language) {
+    const token = await OpenSubtitles.api.login()
+    const rawSubtitles = await OpenSubtitles.api.search(token, language, { query: query })
+
+    console.log(`Opensubtitles found ${rawSubtitles.length} subtitles.`);
+
+    const subtitles = []
+
+    for (const subtitle of rawSubtitles) {
+        subtitles.push({
+            title: subtitle.MovieReleaseName,
+            download: subtitle.ZipDownloadLink,
+            source: 'opensubtitles',
+            extention: '',
+            size: ''
+        });
+    }
+
+    const logout = await OpenSubtitles.api.logout(token)
+
+    return {
+        subtitles,
+        source: 'opensubtitles',
+    }
 }
 
-function downloadFile(subtitles, file) {
-    OpenSubtitles.downloader.download(subtitles, 1, file.path, null)
+export async function downloadFile(subtitle, file) {
+    await OpenSubtitles.downloader.download(subtitle, 1, file.path, null)
 }
 
-function downloadQuery(item) {
+export function downloadQuery(item) {
     return window.location.assign(item.download)
 }
-
-export default { searchQuery, searchFile, downloadQuery, downloadFile }
