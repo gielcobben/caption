@@ -21,7 +21,7 @@ export async function searchFile(rawFile, language) {
   // console.log(`Addic7ed found ${subtitles.length} subtitles.`);
   // console.log(subtitles)
 
-  if (!subtitles.length > 0) {
+  if (!subtitles.length >= 0) {
     return new Error('No Subtitles found...');
   }
 
