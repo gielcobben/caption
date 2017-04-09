@@ -1,111 +1,94 @@
-import fs from 'fs'
-import request from 'request-promise'
-import Addic7ed from 'addic7ed-api'
-import { remote } from 'electron'
-import { ToBuffer, checkExtention } from '../scripts/Utility'
+import Addic7ed from 'addic7ed-api';
+import { remote } from 'electron';
+import { checkExtention } from '../scripts/Utility';
 
-const { dialog } = remote
-const URL = 'http://www.addic7ed.com'
+const { dialog } = remote;
 
-function searchFile(rawFile, language) {
-    const file = checkExtention(rawFile)
-    return new Promise((resolve, reject) => {
-        const splitFileName = file.name.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i)
+export async function searchFile(rawFile, language) {
+  const file = checkExtention(rawFile);
+  const splitFileName = file.name.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i);
 
-        if (splitFileName) {
-            const serie = splitFileName.input
-            const season = parseInt(splitFileName[1], 10)
-            const episode = parseInt(splitFileName[2], 10)
+  if (!splitFileName) {
+    return new Error('No Subtitles found...');
+  }
 
-            Addic7ed.search(serie, season, episode, language)
-                .then(subtitles => {
-                    console.log(`Addic7ed found ${subtitles.length} subtitles.`);
-                    // console.log(subtitles)
-                    if (!subtitles.length > 0) {
-                        return reject(new Error('No Subtitles found...'))
-                    }
-                    else {
-                        return subtitles
-                    }
-                })
-                .then(subtitles => ({
-                    subtitles,
-                    file,
-                    source: 'addic7ed'
-                }))
-                .then(resolve)
-                .catch(reject)
-        }
-        else {
-            return reject(new Error('No Subtitles found...'))
-        }
-    })
+  const serie = splitFileName.input;
+  const season = parseInt(splitFileName[1], 10);
+  const episode = parseInt(splitFileName[2], 10);
+
+  const subtitles = await Addic7ed.search(serie, season, episode, language);
+
+  // console.log(`Addic7ed found ${subtitles.length} subtitles.`);
+  // console.log(subtitles)
+
+  if (!subtitles.length > 0) {
+    return new Error('No Subtitles found...');
+  }
+
+  return {
+    subtitles,
+    file,
+    source: 'addic7ed'
+  };
 }
 
-function searchQuery(query, language) {
-    return new Promise((resolve, reject) => {
+export async function searchQuery(query, language) {
+  const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i);
 
-        const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i)
+  if (!splitQuery) {
+    return new Error('No subtitles found.');
+  }
 
-        if (splitQuery) {
-            const serie = query.replace(splitQuery[0], '')
-            const season = parseInt(splitQuery[1], 10)
-            const episode = parseInt(splitQuery[2], 10)
+  const serie = query.replace(splitQuery[0], '');
+  const season = parseInt(splitQuery[1], 10);
+  const episode = parseInt(splitQuery[2], 10);
 
-            Addic7ed.search(serie, season, episode, language)
-                .then(subtitleList => {
-                    console.log(`Addic7ed found ${subtitleList.length} subtitles.`);
-                    const subtitles = []
-                    subtitleList.map(subtitle => {
-                        subtitles.push({
-                            title: `${query}.${subtitle.distribution}.${subtitle.team}`,
-                            download: subtitle,
-                            extention: '',
-                            source: 'addic7ed',
-                            size: ''
-                        })
-                    })
-                    // console.log(subtitles)
-                    return subtitles
-                })
-                .then(subtitles => ({
-                    subtitles,
-                    source: 'addic7ed'
-                }))
-                .then(resolve)
-                .catch(reject)
-        }
-        else {
-            throw new Error('No subtitles found.');
-        }
+  const list = await Addic7ed.search(serie, season, episode, language);
 
-    })
+  // console.log(`Addic7ed found ${subtitleList.length} subtitles.`);
 
+  const subtitles = [];
+
+  for (const subtitle of list) {
+    subtitles.push({
+      title: `${query}.${subtitle.distribution}.${subtitle.team}`,
+      download: subtitle,
+      extention: '',
+      source: 'addic7ed',
+      size: ''
+    });
+  }
+
+  return {
+    subtitles,
+    source: 'addic7ed'
+  };
 }
 
-function downloadQuery(item) {
-    const currentWindow = remote.getCurrentWindow()
+export async function downloadQuery(item) {
+  const currentWindow = remote.getCurrentWindow();
+
+  const path = await new Promise((resolve) => {
     dialog.showSaveDialog(currentWindow, {
-        title: 'Download',
-        defaultPath: `${item.title}.srt`
-    }, (savePath) => {
-        if (savePath) {
-            return Addic7ed.download(item.download, savePath).then(() => {
-                console.log('Subtitles file saved.')
-            })
-        }
-        else {
-            return
-        }
-    })
+      title: 'Download',
+      defaultPath: `${item.title}.srt`
+    }, resolve);
+  });
+
+  if (!path) {
+    return;
+  }
+
+  await Addic7ed.download(item.download, path);
+
+  // console.log('Subtitles file saved.');
 }
 
-function downloadFile(subtitle, file, language) {
-    const filePath = file.path
-    const fileName = `${filePath.slice(0, filePath.lastIndexOf('.'))}.srt`
-    return Addic7ed.download(subtitle, fileName).then((response) => {
-        console.log('Subtitles file saved.')
-    })
-}
+export async function downloadFile(subtitle, file) {
+  const filePath = file.path;
+  const fileName = `${filePath.slice(0, filePath.lastIndexOf('.'))}.srt`;
 
-export default { searchQuery, searchFile, downloadQuery, downloadFile }
+  await Addic7ed.download(subtitle, fileName);
+
+  // console.log('Subtitles file saved.');
+}

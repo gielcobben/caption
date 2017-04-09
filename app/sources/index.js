@@ -1,5 +1,5 @@
 import opensubtitles from './opensubtitles'
-import addic7ed from './addic7ed'
+import * as addic7ed from './addic7ed'
 
 export {
     opensubtitles,
