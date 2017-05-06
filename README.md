@@ -2,7 +2,7 @@
 
 ### Get Caption
 
-- **[Download the latest release](http://getcaption.co/)** (macOS only)
+- **[Download the latest release](http://getcaption.co/)** (macOS only) ![DownloadCount](https://img.shields.io/github/downloads/gielcobben/Caption/total.svg)
 - [Getcaption.co](https://getcaption.co/)
 
 ### Contribute
