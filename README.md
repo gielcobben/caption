@@ -27,3 +27,5 @@ After that, you'll see the binary in the `./release` folder :smile:
 
 - [Rick Wong](https://github.com/RickWong)
 - [Lennard van Gunst](https://github.com/lvgunst)
+- [Matthijs Dabroek](https://github.com/dabroek)
+- [Jeroen Rinzema](https://github.com/jeroenrinzema)
