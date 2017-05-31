@@ -39,6 +39,7 @@ export default class Home extends Component {
     this.onLanguageChange = this.onLanguageChange.bind(this);
     this.showNothingFoundDialog = this.showNothingFoundDialog.bind(this);
     this.disableNothingFoundDialog = this.disableNothingFoundDialog.bind(this);
+    this.dialogCallback = this.dialogCallback.bind(this);
   }
 
   setFileStatus(index, status) {
@@ -53,36 +54,36 @@ export default class Home extends Component {
     }
   }
 
+  dialogCallback(response, checkboxChecked) {
+    console.log(response);
+
+    if (response === 0) {
+      this.setState(
+        {
+          lang: "eng"
+        },
+        () => {
+          this.searchForTitle();
+        }
+      );
+    }
+
+    if (checkboxChecked) {
+      this.disableNothingFoundDialog();
+    }
+  }
+
   showNothingFoundDialog() {
     const dialog = remote.dialog;
     const options = {
       type: "question",
       buttons: ["OK", "Cancel"],
+      message: "No results found, try English?",
       checkboxLabel: "Do not show this message again.",
-      checkboxChecked: false,
-      message: `No subs in your chosen language.`,
-      detail: `Sorry, no subs for ${this.state.query}. in your language. Would you like to try English?`
+      detail: `Sorry, we didn’t find any [${this.state.lang}] subtitles matching your file. Would you like to try searching for English subtitles?`
     };
 
-    dialog.showMessageBox(options, (response, checkboxChecked) => {
-      // Disable nothing found dialog
-      if (checkboxChecked) {
-        this.disableNothingFoundDialog();
-      }
-
-      // if buttons "OK" is clicked
-      if (response === 0) {
-        // Set language to english and search again.
-        this.setState(
-          {
-            lang: "eng"
-          },
-          () => {
-            this.searchForTitle();
-          }
-        );
-      }
-    });
+    dialog.showMessageBox(options, this.dialogCallback);
   }
 
   disableNothingFoundDialog() {
