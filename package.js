@@ -39,7 +39,7 @@ const DEFAULT_OPTS = {
   dir: "./",
   name: appName,
   asar: shouldUseAsar,
-  ignore: ["^/test($|/)", "^/release($|/)", "^/main.development.js"]
+  ignore: ["^/test($|/)", "^/release($|/)", "^/main.development.js", "./*.dmg"]
     .concat(devDeps)
     .concat(depsExternal)
 };

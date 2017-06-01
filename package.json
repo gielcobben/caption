@@ -21,7 +21,7 @@
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
     "cleanup": "mop -v",
     "sign": "electron-osx-sign ./release/darwin-x64/Caption-darwin-x64/Caption.app",
-    "create-dmg": "create-dmg ./release/darwin-x64/Caption-darwin-x64/Caption.app"
+    "create-dmg": "rm -rf ./*.dmg && create-dmg ./release/darwin-x64/Caption-darwin-x64/Caption.app"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
