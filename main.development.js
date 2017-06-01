@@ -21,6 +21,7 @@ import windowStateKeeper from "electron-window-state";
 let menu;
 let mainWindow = null;
 let settingsWindow = null;
+let nothingFoundWindowValue;
 
 if (process.env.NODE_ENV === "development") {
   require("electron-debug")();
@@ -196,6 +197,17 @@ app.on("ready", async () => {
           } else {
             console.log("user choosed to not move the app!");
           }
+        });
+      }
+    });
+
+    // Set default property for nothing-found-window
+    Storage.has("noting-found-window", (error, hasKey) => {
+      if (error) throw error;
+      if (!hasKey) {
+        Storage.set("noting-found-window", true, error => {
+          if (error) throw error;
+          nothingFoundWindowValue = true;
         });
       }
     });
@@ -383,6 +395,27 @@ app.on("ready", async () => {
               click() {
                 mainWindow.setFullScreen(!mainWindow.isFullScreen());
               }
+            },
+            {
+              label: "Show nothing found window",
+              type: "checkbox",
+              checked: nothingFoundWindowValue,
+              click: () => {
+                if (nothingFoundWindowValue) {
+                  nothingFoundWindowValue = false;
+
+                  Storage.set("noting-found-window", false, error => {
+                    if (error) throw error;
+                  });
+                } else {
+                  nothingFoundWindowValue = true;
+
+                  Storage.set("noting-found-window", true, error => {
+                    if (error) throw error;
+                  });
+                }
+                console.log("toggle nothing found window");
+              }
             }
           ]
         : [
@@ -391,6 +424,27 @@ app.on("ready", async () => {
               accelerator: "Ctrl+Command+F",
               click() {
                 mainWindow.setFullScreen(!mainWindow.isFullScreen());
+              }
+            },
+            {
+              label: "Show nothing found window",
+              type: "checkbox",
+              checked: nothingFoundWindowValue,
+              click: () => {
+                if (nothingFoundWindowValue) {
+                  nothingFoundWindowValue = false;
+
+                  Storage.set("noting-found-window", false, error => {
+                    if (error) throw error;
+                  });
+                } else {
+                  nothingFoundWindowValue = true;
+
+                  Storage.set("noting-found-window", true, error => {
+                    if (error) throw error;
+                  });
+                }
+                console.log("toggle nothing found window");
               }
             }
           ]

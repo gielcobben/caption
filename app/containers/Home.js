@@ -25,6 +25,7 @@ export default class Home extends Component {
       loading: false,
       dragging: false,
       searching: false,
+      searched: false,
       dropzoneText: "Drop an episode or season…"
     };
     this.onDrop = this.onDrop.bind(this);
@@ -55,8 +56,7 @@ export default class Home extends Component {
   }
 
   dialogCallback(response, checkboxChecked) {
-    console.log(response);
-
+    // If OK is clicked, search in English
     if (response === 0) {
       this.setState(
         {
@@ -68,6 +68,7 @@ export default class Home extends Component {
       );
     }
 
+    // If checkbox checked, don't show the dialog anymore.
     if (checkboxChecked) {
       this.disableNothingFoundDialog();
     }
@@ -141,6 +142,7 @@ export default class Home extends Component {
       this.setState({
         loading: true,
         searching: true,
+        searched: true,
         results: []
       });
 
@@ -169,23 +171,31 @@ export default class Home extends Component {
           }));
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
           this.setState({
             loading: false
           });
         });
 
       Promise.all([s1, s2])
-        //   Promise.all([s2])
         .then(() => {
           this.setState({
             searching: false
           });
         })
         .then(() => {
-          if (this.state.results.length === 0 && this.state.lang !== "eng") {
-            this.showNothingFoundDialog();
-          }
+          Storage.get("noting-found-window", (error, data) => {
+            if (error) throw error;
+
+            if (data) {
+              if (
+                this.state.results.length === 0 &&
+                this.state.lang !== "eng"
+              ) {
+                this.showNothingFoundDialog();
+              }
+            }
+          });
         })
         .catch(error => {
           console.error(error);
@@ -317,7 +327,8 @@ export default class Home extends Component {
       files: [],
       query: "",
       results: [],
-      loading: false
+      loading: false,
+      searched: false
     });
   }
 
@@ -422,6 +433,7 @@ export default class Home extends Component {
           files={this.state.files}
           resetList={this.resetList}
           searching={this.state.searching}
+          searched={this.state.searched}
         />
         <section className={`content-wrapper`}>
           {content}
