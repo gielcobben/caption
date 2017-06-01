@@ -479,27 +479,25 @@ app.on("ready", async () => {
         {
           label: "Learn More",
           click() {
-            shell.openExternal("http://electron.atom.io");
+            shell.openExternal("https://getcaption.co/");
           }
         },
         {
-          label: "Documentation",
+          label: "Support",
           click() {
-            shell.openExternal(
-              "https://github.com/atom/electron/tree/master/docs#readme"
-            );
+            shell.openExternal("https://twitter.com/gielcobben");
           }
         },
         {
-          label: "Community Discussions",
+          label: "Report Issue",
           click() {
-            shell.openExternal("https://discuss.atom.io/c/electron");
+            shell.openExternal("https://github.com/gielcobben/Caption/issues");
           }
         },
         {
           label: "Search Issues",
           click() {
-            shell.openExternal("https://github.com/atom/electron/issues");
+            shell.openExternal("https://github.com/gielcobben/Caption/issues");
           }
         }
       ]

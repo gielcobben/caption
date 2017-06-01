@@ -1,201 +1,273 @@
 /*
  * Imports
  */
-import fs from 'fs'
-import AdmZip from 'adm-zip'
-import Junk from 'junk'
-import { opensubtitles, addic7ed } from '../sources'
+import fs from "fs";
+import AdmZip from "adm-zip";
+import Junk from "junk";
+import { opensubtitles, addic7ed } from "../sources";
 
-const EXTENTIONS = ['3g2', '3gp', '3gp2', '3gpp', '60d', 'ajp', 'asf', 'asx', 'avchd', 'avi', 'bik', 'bix', 'box', 'cam', 'dat', 'divx', 'dmf', 'dv', 'dvr-ms', 'evo', 'flc', 'fli', 'flic', 'flv', 'flx', 'gvi', 'gvp', 'h264', 'm1v', 'm2p', 'm2ts', 'm2v', 'm4e', 'm4v', 'mjp', 'mjpeg', 'mjpg', 'mkv', 'moov', 'mov', 'movhd', 'movie', 'movx', 'mp4', 'mpe', 'mpeg', 'mpg', 'mpv', 'mpv2', 'mxf', 'nsv', 'nut', 'ogg', 'ogm', 'omf', 'ps', 'qt', 'ram', 'rm', 'rmvb', 'swf', 'ts', 'vfw', 'vid', 'video', 'viv', 'vivo', 'vob', 'vro', 'wm', 'wmv', 'wmx', 'wrap', 'wvx', 'wx', 'x264', 'xvid']
+const EXTENTIONS = [
+  "3g2",
+  "3gp",
+  "3gp2",
+  "3gpp",
+  "60d",
+  "ajp",
+  "asf",
+  "asx",
+  "avchd",
+  "avi",
+  "bik",
+  "bix",
+  "box",
+  "cam",
+  "dat",
+  "divx",
+  "dmf",
+  "dv",
+  "dvr-ms",
+  "evo",
+  "flc",
+  "fli",
+  "flic",
+  "flv",
+  "flx",
+  "gvi",
+  "gvp",
+  "h264",
+  "m1v",
+  "m2p",
+  "m2ts",
+  "m2v",
+  "m4e",
+  "m4v",
+  "mjp",
+  "mjpeg",
+  "mjpg",
+  "mkv",
+  "moov",
+  "mov",
+  "movhd",
+  "movie",
+  "movx",
+  "mp4",
+  "mpe",
+  "mpeg",
+  "mpg",
+  "mpv",
+  "mpv2",
+  "mxf",
+  "nsv",
+  "nut",
+  "ogg",
+  "ogm",
+  "omf",
+  "ps",
+  "qt",
+  "ram",
+  "rm",
+  "rmvb",
+  "swf",
+  "ts",
+  "vfw",
+  "vid",
+  "video",
+  "viv",
+  "vivo",
+  "vob",
+  "vro",
+  "wm",
+  "wmv",
+  "wmx",
+  "wrap",
+  "wvx",
+  "wx",
+  "x264",
+  "xvid"
+];
 
 function checkExtention(file) {
-    const extention = file.extention
+  const extention = file.extention;
 
-    if (EXTENTIONS.indexOf(extention) > -1) {
-        return file
-    }
-    else {
-        return false
-    }
-
+  if (EXTENTIONS.indexOf(extention) > -1) {
+    return file;
+  } else {
+    return false;
+  }
 }
 
 /*
  * Process Files
  */
 const CheckFiles = (filesDropped, callback) => {
+  const files = [];
+  let isDirectory;
 
-    const files = []
-    let isDirectory
+  // Loop trough each dropped file
+  for (let i = 0; i < filesDropped.length; i++) {
+    const file = filesDropped[i];
 
-    // Loop trough each dropped file
-    for (let i = 0; i < filesDropped.length; i++) {
+    // Check if path exists
+    if (fs.existsSync(file.path)) {
+      // Check if it's a directory
+      const stats = fs.statSync(file.path);
+      isDirectory = stats.isDirectory();
 
-        const file = filesDropped[i]
+      // It's a directory
+      if (isDirectory) {
+        fs.readdirSync(file.path).map(fileInDirectory => {
+          // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
+          const fileName = fileInDirectory;
+          const filePath = `${file.path}/${fileInDirectory}`;
+          const fileInDirectoryStats = fs.statSync(filePath);
+          const fileSize = fileInDirectoryStats.size;
+          const fileExtention = fileName.substr(fileName.lastIndexOf(".") + 1);
 
-        // Check if path exists
-        if (fs.existsSync(file.path)) {
+          if (Junk.is(fileInDirectory)) {
+            // Check if file is junk (Think on files like DS_Store ect..)
+            return false;
+          } else {
+            // Map and push the file object in array
+            const fileObject = {
+              extention: fileExtention,
+              size: fileSize,
+              name: fileName,
+              path: filePath,
+              status: "loading"
+            };
 
-            // Check if it's a directory
-            const stats = fs.statSync(file.path)
-            isDirectory = stats.isDirectory()
+            // Push
+            files.push(fileObject);
+          }
+        });
+      } else {
+        // It's a file
+        // Get extention for file name
+        const fileExtention = file.name.substr(file.name.lastIndexOf(".") + 1);
 
-            // It's a directory
-            if (isDirectory) {
-                fs.readdirSync(file.path).map(fileInDirectory => {
-                    
-                    // Get stats for each file in directory so we can add the size of the file in the object instead of the size of the folder.
-                    const fileName = fileInDirectory
-                    const filePath = `${file.path}/${fileInDirectory}`
-                    const fileInDirectoryStats = fs.statSync(filePath)
-                    const fileSize = fileInDirectoryStats.size
-                    const fileExtention = fileName.substr(fileName.lastIndexOf('.') + 1)
+        // If file is just a file, push the file object in array
+        const fileObject = {
+          extention: fileExtention,
+          size: file.size,
+          name: file.name,
+          path: file.path,
+          status: "loading"
+        };
 
-                    if (Junk.is(fileInDirectory)) {
-                        // Check if file is junk (Think on files like DS_Store ect..)
-                        return false
-                    }
-                    else {
-
-                        // Map and push the file object in array
-                        const fileObject = {
-                            extention: fileExtention,
-                            size: fileSize,
-                            name: fileName,
-                            path: filePath,
-                            status: 'loading'
-                        }
-
-                        // Push
-                        files.push(fileObject)
-
-                    }
-
-                })
-            }
-            // It's a file
-            else {
-
-                // Get extention for file name
-                const fileExtention = file.name.substr(file.name.lastIndexOf('.') + 1)
-
-                // If file is just a file, push the file object in array
-                const fileObject = {
-                    extention: fileExtention,
-                    size: file.size,
-                    name: file.name,
-                    path: file.path,
-                    status: 'loading'
-                }
-
-                // Push
-                files.push(fileObject)
-
-            }
-        }
-
+        // Push
+        files.push(fileObject);
+      }
     }
+  }
 
-    return { files, isDirectory }
-}
+  return { files, isDirectory };
+};
 
 /*
  * To Buffer
  */
-const ToBuffer = (arrayBuffer) => {
-    const buf = new Buffer(arrayBuffer.byteLength)
-    const view = new Uint8Array(arrayBuffer)
+const ToBuffer = arrayBuffer => {
+  const buf = new Buffer(arrayBuffer.byteLength);
+  const view = new Uint8Array(arrayBuffer);
 
-    for (let i = 0; i < buf.length; i++) {
-        buf[i] = view[i]
-    }
+  for (let i = 0; i < buf.length; i++) {
+    buf[i] = view[i];
+  }
 
-    return buf
-}
+  return buf;
+};
 
 /*
  * Download Subtitle
  */
-function DownloadSubtitles(subDownloadLink, file, subFileName, newFilename, callback) {
+function DownloadSubtitles(
+  subDownloadLink,
+  file,
+  subFileName,
+  newFilename,
+  callback
+) {
+  return new Promise((resolve, reject) => {
+    fetch(subDownloadLink)
+      .then(response => {
+        // Get arrayBuffer
+        return response.arrayBuffer();
+      })
+      .then(arrayBuffer => {
+        // Convert to Buffer
+        return ToBuffer(arrayBuffer);
+      })
+      .then(buffer => {
+        // Process file
+        const zip = new AdmZip(buffer);
+        const zipEntries = zip.getEntries();
 
-    return new Promise((resolve, reject) => {
-        fetch(subDownloadLink)
-            .then(response => {
+        // Map files in zip
+        zipEntries.map(zipEntry => {
+          // Search for the .srt file inside the zip
+          if (zipEntry.entryName === subFileName) {
+            // remove file.name from file.path to get the right directoryPath
+            const directoryPath = file.path.replace(file.name, "");
 
-                // Get arrayBuffer
-                return response.arrayBuffer()
-            })
-            .then(arrayBuffer => {
+            // Extract srt file
+            zip.extractEntryTo(zipEntry.entryName, directoryPath, false, true);
 
-                // Convert to Buffer
-                return ToBuffer(arrayBuffer)
-            })
-            .then(buffer => {
-
-                // Process file
-                const zip = new AdmZip(buffer)
-                const zipEntries = zip.getEntries()
-
-                // Map files in zip
-                zipEntries.map(zipEntry => {
-
-                    // Search for the .srt file inside the zip
-                    if (zipEntry.entryName === subFileName) {
-
-                        // remove file.name from file.path to get the right directoryPath
-                        const directoryPath = file.path.replace(file.name, '')
-
-                        // Extract srt file
-                        zip.extractEntryTo(zipEntry.entryName, directoryPath, false, true)
-
-                        // Rename subtitle file to the same filename as the video
-                        fs.rename(`${directoryPath}/${subFileName}`, `${directoryPath}/${newFilename}.srt`)
-                    }
-
-                })
-            })
-            .then(resolve)
-            .catch(reject)
-    })
-
+            // Rename subtitle file to the same filename as the video
+            fs.rename(
+              `${directoryPath}/${subFileName}`,
+              `${directoryPath}/${newFilename}.srt`
+            );
+          }
+        });
+      })
+      .then(resolve)
+      .catch(reject);
+  });
 }
 
 /*
  * Human File Size
  */
 const humanFileSize = (bytes, si) => {
-    let thresh = si ? 1000 : 1024
+  let thresh = si ? 1000 : 1024;
 
-    if (Math.abs(bytes) < thresh) {
-        return `${bytes} B`
-    }
+  if (Math.abs(bytes) < thresh) {
+    return `${bytes} B`;
+  }
 
-    const units = si ?
-        ['kB','MB','GB','TB','PB','EB','ZB','YB'] :
-        ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB']
+  const units = si
+    ? ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    : ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
 
-    let u = -1
+  let u = -1;
 
-    do {
-        bytes /= thresh
-        ++u
-    } while (Math.abs(bytes) >= thresh && u < units.length - 1)
+  do {
+    bytes /= thresh;
+    ++u;
+  } while (Math.abs(bytes) >= thresh && u < units.length - 1);
 
-    return `${bytes.toFixed(1)} ${units[u]}`
-}
+  return `${bytes.toFixed(1)} ${units[u]}`;
+};
 
 function downloadSubtitleFile(item) {
-    switch (item.source) {
-        case 'opensubtitles':
-            return opensubtitles.downloadQuery(item)
-        case 'addic7ed':
-            return addic7ed.downloadQuery(item)
-        default:
-            return null
-    }
+  switch (item.source) {
+    case "opensubtitles":
+      return opensubtitles.downloadQuery(item);
+    case "addic7ed":
+      return addic7ed.downloadQuery(item);
+    default:
+      return null;
+  }
 }
 
 /*
  * Export all functions
  */
-export {CheckFiles, downloadSubtitleFile, checkExtention, ToBuffer, DownloadSubtitles, humanFileSize}
+export {
+  CheckFiles,
+  downloadSubtitleFile,
+  checkExtention,
+  ToBuffer,
+  DownloadSubtitles,
+  humanFileSize
+};
