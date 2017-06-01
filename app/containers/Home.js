@@ -151,8 +151,7 @@ export default class Home extends Component {
         .searchQuery(this.state.query, this.state.lang)
         .then(results => {
           this.setState((prevState, props) => ({
-            results: [...prevState.results, ...results.subtitles],
-            loading: false
+            results: [...prevState.results, ...results.subtitles]
           }));
         })
         .catch(error => {
@@ -166,8 +165,7 @@ export default class Home extends Component {
         .searchQuery(this.state.query, this.state.lang)
         .then(results => {
           this.setState((prevState, props) => ({
-            results: [...prevState.results, ...results.subtitles],
-            loading: false
+            results: [...prevState.results, ...results.subtitles]
           }));
         })
         .catch(error => {
@@ -177,10 +175,25 @@ export default class Home extends Component {
           });
         });
 
+      // keep loading true if results after one source is still zero!
+      Promise.any([s1, s2]).then(() => {
+        console.log(this.state.results.length);
+        if (this.state.results.length > 0) {
+          this.setState({
+            loading: false
+          });
+        } else {
+          this.setState({
+            loading: true
+          });
+        }
+      });
+
       Promise.all([s1, s2])
         .then(() => {
           this.setState({
-            searching: false
+            searching: false,
+            loading: false
           });
         })
         .then(() => {

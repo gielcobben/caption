@@ -147,7 +147,10 @@ const createMainWindow = () => {
     vibrancy: "dark",
     transparent: transparent,
     titleBarStyle: "hidden-inset",
-    backgroundColor: backgroundColor
+    backgroundColor: backgroundColor,
+    webPreferences: {
+      scrollBounce: true
+    }
   });
 
   console.log("ELECTRON VERSION: " + process.versions.electron);

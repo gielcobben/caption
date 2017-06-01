@@ -56,7 +56,7 @@ export default class Settings extends Component {
       );
     }
 
-    if (searched && results.length === 0) {
+    if (searched && !searching && results.length === 0) {
       info = (
         <div className="info">
           <span>
