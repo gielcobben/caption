@@ -494,7 +494,9 @@ app.on("ready", async () => {
         {
           label: "Report Issue",
           click() {
-            shell.openExternal("https://github.com/gielcobben/Caption/issues");
+            shell.openExternal(
+              "https://github.com/gielcobben/Caption/issues/new"
+            );
           }
         },
         {
