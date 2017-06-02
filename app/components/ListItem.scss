@@ -5,6 +5,10 @@
 
     &.selected {
         background: #007AFF !important;
+
+        path {
+            fill: #FFF;
+        }
     }
 
     span {
