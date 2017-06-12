@@ -2,8 +2,9 @@
 
 ### Get Caption
 
-- **[Download the latest release](http://getcaption.co/)** (macOS only) [![Github All Releases](https://img.shields.io/github/downloads/gielcobben/Caption/total.svg)](https://github.com/gielcobben/Caption)
-- [Getcaption.co](https://getcaption.co/)
+- **[Download the latest release](https://download.getcaption.co/)** (macOS only) [![Github All Releases](https://img.shields.io/github/downloads/gielcobben/Caption/total.svg)](https://github.com/gielcobben/Caption)
+- [Caption website](https://getcaption.co/)
+- [Design roadmap](https://dribbble.com/Giel/projects/475278-Caption)
 
 ### Contribute
 
