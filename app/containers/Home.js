@@ -76,12 +76,13 @@ export default class Home extends Component {
 
   showNothingFoundDialog() {
     const dialog = remote.dialog;
+    const selectedLanguage = this.state.lang;
     const options = {
       type: "question",
       buttons: ["OK", "Cancel"],
       message: "No results found, try English?",
       checkboxLabel: "Do not show this message again.",
-      detail: `Sorry, we didn’t find any [${this.state.lang}] subtitles matching your file. Would you like to try searching for English subtitles?`
+      detail: `Sorry, we didn’t find any [${selectedLanguage.toUpperCase()}] subtitles matching your file. Would you like to try searching for English subtitles?`
     };
 
     dialog.showMessageBox(options, this.dialogCallback);

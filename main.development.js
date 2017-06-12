@@ -35,11 +35,22 @@ app.on("window-all-closed", () => {
 * autoUpdater
 */
 let firstRun = true;
+let downloading = false;
 const platform = os.platform() + "_" + os.arch(); // darwin_x64
 const updateURL = `https://download.getcaption.co/update/${platform}/${pkg.version}`;
 
 autoUpdater.on("checking-for-update", () => {
   console.log("Checking for updates...");
+  if (downloading) {
+    const options = {
+      type: "info",
+      buttons: ["OK"],
+      title: "Caption",
+      message: `Downloading...`,
+      detail: `Please leave the app open, the new version of Caption is downloading. You'll receive a new dialog when downloading is finished.`
+    };
+    dialog.showMessageBox(options);
+  }
 });
 
 autoUpdater.on("update-not-available", () => {
@@ -54,6 +65,7 @@ autoUpdater.on("update-not-available", () => {
     dialog.showMessageBox(options);
   }
   firstRun = false;
+  downloading = false;
   console.log(`You've got the latest version.`);
 });
 
@@ -75,21 +87,21 @@ autoUpdater.on(
 
     quitAndUpdate();
     firstRun = false;
+    downloading = false;
   }
 );
 
 autoUpdater.on("error", error => {
   console.log(error);
   firstRun = false;
+  downloading = false;
 });
 
 autoUpdater.on("update-available", () => {
   console.log("update available");
   firstRun = false;
-
-  // setInterval(() => {
-  //     console.log(autoUpdater.status);
-  // }, 5000);
+  downloading = true;
+  buildMenu();
 });
 
 try {
@@ -173,121 +185,23 @@ const createMainWindow = () => {
   });
 };
 
-app.on("ready", async () => {
-  if (process.env.NODE_ENV !== "development") {
-    /*
-        * Let's Move
-        */
+const buildMenu = () => {
+  let menuItemUpdater;
 
-    Storage.has("moveApp", async (error, value) => {
-      if (!value) {
-        try {
-          const moved = await moveToApplications();
-          if (!moved) {
-            Storage.set("moveApp", false);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        Storage.get("moveApp", async (error, value) => {
-          if (value) {
-            try {
-              const moved = await moveToApplications();
-            } catch (error) {
-              console.log(error);
-            }
-          } else {
-            console.log("user choosed to not move the app!");
-          }
-        });
+  if (downloading) {
+    menuItemUpdater = {
+      label: "Downloading Updates...",
+      click() {
+        autoUpdater.checkForUpdates();
       }
-    });
-
-    // Set default property for nothing-found-window
-    Storage.has("noting-found-window", (error, hasKey) => {
-      if (error) throw error;
-      if (!hasKey) {
-        Storage.set("noting-found-window", true, error => {
-          if (error) throw error;
-          nothingFoundWindowValue = true;
-        });
+    };
+  } else {
+    menuItemUpdater = {
+      label: "Check for Updates...",
+      click() {
+        autoUpdater.checkForUpdates();
       }
-    });
-  }
-
-  app.setAboutPanelOptions({
-    applicationName: "Caption",
-    applicationVersion: pkg.version,
-    copyright: "Made with 💖 by Giel Cobben. \n www.gielcobben.com",
-    credits: `With the invaluable help of: \n OpenSubtitles.org and Addic7ed.com`,
-    version: pkg.version
-  });
-
-  await installExtensions();
-
-  /*
-    * MainWindow
-    */
-  createMainWindow();
-
-  /*
-    * IPC's
-    */
-  ipcMain.on("close-main", () => {
-    mainWindow.close();
-    app.quit();
-  });
-
-  ipcMain.on("lang-changed", () => {
-    mainWindow.webContents.send("change-language");
-  });
-
-  /*
-    * Downloads
-    */
-  mainWindow.webContents.session.on(
-    "will-download",
-    (event, item, webContents) => {
-      item.on("updated", (event, state) => {
-        if (state === "interrupted") {
-          console.log("Download is interrupted but can be resumed");
-        } else if (state === "progressing") {
-          if (item.isPaused()) {
-            console.log("Download is paused");
-          } else {
-            console.log(`Received bytes: ${item.getReceivedBytes()}`);
-          }
-        }
-      });
-
-      item.once("done", (event, state) => {
-        if (state === "completed") {
-          console.log("Download successfully");
-        } else {
-          console.log(`Download failed: ${state}`);
-        }
-      });
-    }
-  );
-
-  /*
-    * Development
-    */
-  if (process.env.NODE_ENV === "development") {
-    mainWindow.openDevTools();
-    mainWindow.webContents.on("context-menu", (e, props) => {
-      const { x, y } = props;
-
-      Menu.buildFromTemplate([
-        {
-          label: "Inspect element",
-          click() {
-            mainWindow.inspectElement(x, y);
-          }
-        }
-      ]).popup(mainWindow);
-    });
+    };
   }
 
   /*
@@ -301,12 +215,7 @@ app.on("ready", async () => {
           label: "About Caption",
           selector: "orderFrontStandardAboutPanel:"
         },
-        {
-          label: "Check for Updates...",
-          click() {
-            autoUpdater.checkForUpdates();
-          }
-        },
+        menuItemUpdater,
         {
           type: "separator"
         },
@@ -511,4 +420,124 @@ app.on("ready", async () => {
 
   menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+};
+
+app.on("ready", async () => {
+  if (process.env.NODE_ENV !== "development") {
+    /*
+        * Let's Move
+        */
+
+    Storage.has("moveApp", async (error, value) => {
+      if (!value) {
+        try {
+          const moved = await moveToApplications();
+          if (!moved) {
+            Storage.set("moveApp", false);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        Storage.get("moveApp", async (error, value) => {
+          if (value) {
+            try {
+              const moved = await moveToApplications();
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            console.log("user choosed to not move the app!");
+          }
+        });
+      }
+    });
+
+    // Set default property for nothing-found-window
+    Storage.has("noting-found-window", (error, hasKey) => {
+      if (error) throw error;
+      if (!hasKey) {
+        Storage.set("noting-found-window", true, error => {
+          if (error) throw error;
+          nothingFoundWindowValue = true;
+        });
+      }
+    });
+  }
+
+  app.setAboutPanelOptions({
+    applicationName: "Caption",
+    applicationVersion: pkg.version,
+    copyright: "Made with 💖 by Giel Cobben. \n www.gielcobben.com",
+    credits: `With the invaluable help of: \n OpenSubtitles.org and Addic7ed.com`,
+    version: pkg.version
+  });
+
+  await installExtensions();
+
+  /*
+    * MainWindow
+    */
+  createMainWindow();
+
+  /*
+    * IPC's
+    */
+  ipcMain.on("close-main", () => {
+    mainWindow.close();
+    app.quit();
+  });
+
+  ipcMain.on("lang-changed", () => {
+    mainWindow.webContents.send("change-language");
+  });
+
+  /*
+    * Downloads
+    */
+  mainWindow.webContents.session.on(
+    "will-download",
+    (event, item, webContents) => {
+      item.on("updated", (event, state) => {
+        if (state === "interrupted") {
+          console.log("Download is interrupted but can be resumed");
+        } else if (state === "progressing") {
+          if (item.isPaused()) {
+            console.log("Download is paused");
+          } else {
+            console.log(`Received bytes: ${item.getReceivedBytes()}`);
+          }
+        }
+      });
+
+      item.once("done", (event, state) => {
+        if (state === "completed") {
+          console.log("Download successfully");
+        } else {
+          console.log(`Download failed: ${state}`);
+        }
+      });
+    }
+  );
+
+  /*
+    * Development
+    */
+  if (process.env.NODE_ENV === "development") {
+    mainWindow.openDevTools();
+    mainWindow.webContents.on("context-menu", (e, props) => {
+      const { x, y } = props;
+
+      Menu.buildFromTemplate([
+        {
+          label: "Inspect element",
+          click() {
+            mainWindow.inspectElement(x, y);
+          }
+        }
+      ]).popup(mainWindow);
+    });
+  }
+
+  buildMenu();
 });
