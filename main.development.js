@@ -292,74 +292,75 @@ const buildMenu = () => {
     },
     {
       label: "View",
-      submenu: process.env.NODE_ENV === "development"
-        ? [
-            {
-              label: "Reload",
-              accelerator: "Command+R",
-              click() {
-                mainWindow.webContents.reload();
-              }
-            },
-            {
-              label: "Toggle Full Screen",
-              accelerator: "Ctrl+Command+F",
-              click() {
-                mainWindow.setFullScreen(!mainWindow.isFullScreen());
-              }
-            },
-            {
-              label: "Show nothing found window",
-              type: "checkbox",
-              checked: nothingFoundWindowValue,
-              click: () => {
-                if (nothingFoundWindowValue) {
-                  nothingFoundWindowValue = false;
-
-                  Storage.set("noting-found-window", false, error => {
-                    if (error) throw error;
-                  });
-                } else {
-                  nothingFoundWindowValue = true;
-
-                  Storage.set("noting-found-window", true, error => {
-                    if (error) throw error;
-                  });
+      submenu:
+        process.env.NODE_ENV === "development"
+          ? [
+              {
+                label: "Reload",
+                accelerator: "Command+R",
+                click() {
+                  mainWindow.webContents.reload();
                 }
-                console.log("toggle nothing found window");
-              }
-            }
-          ]
-        : [
-            {
-              label: "Toggle Full Screen",
-              accelerator: "Ctrl+Command+F",
-              click() {
-                mainWindow.setFullScreen(!mainWindow.isFullScreen());
-              }
-            },
-            {
-              label: "Show nothing found window",
-              type: "checkbox",
-              checked: nothingFoundWindowValue,
-              click: () => {
-                if (nothingFoundWindowValue) {
-                  nothingFoundWindowValue = false;
-
-                  Storage.set("noting-found-window", false, error => {
-                    if (error) throw error;
-                  });
-                } else {
-                  nothingFoundWindowValue = true;
-
-                  Storage.set("noting-found-window", true, error => {
-                    if (error) throw error;
-                  });
+              },
+              {
+                label: "Toggle Full Screen",
+                accelerator: "Ctrl+Command+F",
+                click() {
+                  mainWindow.setFullScreen(!mainWindow.isFullScreen());
                 }
-                console.log("toggle nothing found window");
+              },
+              {
+                label: "Show nothing found window",
+                type: "checkbox",
+                checked: nothingFoundWindowValue,
+                click: () => {
+                  if (nothingFoundWindowValue) {
+                    nothingFoundWindowValue = false;
+
+                    Storage.set("noting-found-window", false, error => {
+                      if (error) throw error;
+                    });
+                  } else {
+                    nothingFoundWindowValue = true;
+
+                    Storage.set("noting-found-window", true, error => {
+                      if (error) throw error;
+                    });
+                  }
+                  console.log("toggle nothing found window");
+                }
               }
-            }
-          ]
+            ]
+          : [
+              {
+                label: "Toggle Full Screen",
+                accelerator: "Ctrl+Command+F",
+                click() {
+                  mainWindow.setFullScreen(!mainWindow.isFullScreen());
+                }
+              },
+              {
+                label: "Show nothing found window",
+                type: "checkbox",
+                checked: nothingFoundWindowValue,
+                click: () => {
+                  if (nothingFoundWindowValue) {
+                    nothingFoundWindowValue = false;
+
+                    Storage.set("noting-found-window", false, error => {
+                      if (error) throw error;
+                    });
+                  } else {
+                    nothingFoundWindowValue = true;
+
+                    Storage.set("noting-found-window", true, error => {
+                      if (error) throw error;
+                    });
+                  }
+                  console.log("toggle nothing found window");
+                }
+              }
+            ]
     },
     {
       label: "Window",
@@ -465,13 +466,15 @@ app.on("ready", async () => {
     });
   }
 
-  app.setAboutPanelOptions({
-    applicationName: "Caption",
-    applicationVersion: pkg.version,
-    copyright: "Made with 💖 by Giel Cobben. \n www.gielcobben.com",
-    credits: `With the invaluable help of: \n OpenSubtitles.org and Addic7ed.com`,
-    version: pkg.version
-  });
+  if (process.platform === "darwin") {
+    app.setAboutPanelOptions({
+      applicationName: "Caption",
+      applicationVersion: pkg.version,
+      copyright: "Made with 💖 by Giel Cobben. \n www.gielcobben.com",
+      credits: `With the invaluable help of: \n OpenSubtitles.org and Addic7ed.com`,
+      version: pkg.version
+    });
+  }
 
   await installExtensions();
 

@@ -40,3 +40,6 @@ main.js.map
 config.json
 *.dmg
 *.zip
+
+# npm
+package-lock.json
