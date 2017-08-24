@@ -15,15 +15,32 @@ export default class MainApp extends React.Component {
       files: []
     };
 
+    this.onKeyDown = this.onKeyDown.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onDrop = this.onDrop.bind(this);
   }
 
+  // handling escape close
+  componentDidMount() {
+    document.addEventListener("keydown", this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.onKeyDown);
+  }
+
+  onKeyDown(event) {
+    if (event.keyCode === 27) {
+      this.onReset();
+    }
+  }
+
   onChange(event) {
     const searchQuery = event.target.value;
-    this.setState({ searchQuery });
+    const files = [];
+    this.setState({ searchQuery, files });
   }
 
   onFocus() {
@@ -40,8 +57,15 @@ export default class MainApp extends React.Component {
     this.setState({ files });
   }
 
+  onReset() {
+    const placeholder = "Search for a show...";
+    const searchQuery = "";
+    const files = [];
+    this.setState({ placeholder, searchQuery, files });
+  }
+
   render() {
-    const { placeholder, searchQuery } = this.state;
+    const { placeholder, searchQuery, files } = this.state;
 
     return (
       <Layout>
@@ -53,7 +77,7 @@ export default class MainApp extends React.Component {
           onFocus={this.onFocus}
           onBlur={this.onBlur}
         />
-        <Content searchQuery={searchQuery} onDrop={this.onDrop} />
+        <Content searchQuery={searchQuery} files={files} onDrop={this.onDrop} />
         <Footer />
       </Layout>
     );
