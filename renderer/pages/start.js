@@ -1,3 +1,6 @@
+// Utils
+import { processFiles } from "../utils";
+
 // Components
 import Layout from "../components/layout";
 import TitleBar from "../components/titleBar";
@@ -53,7 +56,8 @@ export default class MainApp extends React.Component {
     this.setState({ placeholder });
   }
 
-  onDrop(files) {
+  onDrop(rawFiles) {
+    const files = processFiles(rawFiles);
     this.setState({ files });
   }
 
