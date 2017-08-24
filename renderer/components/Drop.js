@@ -16,12 +16,7 @@ const styleActive = {
 // Component
 const Drop = ({ onDrop }) =>
   <div>
-    <Dropzone
-      style={styleDefault}
-      activeStyle={styleActive}
-      accept="video/*"
-      onDrop={onDrop}
-    >
+    <Dropzone style={styleDefault} activeStyle={styleActive} onDrop={onDrop}>
       <p>Drop and episode or season...</p>
     </Dropzone>
 

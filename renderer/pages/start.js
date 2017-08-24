@@ -57,6 +57,7 @@ export default class MainApp extends React.Component {
   }
 
   onDrop(rawFiles) {
+    console.log(rawFiles);
     const files = processFiles(rawFiles);
     this.setState({ files });
   }

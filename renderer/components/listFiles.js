@@ -1,10 +1,8 @@
+import ListItem from "./listItem";
+
 const listFiles = ({ files }) =>
   <ul>
-    {files.map((file, index) =>
-      <li key={index}>
-        {file.name}
-      </li>
-    )}
+    {files.map((file, index) => <ListItem file={file} />)}
 
     <style jsx>{`
       ul {

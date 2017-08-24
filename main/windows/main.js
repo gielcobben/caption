@@ -28,8 +28,7 @@ const createMainWindow = () => {
     acceptFirstMouse: true,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: true,
-      scrollBounce: true
+      webSecurity: true
     }
   });
 

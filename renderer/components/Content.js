@@ -14,6 +14,7 @@ export default ({ searchQuery, files, onDrop, setRef }) =>
       section {
         height: calc(100vh - 120px);
         overflow: hidden;
+        overflow-y: scroll;
       }
     `}</style>
   </section>;
