@@ -1,9 +1,9 @@
 // Components
-import Layout from "../components/Layout";
-import TitleBar from "../components/TitleBar";
-import Search from "../components/Search";
-import Content from "../components/Content";
-import Footer from "../components/Footer";
+import Layout from "../components/layout";
+import TitleBar from "../components/titleBar";
+import Search from "../components/search";
+import Content from "../components/content";
+import Footer from "../components/footer";
 
 export default class MainApp extends React.Component {
   constructor(props) {

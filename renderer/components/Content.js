@@ -1,5 +1,5 @@
-import Drop from "../components/Drop";
-import ListEmpty from "../components/ListEmpty";
+import Drop from "../components/drop";
+import ListEmpty from "../components/listEmpty";
 
 export default ({ searchQuery, onDrop }) =>
   <section>
