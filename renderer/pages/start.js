@@ -2,7 +2,7 @@
 import Layout from "../components/Layout";
 import TitleBar from "../components/TitleBar";
 import Search from "../components/Search";
-import Drop from "../components/Drop";
+import Content from "../components/Content";
 import Footer from "../components/Footer";
 
 export default class MainApp extends React.Component {
@@ -53,7 +53,7 @@ export default class MainApp extends React.Component {
           onFocus={this.onFocus}
           onBlur={this.onBlur}
         />
-        <Drop onDrop={this.onDrop} />
+        <Content searchQuery={searchQuery} onDrop={this.onDrop} />
         <Footer />
       </Layout>
     );

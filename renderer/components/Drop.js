@@ -15,7 +15,7 @@ const styleActive = {
 
 // Component
 const Drop = ({ onDrop }) =>
-  <section>
+  <div>
     <Dropzone
       style={styleDefault}
       activeStyle={styleActive}
@@ -26,7 +26,7 @@ const Drop = ({ onDrop }) =>
     </Dropzone>
 
     <style jsx>{`
-      section {
+      div {
         position: relative;
         height: calc(100vh - 120px);
         padding: 13px;
@@ -42,6 +42,6 @@ const Drop = ({ onDrop }) =>
         text-align: center;
       }
     `}</style>
-  </section>;
+  </div>;
 
 export default Drop;
