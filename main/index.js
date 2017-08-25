@@ -1,6 +1,8 @@
 // Packages
-const { app } = require("electron");
+const path = require("path");
+const { app, ipcMain } = require("electron");
 const prepareNext = require("electron-next");
+const { download } = require("electron-dl");
 
 // Windows
 const { createMainWindow } = require("./windows/main");
@@ -8,7 +10,19 @@ const { createMainWindow } = require("./windows/main");
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext("./renderer");
-  createMainWindow();
+  const mainWindow = createMainWindow();
+
+  ipcMain.on("download-subtitle", async (event, args) => {
+    const downloadLocation = path.dirname(args.file.path);
+    const filename = args.file.name.replace(/\.[^/.]+$/, "");
+    const options = {
+      saveAs: false,
+      directory: downloadLocation,
+      filename: `${filename}.srt`
+    };
+    const dl = await download(mainWindow, args.subtitle.url, options);
+    console.log(dl.getSavePath());
+  });
 });
 
 // Quit the app once all windows are closed

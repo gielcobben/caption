@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "app-root-path": "2.0.1",
+    "electron-dl": "^1.10.0",
     "electron-is-dev": "0.3.0",
     "electron-next": "3.1.1",
     "electron-window-state": "^4.1.1",

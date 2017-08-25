@@ -49,6 +49,8 @@ const createMainWindow = () => {
     mainWindow.show();
     mainWindow.focus();
   });
+
+  return mainWindow;
 };
 
 module.exports = { createMainWindow };

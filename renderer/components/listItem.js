@@ -1,7 +1,7 @@
 import { fileSizeReadable } from "../utils";
 
-const ListItem = ({ item }) =>
-  <li>
+const ListItem = ({ item, selected, onClick }) =>
+  <li onClick={onClick} className={selected ? "selected" : ""}>
     {item.name && item.name}
     {item.filename && item.filename}
 
@@ -25,6 +25,16 @@ const ListItem = ({ item }) =>
 
       li:nth-child(even) {
         background: rgba(255, 255, 255, .3);
+      }
+
+      .selected {
+        color: #fff;
+        font-weight: 500;
+      }
+
+      .selected,
+      .selected:nth-child(even) {
+        background: #199fff;
       }
 
       div {

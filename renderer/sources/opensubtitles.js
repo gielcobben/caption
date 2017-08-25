@@ -1,4 +1,5 @@
 // Packages
+import { ipcRenderer } from "electron";
 import OS from "opensubtitles-api";
 const OpenSubtitles = new OS("OSTestUserAgentTemp");
 
@@ -45,7 +46,7 @@ const searchFiles = async (files, language, limit) => {
 };
 
 const downloadSubtitle = (file, subtitle) => {
-  console.log(subtitle);
+  ipcRenderer.send("download-subtitle", { file, subtitle });
 };
 
 // Exports
