@@ -80,6 +80,7 @@ export default class MainApp extends React.Component {
     const files = [];
     const results = [];
     this.setState({ placeholder, searchQuery, files, results });
+    this.search.textInput.blur();
   }
 
   onLanguageChange(event) {
@@ -141,7 +142,11 @@ export default class MainApp extends React.Component {
           results={results}
           onDrop={this.onDrop}
         />
-        <Footer language={language} onLanguageChange={this.onLanguageChange} />
+        <Footer
+          results={results}
+          language={language}
+          onLanguageChange={this.onLanguageChange}
+        />
       </Layout>
     );
   }

@@ -11,11 +11,7 @@
     "dist": "npm run build && build --dir"
   },
   "build": {
-    "files": [
-      "**/*",
-      "!renderer",
-      "renderer/out"
-    ]
+    "files": ["**/*", "!renderer", "renderer/out"]
   },
   "devDependencies": {
     "electron": "1.7.5",
@@ -30,7 +26,6 @@
     "electron-is-dev": "0.3.0",
     "electron-next": "3.1.1",
     "electron-window-state": "^4.1.1",
-    "iso-language-converter": "^1.1.0",
     "opensubtitles-api": "^4.0.0",
     "react-dropzone": "^4.1.0"
   }

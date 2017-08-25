@@ -4,11 +4,19 @@ class Search extends React.Component {
   }
 
   render() {
-    const { onSubmit, placeholder, onChange, onFocus, onBlur } = this.props;
+    const {
+      placeholder,
+      value,
+      onSubmit,
+      onChange,
+      onFocus,
+      onBlur
+    } = this.props;
     return (
       <section>
         <form onSubmit={onSubmit}>
           <input
+            value={value}
             type="search"
             placeholder={placeholder}
             onChange={onChange}

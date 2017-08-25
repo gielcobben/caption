@@ -1,17 +1,10 @@
-import convert from "iso-language-converter";
-import languages from "../languages.json";
+import LanguageToggle from "./languageToggle";
+import Info from "./info";
 
-const Footer = ({ language, onLanguageChange }) =>
+const Footer = ({ results, language, onLanguageChange }) =>
   <footer>
-    <select value={language} onChange={onLanguageChange}>
-      {languages.map((lang, index) => {
-        return (
-          <option key={index} value={lang.code}>
-            {lang.name}
-          </option>
-        );
-      })}
-    </select>
+    <LanguageToggle language={language} onLanguageChange={onLanguageChange} />
+    <Info results={results} />
 
     <style jsx>{`
       footer {
@@ -20,12 +13,8 @@ const Footer = ({ language, onLanguageChange }) =>
         font-size: 12px;
         box-shadow: 0px -0.5px 0px #cacbcc;
         padding: 13px 12px;
-      }
-
-      select {
-      }
-
-      option {
+        display: flex;
+        color: rgba(0, 0, 0, .4);
       }
     `}</style>
   </footer>;
