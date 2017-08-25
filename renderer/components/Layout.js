@@ -119,6 +119,7 @@ const Layout = ({ children }) =>
           "Segoe UI Symbol";
         line-height: 1;
         margin: 0;
+        font-size: 15px;
       }
 
       ol,

@@ -1,14 +1,13 @@
 import Drop from "../components/drop";
 import ListEmpty from "../components/listEmpty";
-import ListFiles from "../components/listFiles";
+import List from "../components/list";
 
-export default ({ searchQuery, files, onDrop, setRef }) =>
+export default ({ searchQuery, files, results, onDrop }) =>
   <section>
-    {searchQuery !== "" && <ListEmpty />}
-    {searchQuery === "" &&
-      files.length === 0 &&
-      <Drop onDrop={onDrop} setRef={setRef} />}
-    {files.length > 0 && <ListFiles files={files} />}
+    {searchQuery !== "" && results.length === 0 && <ListEmpty />}
+    {searchQuery === "" && files.length === 0 && <Drop onDrop={onDrop} />}
+    {files.length > 0 && <List results={files} />}
+    {results.length > 0 && <List results={results} />}
 
     <style jsx>{`
       section {

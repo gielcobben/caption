@@ -1,6 +1,6 @@
-const Search = ({ placeholder, onChange, onFocus, onBlur }) =>
+const Search = ({ onSubmit, placeholder, onChange, onFocus, onBlur }) =>
   <section>
-    <form>
+    <form onSubmit={onSubmit}>
       <input
         type="search"
         placeholder={placeholder}

@@ -1,5 +1,6 @@
 // Utils
 import { processFiles } from "../utils";
+import { opensubtitles } from "../sources";
 
 // Components
 import Layout from "../components/layout";
@@ -15,11 +16,13 @@ export default class MainApp extends React.Component {
     this.state = {
       searchQuery: "",
       placeholder: "Search for a show...",
-      files: []
+      files: [],
+      results: []
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onDrop = this.onDrop.bind(this);
@@ -66,11 +69,21 @@ export default class MainApp extends React.Component {
     const placeholder = "Search for a show...";
     const searchQuery = "";
     const files = [];
-    this.setState({ placeholder, searchQuery, files });
+    const results = [];
+    this.setState({ placeholder, searchQuery, files, results });
+  }
+
+  async onSearch(event) {
+    event.preventDefault();
+    const { searchQuery } = this.state;
+
+    const results = await opensubtitles.searchQuery(searchQuery, "eng", "all");
+
+    this.setState({ results });
   }
 
   render() {
-    const { placeholder, searchQuery, files } = this.state;
+    const { placeholder, searchQuery, files, results } = this.state;
 
     return (
       <Layout>
@@ -78,11 +91,17 @@ export default class MainApp extends React.Component {
         <Search
           placeholder={placeholder}
           value={searchQuery}
+          onSubmit={this.onSearch}
           onChange={this.onChange}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
         />
-        <Content searchQuery={searchQuery} files={files} onDrop={this.onDrop} />
+        <Content
+          searchQuery={searchQuery}
+          files={files}
+          results={results}
+          onDrop={this.onDrop}
+        />
         <Footer />
       </Layout>
     );

@@ -1,14 +1,15 @@
 import { fileSizeReadable } from "../utils";
 
-const ListItem = ({ file }) =>
+const ListItem = ({ item }) =>
   <li>
-    {file.name}
+    {item.name && item.name}
+    {item.filename && item.filename}
 
-    {file.size &&
+    {item.size &&
       <div>
-        {fileSizeReadable(file.size)}
+        {fileSizeReadable(item.size)}
         <span />
-        {file.extention}
+        {item.extention}
       </div>}
 
     <style jsx>{`

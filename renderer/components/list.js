@@ -1,8 +1,8 @@
 import ListItem from "./listItem";
 
-const listFiles = ({ files }) =>
+const List = ({ results }) =>
   <ul>
-    {files.map((file, index) => <ListItem file={file} />)}
+    {results.map((item, index) => <ListItem key={index} item={item} />)}
 
     <style jsx>{`
       ul {
@@ -11,4 +11,4 @@ const listFiles = ({ files }) =>
     `}</style>
   </ul>;
 
-export default listFiles;
+export default List;
