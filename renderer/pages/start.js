@@ -14,12 +14,14 @@ export default class MainApp extends React.Component {
     super(props);
 
     this.state = {
-      searchQuery: "",
-      placeholder: "Search for a show...",
       files: [],
-      results: []
+      results: [],
+      language: "eng",
+      searchQuery: "",
+      placeholder: "Search for a show..."
     };
 
+    this.onLanguageChange = this.onLanguageChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSearch = this.onSearch.bind(this);
@@ -80,6 +82,11 @@ export default class MainApp extends React.Component {
     this.setState({ placeholder, searchQuery, files, results });
   }
 
+  onLanguageChange(event) {
+    const language = event.target.value;
+    this.setState({ language });
+  }
+
   onSearch(event) {
     if (event) {
       event.preventDefault();
@@ -97,18 +104,22 @@ export default class MainApp extends React.Component {
   }
 
   async searchQuery() {
-    const { searchQuery } = this.state;
-    const results = await opensubtitles.searchQuery(searchQuery, "eng", "all");
+    const { searchQuery, language } = this.state;
+    const results = await opensubtitles.searchQuery(
+      searchQuery,
+      language,
+      "all"
+    );
     this.setState({ results });
   }
 
   async searchFile() {
-    const { files } = this.state;
-    const results = await opensubtitles.searchFiles(files, "eng", "best");
+    const { files, language } = this.state;
+    const results = await opensubtitles.searchFiles(files, language, "best");
   }
 
   render() {
-    const { placeholder, searchQuery, files, results } = this.state;
+    const { placeholder, searchQuery, files, results, language } = this.state;
 
     return (
       <Layout>
@@ -130,7 +141,7 @@ export default class MainApp extends React.Component {
           results={results}
           onDrop={this.onDrop}
         />
-        <Footer />
+        <Footer language={language} onLanguageChange={this.onLanguageChange} />
       </Layout>
     );
   }

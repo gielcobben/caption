@@ -12,7 +12,8 @@ const searchQuery = async (query, language, limit) => {
   };
 
   const results = await OpenSubtitles.search(options);
-  const subtitles = results.en;
+  const firstItem = Object.keys(results)[0];
+  const subtitles = results[firstItem];
 
   return subtitles;
 };
