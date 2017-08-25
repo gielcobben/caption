@@ -26,6 +26,9 @@ export default class MainApp extends React.Component {
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onDrop = this.onDrop.bind(this);
+
+    this.searchQuery = this.searchQuery.bind(this);
+    this.searchFile = this.searchFile.bind(this);
   }
 
   // handling escape close
@@ -59,10 +62,10 @@ export default class MainApp extends React.Component {
     this.setState({ placeholder });
   }
 
-  onDrop(rawFiles) {
-    console.log(rawFiles);
-    const files = processFiles(rawFiles);
+  async onDrop(rawFiles) {
+    const files = await processFiles(rawFiles);
     this.setState({ files });
+    this.onSearch();
   }
 
   onReset() {
@@ -73,13 +76,31 @@ export default class MainApp extends React.Component {
     this.setState({ placeholder, searchQuery, files, results });
   }
 
-  async onSearch(event) {
-    event.preventDefault();
+  onSearch(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const { searchQuery, files } = this.state;
+
+    if (searchQuery !== "") {
+      this.searchQuery();
+    }
+
+    if (files.length > 0) {
+      this.searchFile();
+    }
+  }
+
+  async searchQuery() {
     const { searchQuery } = this.state;
-
     const results = await opensubtitles.searchQuery(searchQuery, "eng", "all");
-
     this.setState({ results });
+  }
+
+  async searchFile() {
+    const { files } = this.state;
+    const results = await opensubtitles.searchFiles(files, "eng", "best");
   }
 
   render() {

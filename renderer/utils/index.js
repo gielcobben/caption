@@ -1,5 +1,7 @@
+// Packages
 import fs from "fs";
 
+// Process files
 const processFiles = rawFiles => {
   const files = [];
 
@@ -20,6 +22,7 @@ const processFiles = rawFiles => {
   return files;
 };
 
+// File size readable
 const fileSizeReadable = size => {
   if (size >= 1000000000) {
     return Math.ceil(size / 1000000000) + "GB";
@@ -32,4 +35,5 @@ const fileSizeReadable = size => {
   }
 };
 
+// Export
 export { processFiles, fileSizeReadable };

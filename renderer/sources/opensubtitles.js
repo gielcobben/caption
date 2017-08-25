@@ -16,5 +16,37 @@ const searchQuery = async (query, language, limit) => {
   return subtitles;
 };
 
+const searchFiles = async (files, language, limit) => {
+  files.map(async file => {
+    const info = await OpenSubtitles.identify({
+      path: file.path,
+      extend: true
+    });
+
+    const options = {
+      sublanguageid: language,
+      limit: limit,
+      hash: info.moviehash,
+      filesize: info.moviebytesize,
+      path: file.path,
+      filename: file.filename
+    };
+
+    if (info && info.metadata && info.metadata.imdbid) {
+      options["imdbid"] = info.metadata.imdbid;
+    }
+
+    const result = await OpenSubtitles.search(options);
+    const firstItem = Object.keys(result)[0];
+    const subtitle = result[firstItem];
+
+    downloadSubtitle(file, subtitle);
+  });
+};
+
+const downloadSubtitle = (file, subtitle) => {
+  console.log(subtitle);
+};
+
 // Exports
-export { searchQuery };
+export { searchQuery, searchFiles };
