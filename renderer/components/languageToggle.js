@@ -11,12 +11,15 @@ const languageToggle = ({ language, onLanguageChange }) =>
     })}
     <style jsx>{`
       select {
+        -webkit-appearance: none;
         appearence: none;
-        border: none;
         background: none;
         outline: none;
+        border: none;
         padding: 0;
         margin: 0;
+        font-size: 12px;
+        color: rgba(0, 0, 0, .5);
       }
     `}</style>
   </select>;

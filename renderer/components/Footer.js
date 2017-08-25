@@ -8,7 +8,7 @@ const Footer = ({ results, language, onLanguageChange }) =>
 
     <style jsx>{`
       footer {
-        background: #fff;
+        background: rgba(255, 255, 255, 0.5);
         height: 40px;
         font-size: 12px;
         box-shadow: 0px -0.5px 0px #cacbcc;
