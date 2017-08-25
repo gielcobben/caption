@@ -13,15 +13,24 @@ app.on("ready", async () => {
   const mainWindow = createMainWindow();
 
   ipcMain.on("download-subtitle", async (event, args) => {
-    const downloadLocation = path.dirname(args.file.path);
-    const filename = args.file.name.replace(/\.[^/.]+$/, "");
-    const options = {
-      saveAs: false,
-      directory: downloadLocation,
-      filename: `${filename}.srt`
-    };
-    const dl = await download(mainWindow, args.subtitle.url, options);
-    console.log(dl.getSavePath());
+    if (args.dialog) {
+      const options = {
+        saveAs: true,
+        openFolderWhenDone: true
+      };
+      const dl = await download(mainWindow, args.subtitle.url, options);
+    } else {
+      // Download file and put in dropped file folder
+      const downloadLocation = path.dirname(args.file.path);
+      const filename = args.file.name.replace(/\.[^/.]+$/, "");
+      const options = {
+        saveAs: false,
+        directory: downloadLocation,
+        filename: `${filename}.srt`
+      };
+      const dl = await download(mainWindow, args.subtitle.url, options);
+      console.log(dl.getSavePath());
+    }
   });
 });
 

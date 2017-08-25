@@ -41,13 +41,13 @@ const searchFiles = async (files, language, limit) => {
     const firstItem = Object.keys(result)[0];
     const subtitle = result[firstItem];
 
-    downloadSubtitle(file, subtitle);
+    downloadSubtitle(file, subtitle, false);
   });
 };
 
-const downloadSubtitle = (file, subtitle) => {
-  ipcRenderer.send("download-subtitle", { file, subtitle });
+const downloadSubtitle = (file, subtitle, dialog) => {
+  ipcRenderer.send("download-subtitle", { file, subtitle, dialog });
 };
 
 // Exports
-export { searchQuery, searchFiles };
+export { searchQuery, searchFiles, downloadSubtitle };
