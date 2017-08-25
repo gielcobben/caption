@@ -1,3 +1,6 @@
+// Packages
+import Store from "electron-settings";
+
 // Utils
 import { processFiles } from "../utils";
 import { opensubtitles } from "../sources";
@@ -10,13 +13,27 @@ import Content from "../components/content";
 import Footer from "../components/footer";
 
 export default class MainApp extends React.Component {
+  static async getInitialProps({ req }) {
+    if (!Store.has("settings")) {
+      const language = "eng";
+      Store.set("settings", { language });
+    }
+
+    const settings = Store.get("settings");
+    console.log(settings);
+
+    return { settings };
+  }
+
   constructor(props) {
     super(props);
+
+    const { language } = this.props.settings;
 
     this.state = {
       files: [],
       results: [],
-      language: "eng",
+      language: language,
       searchQuery: "",
       placeholder: "Search for a show..."
     };
@@ -86,6 +103,7 @@ export default class MainApp extends React.Component {
   onLanguageChange(event) {
     const language = event.target.value;
     this.setState({ language });
+    Store.set("settings", { language });
   }
 
   onSearch(event) {
