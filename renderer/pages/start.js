@@ -20,7 +20,6 @@ export default class MainApp extends React.Component {
     }
 
     const settings = Store.get("settings");
-    console.log(settings);
 
     return { settings };
   }
@@ -101,8 +100,15 @@ export default class MainApp extends React.Component {
   }
 
   onLanguageChange(event) {
+    const { results, files } = this.state;
     const language = event.target.value;
-    this.setState({ language });
+
+    this.setState({ language }, () => {
+      if (results.length > 0 || files.length > 0) {
+        this.onSearch();
+      }
+    });
+
     Store.set("settings", { language });
   }
 
