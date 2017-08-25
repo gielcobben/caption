@@ -41,6 +41,10 @@ export default class MainApp extends React.Component {
   }
 
   onKeyDown(event) {
+    if (event.keyCode >= 48 && event.keyCode <= 90) {
+      this.search.textInput.focus();
+    }
+
     if (event.keyCode === 27) {
       this.onReset();
     }
@@ -116,6 +120,9 @@ export default class MainApp extends React.Component {
           onChange={this.onChange}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          ref={search => {
+            this.search = search;
+          }}
         />
         <Content
           searchQuery={searchQuery}
