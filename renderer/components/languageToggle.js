@@ -1,17 +1,16 @@
 import languages from "../languages.json";
 
-const languageToggle = ({ language, onLanguageChange }) =>
+const LanguageToggle = ({ language, onLanguageChange }) =>
   <select value={language} onChange={onLanguageChange}>
     {languages.map((lang, index) => {
       return (
-        <option key={index} value={lang.code}>
+        <option key={lang.code} value={lang.code}>
           {lang.name}
         </option>
       );
     })}
     <style jsx>{`
       select {
-        -webkit-appearance: none;
         appearence: none;
         background: none;
         outline: none;
@@ -24,4 +23,4 @@ const languageToggle = ({ language, onLanguageChange }) =>
     `}</style>
   </select>;
 
-export default languageToggle;
+export default LanguageToggle;
