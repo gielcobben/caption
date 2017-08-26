@@ -12,8 +12,11 @@ import Search from "../components/Search";
 import Content from "../components/Content";
 import Footer from "../components/Footer";
 
+// Global variables
+const ESC_KEY = 27;
+
 export default class MainApp extends React.Component {
-  static async getInitialProps({ req }) {
+  static async getInitialProps() {
     if (!Store.has("settings")) {
       const language = "eng";
       Store.set("settings", { language });
@@ -64,7 +67,7 @@ export default class MainApp extends React.Component {
       this.onFocus();
     }
 
-    if (event.keyCode === 27) {
+    if (event.keyCode === ESC_KEY) {
       this.onReset();
     }
   }
@@ -99,7 +102,7 @@ export default class MainApp extends React.Component {
     const files = [];
     const results = [];
     this.setState({ placeholder, searchQuery, files, results });
-    this.search.textInput.blur();
+    this.onBlur();
   }
 
   onLanguageChange(event) {

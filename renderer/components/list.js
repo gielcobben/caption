@@ -5,6 +5,7 @@ import { shell } from "electron";
 import ListItem from "./ListItem";
 import { opensubtitles } from "../sources";
 
+// Global variables
 const ARROW_DOWN_KEY = 40;
 const ARROW_UP_KEY = 38;
 const ENTER_KEY = 13;

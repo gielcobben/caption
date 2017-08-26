@@ -8,6 +8,7 @@ class Search extends React.Component {
       onFocus,
       onBlur
     } = this.props;
+
     return (
       <section>
         <form onSubmit={onSubmit}>

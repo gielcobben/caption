@@ -1,6 +1,7 @@
 const Loading = () =>
   <span>
     <img src="/static/loading.gif" />
+
     <style jsx>{`
       img {
         width: 16px;

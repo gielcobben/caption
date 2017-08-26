@@ -20,7 +20,7 @@ const searchQuery = async (query, language, limit) => {
 
 const searchFiles = async (files, language, limit) => {
   files.map(async file => {
-    const info = await OpenSubtitles.identify({
+    const info = await OpenSubtitles.hash({
       path: file.path,
       extend: true
     });
