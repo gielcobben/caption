@@ -61,7 +61,7 @@ export default class MainApp extends React.Component {
 
   onKeyDown(event) {
     if (event.keyCode >= 48 && event.keyCode <= 90) {
-      this.search.textInput.focus();
+      this.onFocus();
     }
 
     if (event.keyCode === 27) {
@@ -78,11 +78,13 @@ export default class MainApp extends React.Component {
   onFocus() {
     const placeholder = "";
     this.setState({ placeholder });
+    this.search.textInput.focus();
   }
 
   onBlur() {
     const placeholder = "Search for a show...";
     this.setState({ placeholder });
+    this.search.textInput.blur();
   }
 
   async onDrop(rawFiles) {
