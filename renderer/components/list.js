@@ -2,15 +2,19 @@
 import { shell } from "electron";
 
 // Components
-import ListItem from "./listItem";
+import ListItem from "./ListItem";
 import { opensubtitles } from "../sources";
+
+const ARROW_DOWN_KEY  = 40;
+const ARROW_UP_KEY    = 38;
+const ENTER_KEY       = 13;
 
 class List extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selected: null
+      selected: null,
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -28,15 +32,15 @@ class List extends React.Component {
   }
 
   onKeyDown(event) {
-    if (event.keyCode === 40) {
+    if (event.keyCode === ARROW_DOWN_KEY) {
       this.onArrowDown();
     }
 
-    if (event.keyCode === 38) {
+    if (event.keyCode === ARROW_UP_KEY) {
       this.onArrowUp();
     }
 
-    if (event.keyCode === 13) {
+    if (event.keyCode === ENTER_KEY) {
       this.onDoubleClick();
     }
   }
@@ -82,12 +86,12 @@ class List extends React.Component {
       <ul>
         {results.map((item, index) =>
           <ListItem
-            key={index}
+            key={item.id}
             item={item}
             selected={selected === index ? true : ""}
             onClick={() => this.setState({ selected: index })}
             onDoubleClick={this.onDoubleClick}
-          />
+          />,
         )}
 
         <style jsx>{`

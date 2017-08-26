@@ -6,11 +6,11 @@ import { processFiles } from "../utils";
 import { opensubtitles } from "../sources";
 
 // Components
-import Layout from "../components/layout";
-import TitleBar from "../components/titleBar";
-import Search from "../components/search";
-import Content from "../components/content";
-import Footer from "../components/footer";
+import Layout from "../components/Layout";
+import TitleBar from "../components/TitleBar";
+import Search from "../components/Search";
+import Content from "../components/Content";
+import Footer from "../components/Footer";
 
 export default class MainApp extends React.Component {
   static async getInitialProps({ req }) {
