@@ -1,6 +1,6 @@
-import Drop from "../components/drop";
-import ListEmpty from "../components/listEmpty";
-import List from "../components/list";
+import Drop from "../components/Drop";
+import ListEmpty from "../components/ListEmpty";
+import List from "../components/List";
 
 export default ({ searchQuery, files, results, onDrop }) =>
   <section>
