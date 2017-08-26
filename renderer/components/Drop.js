@@ -22,7 +22,7 @@ const Drop = ({ onDrop }) =>
       onDrop={onDrop}
       preventDropOnDocument={true}
     >
-      <p>Drop and episode or season...</p>
+      <p>Drop an episode or season...</p>
     </Dropzone>
 
     <style jsx>{`

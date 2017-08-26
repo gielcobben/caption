@@ -1,5 +1,5 @@
-import LanguageToggle from "./languageToggle";
-import Info from "./info";
+import LanguageToggle from "./LanguageToggle";
+import Info from "./Info";
 
 const Footer = ({ results, language, onLanguageChange }) =>
   <footer>
