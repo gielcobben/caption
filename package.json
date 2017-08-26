@@ -11,10 +11,16 @@
     "dist": "npm run build && build --dir"
   },
   "build": {
-    "files": [
-      "**/*",
-      "!renderer",
-      "renderer/out"
+    "files": ["**/*", "!renderer", "renderer/out"],
+    "mac": {
+      "target": ["zip", "dmg"]
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "gielcobben",
+        "repo": "Caption"
+      }
     ]
   },
   "devDependencies": {
@@ -30,6 +36,7 @@
     "electron-is-dev": "0.3.0",
     "electron-next": "3.1.1",
     "electron-settings": "^3.1.1",
+    "electron-updater": "^2.8.7",
     "electron-window-state": "^4.1.1",
     "opensubtitles-api": "^4.0.0",
     "react-dropzone": "^4.1.0"
