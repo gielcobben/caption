@@ -1,12 +1,20 @@
-const info = ({ results }) =>
+import Loading from "./Loading";
+
+const Info = ({ results, loading }) =>
   <div>
-    {results.length} Results
+    {!loading &&
+      <span>
+        {results.length} Results
+      </span>}
+    {loading && <Loading />}
     <style jsx>{`
       div {
         width: 100%;
-        text-align: right;
+        height: 16px;
+        display: flex;
+        justify-content: flex-end;
       }
     `}</style>
   </div>;
 
-export default info;
+export default Info;

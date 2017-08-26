@@ -33,7 +33,6 @@ const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
 
       .selected {
         color: #fff;
-        font-weight: 500;
       }
 
       .selected,

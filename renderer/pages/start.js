@@ -32,8 +32,9 @@ export default class MainApp extends React.Component {
     this.state = {
       files: [],
       results: [],
-      language: language,
+      loading: false,
       searchQuery: "",
+      language: language,
       placeholder: "Search for a show..."
     };
 
@@ -117,6 +118,8 @@ export default class MainApp extends React.Component {
       event.preventDefault();
     }
 
+    this.setState({ loading: true });
+
     const { searchQuery, files } = this.state;
 
     if (searchQuery !== "") {
@@ -135,7 +138,7 @@ export default class MainApp extends React.Component {
       language,
       "all"
     );
-    this.setState({ results });
+    this.setState({ results, loading: false });
   }
 
   async searchFile() {
@@ -144,7 +147,14 @@ export default class MainApp extends React.Component {
   }
 
   render() {
-    const { placeholder, searchQuery, files, results, language } = this.state;
+    const {
+      placeholder,
+      searchQuery,
+      files,
+      results,
+      language,
+      loading
+    } = this.state;
 
     return (
       <Layout>
@@ -164,9 +174,11 @@ export default class MainApp extends React.Component {
           searchQuery={searchQuery}
           files={files}
           results={results}
+          loading={loading}
           onDrop={this.onDrop}
         />
         <Footer
+          loading={loading}
           results={results}
           language={language}
           onLanguageChange={this.onLanguageChange}
