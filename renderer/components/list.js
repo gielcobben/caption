@@ -74,8 +74,6 @@ class List extends React.Component {
       return false;
     }
 
-    console.log('item', item);
-
     // Text search
     if (item.filename) {
       return opensubtitles.downloadSubtitles([{ file: null, subtitle: item, dialog: true }]);

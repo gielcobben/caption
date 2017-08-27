@@ -8,19 +8,20 @@ const { download } = require("electron-dl");
 const { createMainWindow } = require("./windows/main");
 
 async function downloadSubtitles(event, args, mainWindow) {
-  args.files.map(async function({ dialog, subtitle, file }) {
+  args.files.map(function({ dialog, subtitle, file }) {
     if (dialog) {
       const options = {
         saveAs: true,
         openFolderWhenDone: true,
       };
-      const dl = await download(mainWindow, subtitle.url, options);
+      const dl = download(mainWindow, subtitle.url, options);
     } else {
       // Download file and put in dropped file folder
       const downloadLocation = path.dirname(file.path);
       const filename = file.name.replace(/\.[^/.]+$/, "");
 
       console.log('filename', filename);
+      console.log('downloadLocation', downloadLocation);
 
       const options = {
         saveAs: false,
@@ -28,8 +29,9 @@ async function downloadSubtitles(event, args, mainWindow) {
         filename: `${filename}.srt`,
       };
 
-      const dl = await download(mainWindow, subtitle.url, options);
-      console.log(dl.getSavePath());
+      download(mainWindow, subtitle.url, options).then(dl => {
+        console.log(dl.getSavePath());        
+      })
     }
   });
 }
