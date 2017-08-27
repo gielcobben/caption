@@ -1,6 +1,8 @@
 // Packages
 import { ipcRenderer } from "electron";
 import OS from "opensubtitles-api";
+import { head } from "lodash";
+
 const OpenSubtitles = new OS("OSTestUserAgentTemp");
 
 // Functions
@@ -8,21 +10,21 @@ const searchQuery = async (query, language, limit) => {
   const options = {
     sublanguageid: language,
     limit: limit,
-    query: query
+    query: query,
   };
 
   const results = await OpenSubtitles.search(options);
-  const firstItem = Object.keys(results)[0];
+  const firstItem = head(Object.keys(results));
   const subtitles = results[firstItem];
 
   return subtitles;
 };
 
 const searchFiles = async (files, language, limit) => {
-  files.map(async file => {
+  const subtitleReferences = files.map(async file => {
     const info = await OpenSubtitles.identify({
       path: file.path,
-      extend: true
+      extend: true,
     });
 
     const options = {
@@ -31,7 +33,7 @@ const searchFiles = async (files, language, limit) => {
       hash: info.moviehash,
       filesize: info.moviebytesize,
       path: file.path,
-      filename: file.filename
+      filename: file.filename,
     };
 
     if (info && info.metadata && info.metadata.imdbid) {
@@ -39,16 +41,26 @@ const searchFiles = async (files, language, limit) => {
     }
 
     const result = await OpenSubtitles.search(options);
-    const firstItem = Object.keys(result)[0];
+    const firstItem = head(Object.keys(result));
     const subtitle = result[firstItem];
 
-    downloadSubtitle(file, subtitle, false);
+    return {
+      file,
+      subtitle,
+    };
   });
+
+  const downloadedReferences = await Promise.all(subtitleReferences);
+  const subtitleResults = downloadedReferences.filter(
+    ({ subtitle }) => subtitle !== undefined,
+  );
+
+  downloadSubtitles(subtitleResults);
 };
 
-const downloadSubtitle = (file, subtitle, dialog) => {
-  ipcRenderer.send("download-subtitle", { file, subtitle, dialog });
+const downloadSubtitles = files => {
+  ipcRenderer.send("download-subtitle", { files });
 };
 
 // Exports
-export { searchQuery, searchFiles, downloadSubtitle };
+export { searchQuery, searchFiles, downloadSubtitles };

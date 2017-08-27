@@ -8,7 +8,9 @@
   "scripts": {
     "start": "electron .",
     "build": "next build renderer && next export renderer",
-    "dist": "npm run build && build --dir"
+    "dist": "npm run build && build --dir",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "build": {
     "files": [
@@ -20,6 +22,7 @@
   "devDependencies": {
     "electron": "1.7.5",
     "electron-builder": "19.22.1",
+    "jest": "^20.0.4",
     "next": "3.0.6",
     "react": "15.6.1",
     "react-dom": "15.6.1"
@@ -31,6 +34,7 @@
     "electron-next": "3.1.1",
     "electron-settings": "^3.1.1",
     "electron-window-state": "^4.1.1",
+    "lodash": "^4.17.4",
     "opensubtitles-api": "^4.0.0",
     "react-dropzone": "^4.1.0"
   }

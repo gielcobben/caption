@@ -1,4 +1,4 @@
-const info = ({ results }) =>
+const info = ({ results = [] }) =>
   <div>
     {results.length} Results
     <style jsx>{`

@@ -6,8 +6,8 @@ const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
     onDoubleClick={onDoubleClick}
     className={selected ? "selected" : ""}
   >
-    {item.name && item.name}
-    {item.filename && item.filename}
+    {item.name}
+    {item.filename}
 
     {item.size &&
       <div>
