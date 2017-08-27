@@ -13,10 +13,16 @@
     "test:watch": "jest --watch"
   },
   "build": {
-    "files": [
-      "**/*",
-      "!renderer",
-      "renderer/out"
+    "files": ["**/*", "!renderer", "renderer/out"],
+    "mac": {
+      "target": ["zip", "dmg"]
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "gielcobben",
+        "repo": "Caption"
+      }
     ]
   },
   "devDependencies": {

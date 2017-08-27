@@ -12,8 +12,11 @@ import Search from "../components/Search";
 import Content from "../components/Content";
 import Footer from "../components/Footer";
 
+// Global variables
+const ESC_KEY = 27;
+
 export default class MainApp extends React.Component {
-  static async getInitialProps({ req }) {
+  static async getInitialProps() {
     if (!Store.has("settings")) {
       const language = "eng";
       Store.set("settings", { language });
@@ -32,6 +35,7 @@ export default class MainApp extends React.Component {
     this.state = {
       files: [],
       results: [],
+      loading: false,  
       language,
       searchQuery: "",
       placeholder: "Search for a show...",
@@ -60,10 +64,10 @@ export default class MainApp extends React.Component {
 
   onKeyDown(event) {
     if (event.keyCode >= 48 && event.keyCode <= 90) {
-      this.search.textInput.focus();
+      this.onFocus();
     }
 
-    if (event.keyCode === 27) {
+    if (event.keyCode === ESC_KEY) {
       this.onReset();
     }
   }
@@ -77,11 +81,13 @@ export default class MainApp extends React.Component {
   onFocus() {
     const placeholder = "";
     this.setState({ placeholder });
+    this.search.textInput.focus();
   }
 
   onBlur() {
     const placeholder = "Search for a show...";
     this.setState({ placeholder });
+    this.search.textInput.blur();
   }
 
   async onDrop(rawFiles) {
@@ -96,7 +102,7 @@ export default class MainApp extends React.Component {
     const files = [];
     const results = [];
     this.setState({ placeholder, searchQuery, files, results });
-    this.search.textInput.blur();
+    this.onBlur();
   }
 
   onLanguageChange(event) {
@@ -116,6 +122,8 @@ export default class MainApp extends React.Component {
     if (event) {
       event.preventDefault();
     }
+
+    this.setState({ loading: true });
 
     const { searchQuery, files } = this.state;
 
@@ -137,7 +145,7 @@ export default class MainApp extends React.Component {
       language,
       "all",
     );
-    this.setState({ results });
+    this.setState({ results, loading: false });
   }
 
   async searchFile() {
@@ -146,7 +154,14 @@ export default class MainApp extends React.Component {
   }
 
   render() {
-    const { placeholder, searchQuery, files, results, language } = this.state;
+    const {
+      placeholder,
+      searchQuery,
+      files,
+      results,
+      language,
+      loading
+    } = this.state;
 
     return (
       <Layout>
@@ -166,9 +181,11 @@ export default class MainApp extends React.Component {
           searchQuery={searchQuery}
           files={files}
           results={results}
+          loading={loading}
           onDrop={this.onDrop}
         />
         <Footer
+          loading={loading}
           results={results}
           language={language}
           onLanguageChange={this.onLanguageChange}

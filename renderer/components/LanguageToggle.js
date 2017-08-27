@@ -1,4 +1,4 @@
-import languages from "../languages.json";
+import languages from "../static/languages.json";
 
 const LanguageToggle = ({ language, onLanguageChange }) =>
   <select value={language} onChange={onLanguageChange}>

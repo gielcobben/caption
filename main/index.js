@@ -1,6 +1,7 @@
 // Packages
 const path = require("path");
 const { app, ipcMain } = require("electron");
+// const autoUpdater = require("electron-updater").autoUpdater;
 const prepareNext = require("electron-next");
 const { download } = require("electron-dl");
 

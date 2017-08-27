@@ -5,16 +5,17 @@ import { shell } from "electron";
 import ListItem from "./ListItem";
 import { opensubtitles } from "../sources";
 
-const ARROW_DOWN_KEY = 40;
-const ARROW_UP_KEY = 38;
-const ENTER_KEY = 13;
+// Global variables
+const ARROW_DOWN_KEY  = 40;
+const ARROW_UP_KEY    = 38;
+const ENTER_KEY       = 13;
 
 class List extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selected: null,
+      selected: null
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -95,7 +96,7 @@ class List extends React.Component {
             selected={selected === index}
             onClick={() => this.setState({ selected: index })}
             onDoubleClick={this.onDoubleClick}
-          />,
+          />
         )}
 
         <style jsx>{`
