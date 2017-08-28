@@ -1,8 +1,8 @@
 import Title from "./Title";
 
-const TitleBar = () =>
+const TitleBar = ({ title }) =>
   <header>
-    <Title title="Caption" />
+    <Title title={title} />
 
     <style jsx>{`
       header {

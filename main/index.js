@@ -7,11 +7,13 @@ const { download } = require("electron-dl");
 
 // Windows
 const { createMainWindow } = require("./windows/main");
+const { createAboutWindow } = require("./windows/about");
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext("./renderer");
   const mainWindow = createMainWindow();
+  const aboutWindow = createAboutWindow();
 
   ipcMain.on("download-subtitle", async (event, args) => {
     if (args.dialog) {
@@ -36,4 +38,5 @@ app.on("ready", async () => {
 });
 
 // Quit the app once all windows are closed
+app.on("before-quit", () => (willQuitApp = true));
 app.on("window-all-closed", app.quit);
