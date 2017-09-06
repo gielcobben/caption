@@ -122,6 +122,15 @@ const Layout = ({ children }) =>
         font-size: 15px;
       }
 
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      a:hover {
+        color: #000;
+      }
+
       ol,
       ul {
         list-style: none;

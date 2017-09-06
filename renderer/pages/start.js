@@ -165,7 +165,7 @@ export default class MainApp extends React.Component {
 
     return (
       <Layout>
-        <TitleBar />
+        <TitleBar title="Caption" />
         <Search
           placeholder={placeholder}
           value={searchQuery}

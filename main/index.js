@@ -7,10 +7,9 @@ const { download } = require("electron-dl");
 
 // Windows
 const { createMainWindow } = require("./windows/main");
+const { createAboutWindow } = require("./windows/about");
 
 async function downloadSubtitles(event, args, mainWindow) {
-  debugger;
-
   args.files.map(function({ dialog, subtitle, file }) {
     if (dialog) {
       const options = {
@@ -50,4 +49,5 @@ app.on("ready", async () => {
 });
 
 // Quit the app once all windows are closed
+app.on("before-quit", () => (willQuitApp = true));
 app.on("window-all-closed", app.quit);

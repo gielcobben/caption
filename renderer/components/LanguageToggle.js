@@ -9,6 +9,7 @@ const LanguageToggle = ({ language, onLanguageChange }) =>
         </option>
       );
     })}
+
     <style jsx>{`
       select {
         appearence: none;
