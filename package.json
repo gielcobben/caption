@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": "gielcobben/Caption",
   "scripts": {
-    "start": "electron .",
+    "start": "electron --inspect=5858 .",
     "build": "next build renderer && next export renderer",
     "dist": "npm run build && build --dir",
     "test": "jest",

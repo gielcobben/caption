@@ -9,6 +9,8 @@ const { download } = require("electron-dl");
 const { createMainWindow } = require("./windows/main");
 
 async function downloadSubtitles(event, args, mainWindow) {
+  debugger;
+
   args.files.map(function({ dialog, subtitle, file }) {
     if (dialog) {
       const options = {
