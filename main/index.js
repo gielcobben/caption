@@ -10,7 +10,7 @@ const { createMainWindow } = require("./windows/main");
 const { createAboutWindow } = require("./windows/about");
 
 async function downloadSubtitles(event, args, mainWindow) {
-  args.files.map(function({ dialog, subtitle, file }) {
+  args.files.map(function({ dialog, subtitle, file, originalFileName }) {
     if (dialog) {
       const options = {
         saveAs: true,
@@ -20,20 +20,22 @@ async function downloadSubtitles(event, args, mainWindow) {
     } else {
       // Download file and put in dropped file folder
       const downloadLocation = path.dirname(file.path);
-      const filename = file.name.replace(/\.[^/.]+$/, "");
+      const filename = file.name;
+      const originalFileName = file.name;
 
       console.log('filename', filename);
-      console.log('downloadLocation', downloadLocation);
 
       const options = {
         saveAs: false,
         directory: downloadLocation,
-        filename: `${filename}.srt`,
       };
 
-      download(mainWindow, subtitle.url, options).then(dl => {
-        console.log(dl.getSavePath());        
-      })
+      download(mainWindow, subtitle.url, options).then(downloadItem => {
+        downloadItem.setSavePath(downloadLocation + '/' +  originalFileName + '.srt');
+        console.log('downloadItem', downloadItem.getSavePath());
+        // console.log("dl", dl);
+        // console.log(dl.getSavePath());
+      });
     }
   });
 }
