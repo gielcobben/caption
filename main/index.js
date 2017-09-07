@@ -52,7 +52,6 @@ const showAboutWindow = () => {
 };
 
 const onCloseAboutWindow = event => {
-  console.log("close about window...");
   if (willQuitApp) {
     aboutWindow = null;
   } else {

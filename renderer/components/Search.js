@@ -46,7 +46,7 @@ class Search extends React.Component {
 
           ::-webkit-input-placeholder {
             text-align: center;
-            color: rgba(0, 0, 0, .2);
+            color: rgba(0, 0, 0, 0.2);
           }
         `}</style>
       </section>

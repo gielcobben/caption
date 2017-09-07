@@ -5,7 +5,7 @@ import { shell } from "electron";
 import software from "../static/software.json";
 import SoftwareItem from "../components/SoftwareItem";
 
-const Credits = () =>
+const Credits = () => (
   <section>
     <h2>Special thanks to:</h2>
     <ul>
@@ -26,7 +26,7 @@ const Credits = () =>
     <h2>3rd party software</h2>
     <ul>
       {software.map((pkg, index) => {
-        return <SoftwareItem pkg={pkg} />;
+        return <SoftwareItem key={index} pkg={pkg} />;
       })}
     </ul>
 
@@ -43,12 +43,12 @@ const Credits = () =>
         margin-bottom: 12px;
         letter-spacing: 1px;
         font-weight: 500;
-        color: rgba(0, 0, 0, .8);
+        color: rgba(0, 0, 0, 0.8);
       }
 
       ul {
         margin-bottom: 24px;
-        color: rgba(0, 0, 0, .5);
+        color: rgba(0, 0, 0, 0.5);
       }
 
       ul:last-child {
@@ -63,6 +63,7 @@ const Credits = () =>
         color: rgba(0, 0, 0, 1);
       }
     `}</style>
-  </section>;
+  </section>
+);
 
 export default Credits;

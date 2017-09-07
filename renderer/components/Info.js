@@ -10,6 +10,8 @@ const Info = ({ results, loading }) => (
         height: 16px;
         display: flex;
         justify-content: flex-end;
+        font-size: 12px;
+        padding: 2px 0;
       }
     `}</style>
   </div>
