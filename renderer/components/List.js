@@ -6,9 +6,9 @@ import ListItem from "./ListItem";
 import { opensubtitles } from "../sources";
 
 // Global variables
-const ARROW_DOWN_KEY = 40;
-const ARROW_UP_KEY = 38;
-const ENTER_KEY = 13;
+const ARROW_DOWN_KEY  = 40;
+const ARROW_UP_KEY    = 38;
+const ENTER_KEY       = 13;
 
 class List extends React.Component {
   constructor(props) {
@@ -71,12 +71,16 @@ class List extends React.Component {
     const { selected } = this.state;
     const item = results[selected];
 
-    // text search
-    if (item && item.filename) {
-      opensubtitles.downloadSubtitle(null, item, true);
-    } else {
-      shell.showItemInFolder(item.path);
+    if (!item) {
+      return false;
     }
+
+    // Text search
+    if (item.filename) {
+      return opensubtitles.downloadSubtitles([{ file: null, subtitle: item, dialog: true }]);
+    }
+
+    return shell.showItemInFolder(item.path);
   }
 
   render() {
@@ -87,9 +91,9 @@ class List extends React.Component {
       <ul>
         {results.map((item, index) =>
           <ListItem
-            key={item.id}
+            key={item.id || item.name}
             item={item}
-            selected={selected === index ? true : ""}
+            selected={selected === index}
             onClick={() => this.setState({ selected: index })}
             onDoubleClick={this.onDoubleClick}
           />

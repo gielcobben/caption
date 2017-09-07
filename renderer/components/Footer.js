@@ -1,7 +1,7 @@
 import LanguageToggle from "./LanguageToggle";
 import Info from "./Info";
 
-const Footer = ({ results, language, loading, onLanguageChange }) =>
+const Footer = ({ results = [], language, loading, onLanguageChange }) =>
   <footer>
     <LanguageToggle language={language} onLanguageChange={onLanguageChange} />
     <Info results={results} loading={loading} />

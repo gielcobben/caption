@@ -30,15 +30,15 @@ export default class MainApp extends React.Component {
   constructor(props) {
     super(props);
 
-    const { language } = this.props.settings;
+    const { language } = props.settings;
 
     this.state = {
       files: [],
       results: [],
-      loading: false,
+      loading: false,  
+      language,
       searchQuery: "",
-      language: language,
-      placeholder: "Search for a show..."
+      placeholder: "Search for a show...",
     };
 
     this.onLanguageChange = this.onLanguageChange.bind(this);
@@ -128,12 +128,14 @@ export default class MainApp extends React.Component {
     const { searchQuery, files } = this.state;
 
     if (searchQuery !== "") {
-      this.searchQuery();
+      return this.searchQuery();
+    }
+    
+    if (files.length > 0) {
+      return this.searchFile();
     }
 
-    if (files.length > 0) {
-      this.searchFile();
-    }
+    this.onReset();
   }
 
   async searchQuery() {
@@ -141,7 +143,7 @@ export default class MainApp extends React.Component {
     const results = await opensubtitles.searchQuery(
       searchQuery,
       language,
-      "all"
+      "all",
     );
     this.setState({ results, loading: false });
   }
