@@ -1,11 +1,8 @@
 import Loading from "./Loading";
 
-const Info = ({ results, loading }) =>
+const Info = ({ results, loading }) => (
   <div>
-    {!loading &&
-      <span>
-        {results.length} Results
-      </span>}
+    {!loading && <span>{results.length} Results</span>}
     {loading && <Loading />}
     <style jsx>{`
       div {
@@ -15,6 +12,7 @@ const Info = ({ results, loading }) =>
         justify-content: flex-end;
       }
     `}</style>
-  </div>;
+  </div>
+);
 
 export default Info;

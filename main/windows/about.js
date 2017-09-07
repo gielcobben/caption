@@ -6,8 +6,10 @@ const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 
+let aboutWindow;
+
 const createAboutWindow = () => {
-  const aboutWindow = new BrowserWindow({
+  aboutWindow = new BrowserWindow({
     width: 260,
     height: 340,
     resizable: false,
@@ -36,11 +38,6 @@ const createAboutWindow = () => {
 
   const url = isDev ? devPath : prodPath;
   aboutWindow.loadURL(url);
-
-  aboutWindow.webContents.on("did-finish-load", () => {
-    aboutWindow.show();
-    aboutWindow.focus();
-  });
 
   return aboutWindow;
 };
