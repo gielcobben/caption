@@ -35,10 +35,10 @@ export default class MainApp extends React.Component {
     this.state = {
       files: [],
       results: [],
-      loading: false,  
+      loading: false,
       language,
       searchQuery: "",
-      placeholder: "Search for a show...",
+      placeholder: "Search for a show..."
     };
 
     this.onLanguageChange = this.onLanguageChange.bind(this);
@@ -75,7 +75,8 @@ export default class MainApp extends React.Component {
   onChange(event) {
     const searchQuery = event.target.value;
     const files = [];
-    this.setState({ searchQuery, files });
+    const results = [];
+    this.setState({ searchQuery, files, results });
   }
 
   onFocus() {
@@ -130,7 +131,7 @@ export default class MainApp extends React.Component {
     if (searchQuery !== "") {
       return this.searchQuery();
     }
-    
+
     if (files.length > 0) {
       return this.searchFile();
     }
@@ -143,7 +144,7 @@ export default class MainApp extends React.Component {
     const results = await opensubtitles.searchQuery(
       searchQuery,
       language,
-      "all",
+      "all"
     );
     this.setState({ results, loading: false });
   }
