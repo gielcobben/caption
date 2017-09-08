@@ -98,11 +98,14 @@ export default class MainApp extends React.Component {
   }
 
   onReset() {
-    const placeholder = "Search for a show...";
-    const searchQuery = "";
-    const files = [];
-    const results = [];
-    this.setState({ placeholder, searchQuery, files, results });
+    this.setState({
+      placeholder: "Search for a show...",
+      searchQuery: "",
+      files: [],
+      results: [],
+      loading: false
+    });
+
     this.onBlur();
   }
 
