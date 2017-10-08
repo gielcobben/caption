@@ -5,26 +5,45 @@ import { head } from "lodash";
 
 const OpenSubtitles = new OS("OSTestUserAgentTemp");
 
-// Functions
-const searchQuery = async (query, language, limit) => {
+const transform = items => {
+  const results = [];
+
+  items.map(item => {
+    const result = {
+      name: item.filename,
+      download: item.url,
+      extention: "",
+      source: "opensubtitles",
+      size: "",
+      score: item.score
+    };
+
+    results.push(result);
+  });
+
+  return results;
+};
+
+const textSearch = async (query, language, limit) => {
   const options = {
     sublanguageid: language,
     limit: limit,
-    query: query,
+    query: query
   };
 
-  const results = await OpenSubtitles.search(options);
-  const firstItem = head(Object.keys(results));
-  const subtitles = results[firstItem];
+  const items = await OpenSubtitles.search(options);
+  const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
+  const results = items[firstItem];
+  const subtitles = transform(results);
 
   return subtitles;
 };
 
-const searchFiles = async (files, language, limit) => {
+const fileSearch = async (files, language, limit) => {
   const subtitleReferences = files.map(async file => {
     const info = await OpenSubtitles.identify({
       path: file.path,
-      extend: true,
+      extend: true
     });
 
     const options = {
@@ -33,7 +52,7 @@ const searchFiles = async (files, language, limit) => {
       hash: info.moviehash,
       filesize: info.moviebytesize,
       path: file.path,
-      filename: file.filename,
+      filename: file.filename
     };
 
     if (info && info.metadata && info.metadata.imdbid) {
@@ -46,21 +65,17 @@ const searchFiles = async (files, language, limit) => {
 
     return {
       file,
-      subtitle,
+      subtitle
     };
   });
 
   const downloadedReferences = await Promise.all(subtitleReferences);
   const subtitleResults = downloadedReferences.filter(
-    ({ subtitle }) => subtitle !== undefined,
+    ({ subtitle }) => subtitle !== undefined
   );
 
-  downloadSubtitles(subtitleResults);
-};
-
-const downloadSubtitles = files => {
-  ipcRenderer.send("download-subtitle", { files });
+  return subtitleResults;
 };
 
 // Exports
-export { searchQuery, searchFiles, downloadSubtitles };
+export { textSearch, fileSearch };

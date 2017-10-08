@@ -3,7 +3,7 @@ import Store from "electron-settings";
 
 // Utils
 import { processFiles } from "../utils";
-import { opensubtitles } from "../sources";
+import { textSearch, fileSearch } from "../sources";
 
 // Components
 import Layout from "../components/Layout";
@@ -144,17 +144,13 @@ export default class MainApp extends React.Component {
 
   async searchQuery() {
     const { searchQuery, language } = this.state;
-    const results = await opensubtitles.searchQuery(
-      searchQuery,
-      language,
-      "all"
-    );
+    const results = await textSearch(searchQuery, language, "all");
     this.setState({ results, loading: false });
   }
 
   async searchFile() {
     const { files, language } = this.state;
-    const results = await opensubtitles.searchFiles(files, language, "best");
+    const results = await fileSearch(files, language, "best");
   }
 
   render() {

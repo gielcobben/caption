@@ -1,6 +1,6 @@
 import { fileSizeReadable } from "../utils";
 
-const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
+const ListItem = ({ item, selected, onClick, onDoubleClick }) => (
   <li
     onClick={onClick}
     onDoubleClick={onDoubleClick}
@@ -9,12 +9,13 @@ const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
     {item.name}
     {item.filename}
 
-    {item.size &&
+    {item.size && (
       <div>
         {fileSizeReadable(item.size)}
         <span />
         {item.extention}
-      </div>}
+      </div>
+    )}
 
     <style jsx>{`
       li {
@@ -28,7 +29,7 @@ const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
       }
 
       li:nth-child(even) {
-        background: rgba(255, 255, 255, .3);
+        background: rgba(255, 255, 255, 0.3);
       }
 
       .selected {
@@ -43,7 +44,7 @@ const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
       div {
         display: block;
         font-size: 11px;
-        color: rgba(0, 0, 0, .6);
+        color: rgba(0, 0, 0, 0.6);
         padding: 5px 0;
       }
 
@@ -53,10 +54,11 @@ const ListItem = ({ item, selected, onClick, onDoubleClick }) =>
         height: 4px;
         border-radius: 4px;
         vertical-align: middle;
-        background: rgba(0, 0, 0, .4);
+        background: rgba(0, 0, 0, 0.4);
         margin: 0 8px;
       }
     `}</style>
-  </li>;
+  </li>
+);
 
 export default ListItem;
