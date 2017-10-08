@@ -34,8 +34,13 @@ const textSearch = async (query, language, limit) => {
   const items = await OpenSubtitles.search(options);
   const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
   const results = items[firstItem];
-  const subtitles = transform(results);
 
+  if (!results) {
+    console.log("OpenSubtitle: Nothing found...");
+    return;
+  }
+
+  const subtitles = transform(results);
   return subtitles;
 };
 

@@ -24,7 +24,7 @@ const textSearch = async (query, language, limit) => {
   const splitQuery = query.match(/s([0-9]{1,2})\s*e([0-9]{1,2})/i);
 
   if (!splitQuery) {
-    console.log("no subtitles found");
+    console.log("Addic7ed: Nothing found...");
     return;
   }
 
