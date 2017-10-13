@@ -79,7 +79,11 @@ const fileSearch = async (files, language, limit) => {
     ({ subtitle }) => subtitle !== undefined
   );
 
-  return subtitleResults;
+  downloadSubtitles(subtitleResults);
+};
+
+const downloadSubtitles = files => {
+  ipcRenderer.send("download-subtitle", { files });
 };
 
 // Exports

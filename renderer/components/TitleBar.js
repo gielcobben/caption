@@ -1,6 +1,6 @@
 import Title from "./Title";
 
-const TitleBar = ({ title }) =>
+const TitleBar = ({ title }) => (
   <header>
     <Title title={title} />
 
@@ -9,8 +9,10 @@ const TitleBar = ({ title }) =>
         background: #fff;
         height: 38px;
         -webkit-app-region: drag;
+        border-radius: 6px 6px 0 0;
       }
     `}</style>
-  </header>;
+  </header>
+);
 
 export default TitleBar;

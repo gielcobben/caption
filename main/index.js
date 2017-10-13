@@ -6,6 +6,7 @@ const prepareNext = require("electron-next");
 const { download } = require("electron-dl");
 
 const buildMenu = require("./menu");
+
 const { createMainWindow } = require("./windows/main");
 const { createAboutWindow } = require("./windows/about");
 
@@ -13,8 +14,8 @@ let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
 
-const downloadSubtitles = async (event, args, mainWindow) => {
-  args.files.map(({ dialog, subtitle, file, originalFileName }) => {
+async function downloadSubtitles(event, args, mainWindow) {
+  args.files.map(function({ dialog, subtitle, file, originalFileName }) {
     if (dialog) {
       const options = {
         saveAs: true,
@@ -44,7 +45,7 @@ const downloadSubtitles = async (event, args, mainWindow) => {
       });
     }
   });
-};
+}
 
 const showAboutWindow = () => {
   aboutWindow.show();
