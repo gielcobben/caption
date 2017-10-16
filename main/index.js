@@ -1,6 +1,7 @@
 // Packages
+const fs = require("nano-fs");
 const path = require("path");
-const { app, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 // const autoUpdater = require("electron-updater").autoUpdater;
 const prepareNext = require("electron-next");
 const { download } = require("electron-dl");
@@ -14,38 +15,74 @@ let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
 
-async function downloadSubtitles(event, args, mainWindow) {
-  args.files.map(function({ dialog, subtitle, file, originalFileName }) {
-    if (dialog) {
-      const options = {
-        saveAs: true,
-        openFolderWhenDone: true
-      };
-      const dl = download(mainWindow, subtitle.url, options);
-    } else {
-      // Download file and put in dropped file folder
-      const downloadLocation = path.dirname(file.path);
-      const filename = file.name;
-      const originalFileName = file.name;
+const downloadSubtitles = async (event, args, mainWindow) => {
+  const files = args.files;
 
-      console.log("filename", filename);
+  try {
+    return await Promise.all(
+      files.map(async ({ file, subtitle }) => {
+        const downloadLocation = path.dirname(file.path);
+        const originalFileName = file.name;
+        const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
-      const options = {
-        saveAs: false,
-        directory: downloadLocation
-      };
+        const options = {
+          saveAs: false,
+          directory: downloadLocation
+        };
 
-      download(mainWindow, subtitle.url, options).then(downloadItem => {
-        downloadItem.setSavePath(
-          downloadLocation + "/" + originalFileName + ".srt"
-        );
-        console.log("downloadItem", downloadItem.getSavePath());
-        // console.log("dl", dl);
-        // console.log(dl.getSavePath());
-      });
-    }
-  });
-}
+        try {
+          const item = await download(mainWindow, subtitle.url, options);
+
+          console.log(item);
+
+          // const rename = await fs.rename(
+          //   `${downloadLocation}/${subtitle.filename}`,
+          //   `${downloadLocation}/${subtitleFilename}.srt`
+          // );
+
+          return rename;
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
+  // await Promise.all(files.map())
+
+  // args.files.map(async ({ dialog, subtitle, file }) => {
+  //   if (dialog) {
+  //     const options = {
+  //       saveAs: true,
+  //       openFolderWhenDone: true
+  //     };
+  //     const dl = await download(mainWindow, subtitle.url, options);
+  //   } else {
+  //     // Download file and put in dropped file folder
+  //     const downloadLocation = path.dirname(file.path);
+  //     const originalFileName = file.name;
+  //     const filename = originalFileName.replace(/\.[^/.]+$/, ""); // remove extension
+
+  //     const options = {
+  //       saveAs: false,
+  //       directory: downloadLocation
+  //     };
+
+  //     const dl = await download(mainWindow, subtitle.url, options);
+  //     dl.setSavePath(downloadLocation);
+
+  //     await fs.rename(
+  //       `${downloadLocation}/${subtitle.filename}`,
+  //       `${downloadLocation}/${filename}.srt`,
+  //       error => {
+  //         if (error) console.log(error);
+  //       }
+  //     );
+  //   }
+  // });
+};
 
 const showAboutWindow = () => {
   aboutWindow.show();

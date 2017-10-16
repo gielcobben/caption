@@ -13,9 +13,16 @@
     "test:watch": "jest --watch"
   },
   "build": {
-    "files": ["**/*", "!renderer", "renderer/out"],
+    "files": [
+      "**/*",
+      "!renderer",
+      "renderer/out"
+    ],
     "mac": {
-      "target": ["zip", "dmg"]
+      "target": [
+        "zip",
+        "dmg"
+      ]
     },
     "publish": [
       {
@@ -26,7 +33,7 @@
     ]
   },
   "devDependencies": {
-    "electron": "1.7.5",
+    "electron": "latest",
     "electron-builder": "19.22.1",
     "jest": "^20.0.4",
     "next": "3.0.6",
@@ -42,6 +49,7 @@
     "electron-settings": "^3.1.1",
     "electron-window-state": "^4.1.1",
     "lodash": "^4.17.4",
+    "nano-fs": "^1.2.4",
     "opensubtitles-api": "^4.0.0",
     "react-dropzone": "^4.1.0"
   }
