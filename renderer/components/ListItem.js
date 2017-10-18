@@ -1,9 +1,16 @@
 import { fileSizeReadable } from "../utils";
 
-const ListItem = ({ item, selected, onClick, onDoubleClick }) => (
+const ListItem = ({
+  item,
+  selected,
+  onClick,
+  onDoubleClick,
+  onContextMenu
+}) => (
   <li
     onClick={onClick}
     onDoubleClick={onDoubleClick}
+    onContextMenu={onContextMenu}
     className={selected ? "selected" : ""}
   >
     {item.name}

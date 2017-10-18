@@ -1,9 +1,8 @@
 // Packages
-import { shell } from "electron";
+import { Menu, MenuItem, remote, shell } from "electron";
 
 // Components
 import ListItem from "./ListItem";
-import { opensubtitles } from "../sources";
 
 // Global variables
 const ARROW_DOWN_KEY = 40;
@@ -33,6 +32,8 @@ class List extends React.Component {
   }
 
   onKeyDown(event) {
+    const { onDoubleClick } = this.props;
+
     if (event.keyCode === ARROW_DOWN_KEY) {
       this.onArrowDown();
     }
@@ -42,7 +43,7 @@ class List extends React.Component {
     }
 
     if (event.keyCode === ENTER_KEY) {
-      this.onDoubleClick();
+      onDoubleClick();
     }
   }
 
@@ -70,19 +71,28 @@ class List extends React.Component {
     const { results } = this.props;
     const { selected } = this.state;
     const item = results[selected];
+  }
 
-    if (!item) {
-      return false;
-    }
+  onContextMenu(clicked) {
+    const { Menu, MenuItem } = remote;
+    const { results } = this.props;
+    const item = results[clicked];
+    const template = Menu.buildFromTemplate([
+      {
+        label: "Download",
+        click: () => {
+          // window.location.assign(item.ZipDownloadLink)
+          console.log(`Download ${item.name}`);
+        }
+      }
+    ]);
 
-    // Text search
-    if (item.filename) {
-      return opensubtitles.downloadSubtitles([
-        { file: null, subtitle: item, dialog: true }
-      ]);
-    }
-
-    return shell.showItemInFolder(item.path);
+    // Wait till state is set.
+    this.setState({ selected: clicked }, () => {
+      setTimeout(() => {
+        template.popup(remote.getCurrentWindow());
+      }, 10);
+    });
   }
 
   render() {
@@ -98,6 +108,7 @@ class List extends React.Component {
             selected={selected === index}
             onClick={() => this.setState({ selected: index })}
             onDoubleClick={this.onDoubleClick}
+            onContextMenu={this.onContextMenu.bind(this, index)}
           />
         ))}
 

@@ -1,7 +1,7 @@
 // Packages
 import { ipcRenderer } from "electron";
 import OS from "opensubtitles-api";
-import { head } from "lodash";
+// import { head } from "lodash";
 
 const OpenSubtitles = new OS("OSTestUserAgentTemp");
 
@@ -32,8 +32,11 @@ const textSearch = async (query, language, limit) => {
   };
 
   const items = await OpenSubtitles.search(options);
-  const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
+  const firstItem = Object.keys(items)[0];
+  // const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
   const results = items[firstItem];
+
+  console.log(results);
 
   if (!results) {
     console.log("OpenSubtitle: Nothing found...");

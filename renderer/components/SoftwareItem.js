@@ -6,7 +6,7 @@ const arrowRight = (
     xmlns="http://www.w3.org/2000/svg"
     fill="#808080"
   >
-    <path d="M0 0l5 3-5 3" fill-rule="evenodd" />
+    <path d="M0 0l5 3-5 3" fillRule="evenodd" />
   </svg>
 );
 
@@ -18,7 +18,7 @@ const arrowDown = (
     xmlns="http://www.w3.org/2000/svg"
     fill="#808080"
   >
-    <path d="M6 0L3 5 0 0" fill-rule="evenodd" />
+    <path d="M6 0L3 5 0 0" fillRule="evenodd" />
   </svg>
 );
 
@@ -47,10 +47,7 @@ class SoftwareItem extends React.Component {
           {pkg.name}
         </span>
 
-        {open &&
-          <p>
-            {pkg.description}
-          </p>}
+        {open && <p>{pkg.description}</p>}
 
         <style jsx>{`
           span {
@@ -61,7 +58,7 @@ class SoftwareItem extends React.Component {
             margin: 8px 0;
             line-height: 1.4;
             font-size: 12px;
-            color: rgba(0, 0, 0, .8);
+            color: rgba(0, 0, 0, 0.8);
             user-select: text;
             cursor: default;
           }

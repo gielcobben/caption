@@ -1,8 +1,16 @@
 module.exports = {
   webpack(config) {
+    console.log(config);
+
     config.target = "electron-renderer";
+
+    config.plugins = config.plugins.filter(plugin => {
+      return plugin.constructor.name !== "UglifyJsPlugin";
+    });
+
     return config;
   },
+
   exportPathMap() {
     // Let Next.js know where to find the entry page
     // when it's exporting the static bundle for the use

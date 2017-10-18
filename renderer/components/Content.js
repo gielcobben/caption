@@ -2,12 +2,34 @@ import Drop from "../components/Drop";
 import ListEmpty from "../components/ListEmpty";
 import List from "../components/List";
 
-const Content = ({ searchQuery, files, results = [], loading, onDrop }) => (
+const Content = ({
+  searchQuery,
+  files,
+  results = [],
+  loading,
+  onDrop,
+  onDoubleClick,
+  onContextMenu
+}) => (
   <section className={loading ? "loading" : ""}>
     {searchQuery !== "" && results.length === 0 && <ListEmpty />}
+
     {searchQuery === "" && files.length === 0 && <Drop onDrop={onDrop} />}
-    {files.length > 0 && <List results={files} />}
-    {results.length > 0 && <List results={results} />}
+
+    {files.length > 0 && (
+      <List
+        results={files}
+        onDoubleClick={onDoubleClick}
+        onContextMenu={onContextMenu}
+      />
+    )}
+    {results.length > 0 && (
+      <List
+        results={results}
+        onDoubleClick={onDoubleClick}
+        onContextMenu={onContextMenu}
+      />
+    )}
 
     <style jsx>{`
       section {

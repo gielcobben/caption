@@ -1,5 +1,5 @@
 // Packages
-const fs = require("nano-fs");
+const fs = require("fs");
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
 // const autoUpdater = require("electron-updater").autoUpdater;
@@ -32,15 +32,7 @@ const downloadSubtitles = async (event, args, mainWindow) => {
 
         try {
           const item = await download(mainWindow, subtitle.url, options);
-
-          console.log(item);
-
-          // const rename = await fs.rename(
-          //   `${downloadLocation}/${subtitle.filename}`,
-          //   `${downloadLocation}/${subtitleFilename}.srt`
-          // );
-
-          return rename;
+          return item;
         } catch (error) {
           console.log(error);
         }

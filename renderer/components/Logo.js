@@ -1,6 +1,6 @@
-const Logo = () =>
+const Logo = () => (
   <div>
-    <img src="/static/icon.png" />
+    <img src="/static/icon.png" draggable="false" />
 
     <style jsx>{`
       div {
@@ -14,6 +14,7 @@ const Logo = () =>
         height: 80px;
       }
     `}</style>
-  </div>;
+  </div>
+);
 
 export default Logo;

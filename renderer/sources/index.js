@@ -22,7 +22,7 @@ const textSearch = async (files, language, limit) => {
 const fileSearch = async (files, language, limit) => {
   const opensubtitlesRef = opensubtitles.fileSearch(files, language, limit);
 
-  const [result] = await Promise.race([opensubtitlesRef]);
+  const result = await Promise.race([opensubtitlesRef]);
 
   // downloadSubtitles(results);
 };
