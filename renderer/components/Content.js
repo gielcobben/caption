@@ -7,29 +7,13 @@ const Content = ({
   files = [],
   results = [],
   loading,
-  onDrop,
-  onDoubleClick,
-  onContextMenu
+  onDrop
 }) => (
   <section className={loading ? "loading" : ""}>
     {searchQuery !== "" && results.length === 0 && <ListEmpty />}
-
     {searchQuery === "" && files.length === 0 && <Drop onDrop={onDrop} />}
-
-    {files.length > 0 && (
-      <List
-        results={files}
-        onDoubleClick={onDoubleClick}
-        onContextMenu={onContextMenu}
-      />
-    )}
-    {results.length > 0 && (
-      <List
-        results={results}
-        onDoubleClick={onDoubleClick}
-        onContextMenu={onContextMenu}
-      />
-    )}
+    {files.length > 0 && <List results={files} />}
+    {results.length > 0 && <List results={results} />}
 
     <style jsx>{`
       section {

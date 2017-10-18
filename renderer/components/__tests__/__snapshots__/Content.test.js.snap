@@ -1,5 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Content /> should render <List /> when files dropped are dropped 1`] = `
+<section
+  className="jsx-607015341 "
+>
+  <ul
+    className="jsx-565981134"
+  >
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+  </ul>
+  <ul
+    className="jsx-1528968591"
+  >
+    <li
+      className="jsx-3663839241 "
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDoubleClick={[Function]}
+    />
+    <li
+      className="jsx-3663839241 "
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDoubleClick={[Function]}
+    />
+  </ul>
+</section>
+`;
+
+exports[`<Content /> should render <List /> when there are results 1`] = `
+<section
+  className="jsx-607015341 "
+>
+  <ul
+    className="jsx-1528968591"
+  >
+    <li
+      className="jsx-3663839241 "
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDoubleClick={[Function]}
+    />
+    <li
+      className="jsx-3663839241 "
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDoubleClick={[Function]}
+    />
+  </ul>
+</section>
+`;
+
 exports[`<Content /> should show <Drop /> when there is no searchQuery and no files dropped 1`] = `
 <section
   className="jsx-607015341 "

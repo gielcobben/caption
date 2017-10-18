@@ -1,12 +1,10 @@
 module.exports = {
   webpack(config) {
-    console.log(config);
-
     config.target = "electron-renderer";
 
-    config.plugins = config.plugins.filter(plugin => {
-      return plugin.constructor.name !== "UglifyJsPlugin";
-    });
+    // config.plugins = config.plugins.filter(plugin => {
+    //   return plugin.constructor.name !== "UglifyJsPlugin";
+    // });
 
     return config;
   },
