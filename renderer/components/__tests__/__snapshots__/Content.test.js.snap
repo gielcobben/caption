@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Content /> should show <Drop /> when there is no searchQuery and no files dropped 1`] = `
+<section
+  className="jsx-607015341 "
+>
+  <div
+    className="jsx-4267466600"
+  >
+    <FakeDropzone
+      activeStyle={
+        Object {
+          "border": "1px dashed red",
+        }
+      }
+      onDrop={undefined}
+      preventDropOnDocument={true}
+      style={
+        Object {
+          "border": "1px dashed rgba(202, 203, 204, 1)",
+          "borderRadius": "5px",
+          "height": "100%",
+          "width": "100%",
+        }
+      }
+    >
+      <p
+        className="jsx-4267466600"
+      >
+        Drop an episode or season...
+      </p>
+    </FakeDropzone>
+  </div>
+</section>
+`;
+
 exports[`<Content /> should show <ListEmpty /> when there is a query but no results 1`] = `
 <section
   className="jsx-607015341 "
