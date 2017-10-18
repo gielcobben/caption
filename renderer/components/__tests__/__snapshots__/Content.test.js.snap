@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Content /> should show <ListEmpty /> when there is a query but no results 1`] = `
+<section
+  className="jsx-607015341 "
+>
+  <ul
+    className="jsx-565981134"
+  >
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+    <li
+      className="jsx-565981134"
+    />
+  </ul>
+</section>
+`;
