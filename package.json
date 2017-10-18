@@ -13,9 +13,16 @@
     "test:watch": "jest --watch"
   },
   "build": {
-    "files": ["**/*", "!renderer", "renderer/out"],
+    "files": [
+      "**/*",
+      "!renderer",
+      "renderer/out"
+    ],
     "mac": {
-      "target": ["zip", "dmg"]
+      "target": [
+        "zip",
+        "dmg"
+      ]
     },
     "publish": [
       {
@@ -32,7 +39,8 @@
     "jest": "^20.0.4",
     "next": "4.1.0",
     "react": "16.0.0",
-    "react-dom": "16.0.0"
+    "react-dom": "16.0.0",
+    "react-test-renderer": "^16.0.0"
   },
   "dependencies": {
     "addic7ed-api": "^1.3.2",
