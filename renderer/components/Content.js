@@ -4,7 +4,7 @@ import List from "../components/List";
 
 const Content = ({
   searchQuery,
-  files,
+  files = [],
   results = [],
   loading,
   onDrop,
