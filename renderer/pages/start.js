@@ -1,4 +1,5 @@
 // Packages
+import { ipcRenderer } from "electron";
 import Store from "electron-settings";
 
 // Utils
@@ -48,6 +49,7 @@ export default class MainApp extends React.Component {
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.onFinishedDownloads = this.onFinishedDownloads.bind(this);
 
     this.searchQuery = this.searchQuery.bind(this);
     this.searchFile = this.searchFile.bind(this);
@@ -55,6 +57,10 @@ export default class MainApp extends React.Component {
 
   // handling escape close
   componentDidMount() {
+    ipcRenderer.once("download-complete", (event, downloadedItems) => {
+      this.onFinishedDownloads(downloadedItems);
+    });
+
     document.addEventListener("keydown", this.onKeyDown);
   }
 
@@ -140,6 +146,10 @@ export default class MainApp extends React.Component {
     }
 
     this.onReset();
+  }
+
+  onFinishedDownloads(items) {
+    this.setState({ loading: false });
   }
 
   async searchQuery() {

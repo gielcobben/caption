@@ -1,9 +1,9 @@
 // Packages
-import { ipcRenderer } from "electron";
 import OS from "opensubtitles-api";
-// import { head } from "lodash";
+import { head } from "lodash";
 
-const OpenSubtitles = new OS("OSTestUserAgentTemp");
+// const OpenSubtitles = new OS("OSTestUserAgentTemp");
+const OpenSubtitles = new OS("caption");
 
 const transform = items => {
   const results = [];
@@ -27,16 +27,13 @@ const transform = items => {
 const textSearch = async (query, language, limit) => {
   const options = {
     sublanguageid: language,
-    limit: limit,
-    query: query
+    limit,
+    query
   };
 
   const items = await OpenSubtitles.search(options);
-  const firstItem = Object.keys(items)[0];
-  // const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
+  const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
   const results = items[firstItem];
-
-  console.log(results);
 
   if (!results) {
     console.log("OpenSubtitle: Nothing found...");
@@ -82,11 +79,7 @@ const fileSearch = async (files, language, limit) => {
     ({ subtitle }) => subtitle !== undefined
   );
 
-  downloadSubtitles(subtitleResults);
-};
-
-const downloadSubtitles = files => {
-  ipcRenderer.send("download-subtitle", { files });
+  return subtitleResults;
 };
 
 // Exports

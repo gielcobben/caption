@@ -1,5 +1,4 @@
 // Packages
-const fs = require("fs");
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
 // const autoUpdater = require("electron-updater").autoUpdater;
@@ -17,63 +16,28 @@ let willQuitApp = false;
 
 const downloadSubtitles = async (event, args, mainWindow) => {
   const files = args.files;
+  const items = [];
 
   try {
-    return await Promise.all(
-      files.map(async ({ file, subtitle }) => {
-        const downloadLocation = path.dirname(file.path);
-        const originalFileName = file.name;
-        const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
+    for (let i = 0; i < files.length; i++) {
+      const { file, subtitle } = files[i];
+      const downloadLocation = path.dirname(file.path);
+      const originalFileName = file.name;
+      const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
-        const options = {
-          saveAs: false,
-          directory: downloadLocation
-        };
+      const options = {
+        saveAs: false,
+        directory: downloadLocation
+      };
 
-        try {
-          const item = await download(mainWindow, subtitle.url, options);
-          return item;
-        } catch (error) {
-          console.log(error);
-        }
-      })
-    );
+      const item = await download(mainWindow, subtitle.url, options);
+      items.push(item);
+    }
   } catch (error) {
     console.log(error);
   }
 
-  // await Promise.all(files.map())
-
-  // args.files.map(async ({ dialog, subtitle, file }) => {
-  //   if (dialog) {
-  //     const options = {
-  //       saveAs: true,
-  //       openFolderWhenDone: true
-  //     };
-  //     const dl = await download(mainWindow, subtitle.url, options);
-  //   } else {
-  //     // Download file and put in dropped file folder
-  //     const downloadLocation = path.dirname(file.path);
-  //     const originalFileName = file.name;
-  //     const filename = originalFileName.replace(/\.[^/.]+$/, ""); // remove extension
-
-  //     const options = {
-  //       saveAs: false,
-  //       directory: downloadLocation
-  //     };
-
-  //     const dl = await download(mainWindow, subtitle.url, options);
-  //     dl.setSavePath(downloadLocation);
-
-  //     await fs.rename(
-  //       `${downloadLocation}/${subtitle.filename}`,
-  //       `${downloadLocation}/${filename}.srt`,
-  //       error => {
-  //         if (error) console.log(error);
-  //       }
-  //     );
-  //   }
-  // });
+  mainWindow.webContents.send("download-complete", items);
 };
 
 const showAboutWindow = () => {
@@ -101,8 +65,8 @@ app.on("ready", async () => {
 
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
-  ipcMain.on("download-subtitle", (e, args) =>
-    downloadSubtitles(e, args, mainWindow)
+  ipcMain.on("download-subtitle", (event, args) =>
+    downloadSubtitles(event, args, mainWindow)
   );
 });
 

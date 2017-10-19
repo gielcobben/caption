@@ -50,6 +50,7 @@
     "electron-next": "3.1.1",
     "electron-settings": "^3.1.1",
     "electron-window-state": "^4.1.1",
+    "lodash": "^4.17.4",
     "opensubtitles-api": "latest",
     "react-dropzone": "^4.1.0"
   }
