@@ -1,4 +1,5 @@
 // Packages
+const fs = require("fs");
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
 // const autoUpdater = require("electron-updater").autoUpdater;
@@ -13,6 +14,16 @@ const { createAboutWindow } = require("./windows/about");
 let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
+
+const renameSubtitles = subtitles => {
+  subtitles.map(subtitle => {
+    fs.rename(subtitle.savePath, subtitle.filename, () => {
+      console.log("done");
+    });
+  });
+
+  mainWindow.webContents.send("download-complete", subtitles);
+};
 
 const downloadSubtitles = async (event, args, mainWindow) => {
   const files = args.files;
@@ -31,13 +42,19 @@ const downloadSubtitles = async (event, args, mainWindow) => {
       };
 
       const item = await download(mainWindow, subtitle.url, options);
-      items.push(item);
+
+      const downloadedItem = {
+        savePath: item.getSavePath(),
+        filename: `${downloadLocation}/${subtitleFilename}.srt`
+      };
+
+      items.push(downloadedItem);
     }
   } catch (error) {
     console.log(error);
   }
 
-  mainWindow.webContents.send("download-complete", items);
+  renameSubtitles(items);
 };
 
 const showAboutWindow = () => {
