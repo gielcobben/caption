@@ -1,5 +1,5 @@
 // Packages
-import { Menu, MenuItem, remote, shell } from "electron";
+import { Menu, MenuItem, remote, shell, ipcRenderer } from "electron";
 
 // Components
 import ListItem from "./ListItem";
@@ -77,12 +77,13 @@ class List extends React.Component {
     const { Menu, MenuItem } = remote;
     const { results } = this.props;
     const item = results[clicked];
+    const mainWindow = remote.getCurrentWindow();
+
     const template = Menu.buildFromTemplate([
       {
         label: "Download",
-        click: () => {
-          // window.location.assign(item.ZipDownloadLink)
-          console.log(`Download ${item.name}`);
+        click: async () => {
+          ipcRenderer.send("download-subtitle", true, item);
         }
       }
     ]);

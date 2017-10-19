@@ -25,8 +25,15 @@ const renameSubtitles = subtitles => {
   mainWindow.webContents.send("download-complete", subtitles);
 };
 
-const downloadSubtitles = async (event, args, mainWindow) => {
-  const files = args.files;
+const downloadSingleSubtitle = async (item, mainWindow) => {
+  const options = {
+    saveAs: true
+  };
+  const dl = await download(mainWindow, item.download, options);
+};
+
+const downloadMultipleSubtitles = async (item, mainWindow) => {
+  const files = item.files;
   const items = [];
 
   try {
@@ -41,10 +48,10 @@ const downloadSubtitles = async (event, args, mainWindow) => {
         directory: downloadLocation
       };
 
-      const item = await download(mainWindow, subtitle.url, options);
+      const dl = await download(mainWindow, subtitle.url, options);
 
       const downloadedItem = {
-        savePath: item.getSavePath(),
+        savePath: dl.getSavePath(),
         filename: `${downloadLocation}/${subtitleFilename}.srt`
       };
 
@@ -55,6 +62,14 @@ const downloadSubtitles = async (event, args, mainWindow) => {
   }
 
   renameSubtitles(items);
+};
+
+const downloadSubtitles = (event, dialog, item, mainWindow) => {
+  if (dialog) {
+    downloadSingleSubtitle(item, mainWindow);
+  } else {
+    downloadMultipleSubtitles(item, mainWindow);
+  }
 };
 
 const showAboutWindow = () => {
@@ -82,8 +97,8 @@ app.on("ready", async () => {
 
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
-  ipcMain.on("download-subtitle", (event, args) =>
-    downloadSubtitles(event, args, mainWindow)
+  ipcMain.on("download-subtitle", (event, dialog, item) =>
+    downloadSubtitles(event, dialog, item, mainWindow)
   );
 });
 

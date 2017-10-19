@@ -4,7 +4,7 @@ import * as addic7ed from "./addic7ed";
 import * as opensubtitles from "./opensubtitles";
 
 const downloadSubtitles = files => {
-  ipcRenderer.send("download-subtitle", { files });
+  ipcRenderer.send("download-subtitle", false, { files });
 };
 
 const textSearch = async (files, language, limit) => {
