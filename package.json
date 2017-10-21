@@ -1,5 +1,11 @@
 {
   "name": "caption",
+  "description": "Find the right subtitles. Easy.",
+  "author": {
+    "name": "Giel Cobben",
+    "email": "g.cobben@gmail.com",
+    "url": "https://gielcobben.com"
+  },
   "productName": "Caption",
   "version": "2.0.0",
   "main": "main/index.js",
@@ -7,22 +13,16 @@
   "repository": "gielcobben/Caption",
   "scripts": {
     "start": "electron --inspect=5858 .",
-    "build": "next build renderer && next export renderer",
+    "build": "npm run test && next build renderer && next export renderer",
     "dist": "npm run build && build --dir",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "build": {
-    "files": [
-      "**/*",
-      "!renderer",
-      "renderer/out"
-    ],
+    "files": ["**/*", "!renderer", "renderer/out"],
     "mac": {
-      "target": [
-        "zip",
-        "dmg"
-      ]
+      "target": ["zip", "dmg"],
+      "icon": "./renderer/static/icon"
     },
     "publish": [
       {
@@ -35,7 +35,7 @@
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "electron": "latest",
-    "electron-builder": "19.37.2",
+    "electron-builder": "^19.37.2",
     "jest": "^20.0.4",
     "next": "4.1.0",
     "react": "16.0.0",

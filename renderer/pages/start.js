@@ -1,10 +1,10 @@
 // Packages
 import { ipcRenderer } from "electron";
-import Store from "electron-settings";
+// import Store from "electron-settings";
 
 // Utils
 import { processFiles } from "../utils";
-import { textSearch, fileSearch } from "../sources";
+// import { textSearch, fileSearch } from "../sources";
 
 // Components
 import Layout from "../components/Layout";
@@ -18,12 +18,16 @@ const ESC_KEY = 27;
 
 export default class MainApp extends React.Component {
   static async getInitialProps() {
-    if (!Store.has("settings")) {
-      const language = "eng";
-      Store.set("settings", { language });
-    }
+    // if (!Store.has("settings")) {
+    //   const language = "eng";
+    //   Store.set("settings", { language });
+    // }
 
-    const settings = Store.get("settings");
+    // const settings = Store.get("settings");
+
+    const settings = {
+      language: "eng"
+    };
 
     return { settings };
   }
@@ -34,10 +38,10 @@ export default class MainApp extends React.Component {
     const { language } = props.settings;
 
     this.state = {
+      language,
       files: [],
       results: [],
       loading: false,
-      language,
       searchQuery: "",
       placeholder: "Search for a show..."
     };
@@ -125,7 +129,7 @@ export default class MainApp extends React.Component {
       }
     });
 
-    Store.set("settings", { language });
+    // Store.set("settings", { language });
   }
 
   onSearch(event) {
@@ -154,13 +158,13 @@ export default class MainApp extends React.Component {
 
   async searchQuery() {
     const { searchQuery, language } = this.state;
-    const results = await textSearch(searchQuery, language, "all");
+    // const results = await textSearch(searchQuery, language, "all");
     this.setState({ results, loading: false });
   }
 
   async searchFile() {
     const { files, language } = this.state;
-    const results = await fileSearch(files, language, "best");
+    // const results = await fileSearch(files, language, "best");
   }
 
   render() {

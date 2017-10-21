@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
+// const settings = require("electron-settings");
 // const autoUpdater = require("electron-updater").autoUpdater;
 const prepareNext = require("electron-next");
 const { download } = require("electron-dl");
