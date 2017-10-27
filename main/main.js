@@ -4,13 +4,15 @@ const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 const windowStateKeeper = require("electron-window-state");
 
+let mainWindow;
+
 const createMainWindow = () => {
   const windowState = windowStateKeeper({
     defaultWidth: 360,
     defaultHeight: 440
   });
 
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: windowState.width,
     height: windowState.height,
     x: windowState.x,
@@ -51,4 +53,4 @@ const createMainWindow = () => {
   return mainWindow;
 };
 
-module.exports = { createMainWindow };
+module.exports = { mainWindow, createMainWindow };

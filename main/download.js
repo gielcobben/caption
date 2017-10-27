@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { BrowserWindow, webContents } = require("electron");
 const { download } = require("electron-dl");
+const { mainWindow } = require("./main");
 
 const rename = subtitles => {
   const mainWindow = BrowserWindow.getFocusedWindow();
@@ -16,35 +17,38 @@ const rename = subtitles => {
 };
 
 const multipleDownload = async files => {
-  const mainWindow = BrowserWindow.getFocusedWindow();
-  const items = [];
+  // const mainWindow = BrowserWindow.getFocusedWindow();
 
-  try {
-    for (let i = 0; i < files.length; i++) {
-      const { file, subtitle } = files[i];
-      const downloadLocation = path.dirname(file.path);
-      const originalFileName = file.name;
-      const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
+  console.log(mainWindow);
 
-      const options = {
-        saveAs: false,
-        directory: downloadLocation
-      };
+  // const items = [];
 
-      const dl = await download(mainWindow, subtitle.url, options);
+  // try {
+  //   for (let i = 0; i < files.length; i++) {
+  //     const { file, subtitle } = files[i];
+  //     const downloadLocation = path.dirname(file.path);
+  //     const originalFileName = file.name;
+  //     const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
-      const downloadedItem = {
-        savePath: dl.getSavePath(),
-        filename: `${downloadLocation}/${subtitleFilename}.srt`
-      };
+  //     const options = {
+  //       saveAs: false,
+  //       directory: downloadLocation
+  //     };
 
-      items.push(downloadedItem);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  //     const dl = await download(mainWindow, subtitle.url, options);
 
-  rename(items);
+  //     const downloadedItem = {
+  //       savePath: dl.getSavePath(),
+  //       filename: `${downloadLocation}/${subtitleFilename}.srt`
+  //     };
+
+  //     items.push(downloadedItem);
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  // rename(items);
 };
 
 const singleDownload = async item => {
