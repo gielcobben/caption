@@ -17,11 +17,16 @@ import Footer from "../components/Footer";
 const ESC_KEY = 27;
 
 export default class MainApp extends React.Component {
+  static async getInitialProps() {
+    const defaultLanguage = "eng";
+    return defaultLanguage;
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
-      language,
+      language: props.defaultLanguage,
       files: [],
       results: [],
       loading: false,
