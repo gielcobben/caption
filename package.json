@@ -14,30 +14,21 @@
   "scripts": {
     "start": "electron --inspect=5858 .",
     "build": "npm run test && next build renderer && next export renderer",
-    "dist": "npm run build && build --dir",
+    "dist": "npm run build && build -mwl --dir",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "build": {
-    "files": [
-      "**/*",
-      "!renderer",
-      "renderer/out"
-    ],
+    "files": ["**/*", "!renderer", "renderer/out"],
     "mac": {
-      "target": [
-        "zip",
-        "dmg"
-      ],
+      "target": ["zip", "dmg"],
       "icon": "./renderer/static/icon"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "gielcobben",
-        "repo": "Caption"
-      }
-    ]
+    "linux": {
+      "target": "AppImage",
+      "icon": "./renderer/static/icon",
+      "category": "Development"
+    }
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",

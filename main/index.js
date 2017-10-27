@@ -1,5 +1,6 @@
 const prepareNext = require("electron-next");
 const { app, BrowserWindow, ipcMain } = require("electron");
+const isDev = require("electron-is-dev");
 const Store = require("electron-store");
 const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
@@ -55,9 +56,11 @@ app.on("ready", async () => {
   const menu = buildMenu(aboutWindow, showAboutWindow);
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
-  BrowserWindow.addDevToolsExtension(
-    "/Users/gielcobben/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/2.5.2_0"
-  );
+  if (isDev) {
+    BrowserWindow.addDevToolsExtension(
+      "/Users/gielcobben/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/2.5.2_0"
+    );
+  }
 
   initSettings();
 
