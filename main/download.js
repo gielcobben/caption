@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const { BrowserWindow, webContents } = require("electron");
 const { download } = require("electron-dl");
-const { mainWindow } = require("./main");
+const { getMainWindow } = require("./main");
 
 const rename = subtitles => {
-  const mainWindow = BrowserWindow.getFocusedWindow();
+  const mainWindow = getMainWindow();
 
   subtitles.map(subtitle => {
     fs.rename(subtitle.savePath, subtitle.filename, () => {
@@ -17,42 +17,40 @@ const rename = subtitles => {
 };
 
 const multipleDownload = async files => {
-  // const mainWindow = BrowserWindow.getFocusedWindow();
+  const mainWindow = getMainWindow();
 
-  console.log(mainWindow);
+  const items = [];
 
-  // const items = [];
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const { file, subtitle } = files[i];
+      const downloadLocation = path.dirname(file.path);
+      const originalFileName = file.name;
+      const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
-  // try {
-  //   for (let i = 0; i < files.length; i++) {
-  //     const { file, subtitle } = files[i];
-  //     const downloadLocation = path.dirname(file.path);
-  //     const originalFileName = file.name;
-  //     const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
+      const options = {
+        saveAs: false,
+        directory: downloadLocation
+      };
 
-  //     const options = {
-  //       saveAs: false,
-  //       directory: downloadLocation
-  //     };
+      const dl = await download(mainWindow, subtitle.url, options);
 
-  //     const dl = await download(mainWindow, subtitle.url, options);
+      const downloadedItem = {
+        savePath: dl.getSavePath(),
+        filename: `${downloadLocation}/${subtitleFilename}.srt`
+      };
 
-  //     const downloadedItem = {
-  //       savePath: dl.getSavePath(),
-  //       filename: `${downloadLocation}/${subtitleFilename}.srt`
-  //     };
+      items.push(downloadedItem);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 
-  //     items.push(downloadedItem);
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  // }
-
-  // rename(items);
+  rename(items);
 };
 
 const singleDownload = async item => {
-  const mainWindow = BrowserWindow.getFocusedWindow();
+  const mainWindow = getMainWindow();
   const options = {
     saveAs: true
   };
