@@ -69,6 +69,12 @@ export default class MainApp extends React.Component {
       this.setState({ results, loading: false });
     });
 
+    ipcRenderer.on("language", (event, language) => {
+      this.setState({ language });
+    });
+
+    ipcRenderer.send("getStore", "language");
+
     document.addEventListener("keydown", this.onKeyDown);
   }
 
@@ -133,7 +139,7 @@ export default class MainApp extends React.Component {
       }
     });
 
-    // Store.set("settings", { language });
+    ipcRenderer.send("setStore", "language", language);
   }
 
   onSearch(event) {

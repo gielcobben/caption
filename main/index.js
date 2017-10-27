@@ -1,5 +1,6 @@
 const prepareNext = require("electron-next");
 const { app, BrowserWindow, ipcMain } = require("electron");
+const Store = require("electron-store");
 const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
 const { createMainWindow } = require("./main");
@@ -8,6 +9,7 @@ const { createAboutWindow } = require("./about");
 let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
+const store = new Store();
 
 // const downloadSubtitles = (event, dialog, item, mainWindow) => {
 //   if (dialog) {
@@ -31,6 +33,26 @@ const onCloseAboutWindow = event => {
   }
 };
 
+const initSettings = () => {
+  // Set default language
+  if (!store.has("language")) {
+    store.set("language", "eng");
+  }
+
+  // Get settings
+  ipcMain.on("getStore", (event, setting) => {
+    if (setting === "language") {
+      const language = store.get("language");
+      mainWindow.webContents.send("language", language);
+    }
+  });
+
+  // Set settings
+  ipcMain.on("setStore", (event, key, value) => {
+    store.set(key, value);
+  });
+};
+
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext("./renderer");
@@ -38,6 +60,8 @@ app.on("ready", async () => {
   aboutWindow = createAboutWindow();
   const menu = buildMenu(aboutWindow, showAboutWindow);
   aboutWindow.on("close", event => onCloseAboutWindow(event));
+
+  initSettings();
 
   // ipcMain.on("download-subtitle", (event, dialog, item) =>
   //   downloadSubtitles(event, dialog, item, mainWindow)
@@ -50,7 +74,6 @@ app.on("ready", async () => {
 
   ipcMain.on("fileSearch", async (event, files, language) => {
     const results = await fileSearch(files, language, "best");
-    // mainWindow.webContents.send("results", results);
   });
 });
 
