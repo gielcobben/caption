@@ -1,10 +1,7 @@
 const { flatMap } = require("lodash");
 const addic7ed = require("./addic7ed");
 const opensubtitles = require("./opensubtitles");
-
-const downloadSubtitles = files => {
-  // ipcRenderer.send("download-subtitle", false, { files });
-};
+const { multipleDownload } = require("../download");
 
 const textSearch = async (files, language, limit) => {
   const addic7edRef = addic7ed.textSearch(files, language, limit);
@@ -22,7 +19,7 @@ const textSearch = async (files, language, limit) => {
 const fileSearch = async (files, language, limit) => {
   const opensubtitlesRef = opensubtitles.fileSearch(files, language, limit);
   const result = await Promise.race([opensubtitlesRef]);
-  downloadSubtitles(result);
+  multipleDownload(result);
 };
 
 module.exports = { textSearch, fileSearch };

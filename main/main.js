@@ -1,7 +1,4 @@
-// Native
 const { format } = require("url");
-
-// Packages
 const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
@@ -18,6 +15,7 @@ const createMainWindow = () => {
     height: windowState.height,
     x: windowState.x,
     y: windowState.y,
+    title: "Caption",
     minWidth: 300,
     minHeight: 300,
     vibrancy: "sidebar",
@@ -27,7 +25,7 @@ const createMainWindow = () => {
     autoHideMenuBar: true,
     acceptFirstMouse: true,
     webPreferences: {
-      nodeIntegration: true,
+      backgroundThrottling: false,
       webSecurity: true
     }
   });

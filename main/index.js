@@ -1,9 +1,5 @@
-// Packages
-const fs = require("fs");
-const path = require("path");
-const { app, BrowserWindow, ipcMain } = require("electron");
 const prepareNext = require("electron-next");
-const { download } = require("electron-dl");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
 const { createMainWindow } = require("./main");
@@ -13,62 +9,13 @@ let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
 
-const renameSubtitles = subtitles => {
-  subtitles.map(subtitle => {
-    fs.rename(subtitle.savePath, subtitle.filename, () => {
-      console.log("done");
-    });
-  });
-
-  mainWindow.webContents.send("download-complete", subtitles);
-};
-
-const downloadSingleSubtitle = async (item, mainWindow) => {
-  const options = {
-    saveAs: true
-  };
-  const dl = await download(mainWindow, item.download, options);
-};
-
-const downloadMultipleSubtitles = async (item, mainWindow) => {
-  const files = item.files;
-  const items = [];
-
-  try {
-    for (let i = 0; i < files.length; i++) {
-      const { file, subtitle } = files[i];
-      const downloadLocation = path.dirname(file.path);
-      const originalFileName = file.name;
-      const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
-
-      const options = {
-        saveAs: false,
-        directory: downloadLocation
-      };
-
-      const dl = await download(mainWindow, subtitle.url, options);
-
-      const downloadedItem = {
-        savePath: dl.getSavePath(),
-        filename: `${downloadLocation}/${subtitleFilename}.srt`
-      };
-
-      items.push(downloadedItem);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-
-  renameSubtitles(items);
-};
-
-const downloadSubtitles = (event, dialog, item, mainWindow) => {
-  if (dialog) {
-    downloadSingleSubtitle(item, mainWindow);
-  } else {
-    downloadMultipleSubtitles(item, mainWindow);
-  }
-};
+// const downloadSubtitles = (event, dialog, item, mainWindow) => {
+//   if (dialog) {
+//     downloadSingleSubtitle(item, mainWindow);
+//   } else {
+//     downloadMultipleSubtitles(item, mainWindow);
+//   }
+// };
 
 const showAboutWindow = () => {
   aboutWindow.show();
@@ -92,9 +39,9 @@ app.on("ready", async () => {
   const menu = buildMenu(aboutWindow, showAboutWindow);
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
-  ipcMain.on("download-subtitle", (event, dialog, item) =>
-    downloadSubtitles(event, dialog, item, mainWindow)
-  );
+  // ipcMain.on("download-subtitle", (event, dialog, item) =>
+  //   downloadSubtitles(event, dialog, item, mainWindow)
+  // );
 
   ipcMain.on("textSearch", async (event, query, language) => {
     const results = await textSearch(query, language, "all");
@@ -103,7 +50,7 @@ app.on("ready", async () => {
 
   ipcMain.on("fileSearch", async (event, files, language) => {
     const results = await fileSearch(files, language, "best");
-    mainWindow.webContents.send("results", results);
+    // mainWindow.webContents.send("results", results);
   });
 });
 
