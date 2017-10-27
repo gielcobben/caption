@@ -17,25 +17,8 @@ import Footer from "../components/Footer";
 const ESC_KEY = 27;
 
 export default class MainApp extends React.Component {
-  static async getInitialProps() {
-    // if (!Store.has("settings")) {
-    //   const language = "eng";
-    //   Store.set("settings", { language });
-    // }
-
-    // const settings = Store.get("settings");
-
-    const settings = {
-      language: "eng"
-    };
-
-    return { settings };
-  }
-
   constructor(props) {
     super(props);
-
-    const { language } = props.settings;
 
     this.state = {
       language,
