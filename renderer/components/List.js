@@ -71,19 +71,20 @@ class List extends React.Component {
     const { results } = this.props;
     const { selected } = this.state;
     const item = results[selected];
+
+    ipcRenderer.send("downloadSubtitle", item);
   }
 
   onContextMenu(clicked) {
     const { Menu, MenuItem } = remote;
     const { results } = this.props;
     const item = results[clicked];
-    const mainWindow = remote.getCurrentWindow();
 
     const template = Menu.buildFromTemplate([
       {
         label: "Download",
         click: async () => {
-          ipcRenderer.send("download-subtitle", true, item);
+          ipcRenderer.send("downloadSubtitle", item);
         }
       }
     ]);

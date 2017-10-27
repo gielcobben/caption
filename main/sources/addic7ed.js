@@ -1,4 +1,6 @@
 const addic7ed = require("addic7ed-api");
+const { dialog } = require("electron");
+const { getMainWindow } = require("../main");
 
 const transform = (query, items) => {
   const results = [];
@@ -39,4 +41,24 @@ const textSearch = async (query, language, limit) => {
 
 const fileSearch = async (files, language, limit) => {};
 
-module.exports = { textSearch };
+const download = async item => {
+  const mainWindow = getMainWindow();
+  const path = await new Promise(resolve => {
+    dialog.showSaveDialog(
+      mainWindow,
+      {
+        title: "Download",
+        defaultPath: `${item.name}.srt`
+      },
+      resolve
+    );
+  });
+
+  if (!path) {
+    return;
+  }
+
+  await addic7ed.download(item.download, path);
+};
+
+module.exports = { textSearch, download };

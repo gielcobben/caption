@@ -5,19 +5,13 @@ const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
 const { createMainWindow } = require("./main");
 const { createAboutWindow } = require("./about");
+const { singleDownload } = require("./download");
+const { download } = require("./sources/addic7ed");
 
 let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
 const store = new Store();
-
-// const downloadSubtitles = (event, dialog, item, mainWindow) => {
-//   if (dialog) {
-//     downloadSingleSubtitle(item, mainWindow);
-//   } else {
-//     downloadMultipleSubtitles(item, mainWindow);
-//   }
-// };
 
 const showAboutWindow = () => {
   aboutWindow.show();
@@ -61,11 +55,21 @@ app.on("ready", async () => {
   const menu = buildMenu(aboutWindow, showAboutWindow);
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
+  BrowserWindow.addDevToolsExtension(
+    "/Users/gielcobben/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/2.5.2_0"
+  );
+
   initSettings();
 
-  // ipcMain.on("download-subtitle", (event, dialog, item) =>
-  //   downloadSubtitles(event, dialog, item, mainWindow)
-  // );
+  ipcMain.on("downloadSubtitle", (event, item) => {
+    console.log(item);
+
+    if (item.source === "addic7ed") {
+      download(item);
+    } else {
+      singleDownload(item);
+    }
+  });
 
   ipcMain.on("textSearch", async (event, query, language) => {
     const results = await textSearch(query, language, "all");
