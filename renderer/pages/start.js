@@ -65,6 +65,10 @@ export default class MainApp extends React.Component {
       this.onFinishedDownloads(downloadedItems);
     });
 
+    ipcRenderer.on("results", (event, results) => {
+      this.setState({ results, loading: false });
+    });
+
     document.addEventListener("keydown", this.onKeyDown);
   }
 
@@ -158,13 +162,12 @@ export default class MainApp extends React.Component {
 
   async searchQuery() {
     const { searchQuery, language } = this.state;
-    // const results = await textSearch(searchQuery, language, "all");
-    this.setState({ results, loading: false });
+    ipcRenderer.send("textSearch", searchQuery, language);
   }
 
   async searchFile() {
     const { files, language } = this.state;
-    // const results = await fileSearch(files, language, "best");
+    ipcRenderer.send("fileSearch", files, language);
   }
 
   render() {

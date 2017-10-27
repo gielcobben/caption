@@ -1,5 +1,4 @@
-// Packages
-import addic7ed from "addic7ed-api";
+const addic7ed = require("addic7ed-api");
 
 const transform = (query, items) => {
   const results = [];
@@ -40,5 +39,4 @@ const textSearch = async (query, language, limit) => {
 
 const fileSearch = async (files, language, limit) => {};
 
-// Exports
-export { textSearch };
+module.exports = { textSearch };

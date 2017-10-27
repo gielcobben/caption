@@ -1,10 +1,9 @@
-import { ipcRenderer } from "electron";
-import { flatMap } from "lodash";
-import * as addic7ed from "./addic7ed";
-import * as opensubtitles from "./opensubtitles";
+const { flatMap } = require("lodash");
+const addic7ed = require("./addic7ed");
+const opensubtitles = require("./opensubtitles");
 
 const downloadSubtitles = files => {
-  ipcRenderer.send("download-subtitle", false, { files });
+  // ipcRenderer.send("download-subtitle", false, { files });
 };
 
 const textSearch = async (files, language, limit) => {
@@ -26,4 +25,4 @@ const fileSearch = async (files, language, limit) => {
   downloadSubtitles(result);
 };
 
-export { textSearch, fileSearch };
+module.exports = { textSearch, fileSearch };

@@ -2,15 +2,12 @@
 const fs = require("fs");
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
-// const settings = require("electron-settings");
-// const autoUpdater = require("electron-updater").autoUpdater;
 const prepareNext = require("electron-next");
 const { download } = require("electron-dl");
-
+const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
-
-const { createMainWindow } = require("./windows/main");
-const { createAboutWindow } = require("./windows/about");
+const { createMainWindow } = require("./main");
+const { createAboutWindow } = require("./about");
 
 let aboutWindow;
 let mainWindow;
@@ -90,17 +87,24 @@ const onCloseAboutWindow = event => {
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext("./renderer");
-
   mainWindow = createMainWindow();
   aboutWindow = createAboutWindow();
-
   const menu = buildMenu(aboutWindow, showAboutWindow);
-
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
   ipcMain.on("download-subtitle", (event, dialog, item) =>
     downloadSubtitles(event, dialog, item, mainWindow)
   );
+
+  ipcMain.on("textSearch", async (event, query, language) => {
+    const results = await textSearch(query, language, "all");
+    mainWindow.webContents.send("results", results);
+  });
+
+  ipcMain.on("fileSearch", async (event, files, language) => {
+    const results = await fileSearch(files, language, "best");
+    mainWindow.webContents.send("results", results);
+  });
 });
 
 // Quit the app once all windows are closed

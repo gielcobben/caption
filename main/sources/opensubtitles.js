@@ -1,6 +1,5 @@
-// Packages
-import OS from "opensubtitles-api";
-import { head } from "lodash";
+const OS = require("opensubtitles-api");
+const { head } = require("lodash");
 
 // const OpenSubtitles = new OS("OSTestUserAgentTemp");
 const OpenSubtitles = new OS("caption");
@@ -82,5 +81,4 @@ const fileSearch = async (files, language, limit) => {
   return subtitleResults;
 };
 
-// Exports
-export { textSearch, fileSearch };
+module.exports = { textSearch, fileSearch };
