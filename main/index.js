@@ -65,8 +65,6 @@ app.on("ready", async () => {
   initSettings();
 
   ipcMain.on("downloadSubtitle", (event, item) => {
-    console.log(item);
-
     if (item.source === "addic7ed") {
       download(item);
     } else {
@@ -75,8 +73,7 @@ app.on("ready", async () => {
   });
 
   ipcMain.on("textSearch", async (event, query, language) => {
-    const results = await textSearch(query, language, "all");
-    mainWindow.webContents.send("results", results);
+    textSearch(query, language, "all");
   });
 
   ipcMain.on("fileSearch", async (event, files, language) => {

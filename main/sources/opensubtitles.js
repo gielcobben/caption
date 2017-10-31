@@ -31,16 +31,20 @@ const textSearch = async (query, language, limit) => {
   };
 
   const items = await OpenSubtitles.search(options);
+
+  if (!items) {
+    console.log(`Opensubtitles: Nothing found...`);
+    return [];
+  }
+
   const firstItem = head(Object.keys(items)); // firstItem is selected language: obj[language]
   const results = items[firstItem];
 
   if (!results) {
-    console.log("OpenSubtitle: Nothing found...");
-    return;
+    return [];
   }
 
-  const subtitles = transform(results);
-  return subtitles;
+  return transform(results);
 };
 
 const fileSearch = async (files, language, limit) => {
