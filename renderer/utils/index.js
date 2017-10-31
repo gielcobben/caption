@@ -1,5 +1,6 @@
 // Packages
 import fs from "fs";
+import movieExtentsion from "../data/extenstions";
 
 // Process files
 const processFiles = rawFiles => {
@@ -7,6 +8,10 @@ const processFiles = rawFiles => {
 
   rawFiles.map(file => {
     const extention = file.name.substr(file.name.lastIndexOf(".") + 1);
+
+    if (movieExtentsion.indexOf(extention) < 0) {
+      return;
+    }
 
     const fileObject = {
       extention,

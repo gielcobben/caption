@@ -26,7 +26,7 @@ const textSearch = async (query, language, limit) => {
 
   if (!splitQuery) {
     console.log("Addic7ed: Nothing found...");
-    return;
+    throw new Error("No subtitles found");
   }
 
   const subtitles = [];

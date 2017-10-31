@@ -2,7 +2,7 @@
 import { shell } from "electron";
 
 // Components
-import software from "../static/software.json";
+import software from "../data/software";
 import SoftwareItem from "../components/SoftwareItem";
 
 const Credits = () => (

@@ -9,6 +9,9 @@ jobs:
     - stage: build
       script: npm run build
 
+
+
+
 matrix:
   include:
     - os: osx

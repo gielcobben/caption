@@ -4,21 +4,19 @@ const { BrowserWindow, webContents } = require("electron");
 const { download } = require("electron-dl");
 const { getMainWindow } = require("./main");
 
-const rename = subtitles => {
-  const mainWindow = getMainWindow();
+const MAINWINDOW = getMainWindow();
 
+const rename = subtitles => {
   subtitles.map(subtitle => {
     fs.rename(subtitle.savePath, subtitle.filename, () => {
       console.log("done");
     });
   });
 
-  mainWindow.webContents.send("download-complete", subtitles);
+  MAINWINDOW.webContents.send("download-complete", subtitles);
 };
 
 const multipleDownload = async files => {
-  const mainWindow = getMainWindow();
-
   const items = [];
 
   try {
@@ -33,7 +31,7 @@ const multipleDownload = async files => {
         directory: downloadLocation
       };
 
-      const dl = await download(mainWindow, subtitle.url, options);
+      const dl = await download(MAINWINDOW, subtitle.url, options);
 
       const downloadedItem = {
         savePath: dl.getSavePath(),
@@ -50,11 +48,10 @@ const multipleDownload = async files => {
 };
 
 const singleDownload = async item => {
-  const mainWindow = getMainWindow();
   const options = {
     saveAs: true
   };
-  const dl = await download(mainWindow, item.download, options);
+  const dl = await download(MAINWINDOW, item.download, options);
 };
 
 module.exports = { multipleDownload, singleDownload };

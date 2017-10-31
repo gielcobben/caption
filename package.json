@@ -14,21 +14,9 @@
   "scripts": {
     "start": "electron --inspect=5858 .",
     "build": "npm run test && next build renderer && next export renderer",
-    "dist": "npm run build && build -mwl --dir",
+    "dist": "npm run build && build -mlw",
     "test": "jest",
     "test:watch": "jest --watch"
-  },
-  "build": {
-    "files": ["**/*", "!renderer", "renderer/out"],
-    "mac": {
-      "target": ["zip", "dmg"],
-      "icon": "./renderer/static/icon"
-    },
-    "linux": {
-      "target": "AppImage",
-      "icon": "./renderer/static/icon",
-      "category": "Development"
-    }
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
@@ -51,5 +39,27 @@
     "lodash": "^4.17.4",
     "opensubtitles-api": "latest",
     "react-dropzone": "^4.1.0"
+  },
+  "build": {
+    "files": ["**/*", "!renderer", "renderer/out"],
+    "mac": {
+      "target": ["dmg", "zip"],
+      "icon": "./renderer/static/icon.icns"
+    },
+    "linux": {
+      "target": ["deb"],
+      "icon": "./renderer/static/icon.iconset/"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "./renderer/static/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "gielcobben",
+        "repo": "Caption"
+      }
+    ]
   }
 }
