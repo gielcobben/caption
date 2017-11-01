@@ -1,7 +1,6 @@
 const OS = require("opensubtitles-api");
 const { head } = require("lodash");
 
-// const OpenSubtitles = new OS("OSTestUserAgentTemp");
 const OpenSubtitles = new OS("caption");
 
 const transform = items => {

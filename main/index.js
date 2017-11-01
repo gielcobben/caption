@@ -22,10 +22,11 @@ const showAboutWindow = () => {
 const onCloseAboutWindow = event => {
   if (willQuitApp) {
     aboutWindow = null;
-  } else {
-    event.preventDefault();
-    aboutWindow.hide();
+    return;
   }
+
+  event.preventDefault();
+  aboutWindow.hide();
 };
 
 const initSettings = () => {
@@ -56,28 +57,22 @@ app.on("ready", async () => {
   const menu = buildMenu(aboutWindow, showAboutWindow);
   aboutWindow.on("close", event => onCloseAboutWindow(event));
 
-  if (isDev) {
-    BrowserWindow.addDevToolsExtension(
-      "/Users/gielcobben/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/2.5.2_0"
-    );
-  }
-
   initSettings();
 
   ipcMain.on("downloadSubtitle", (event, item) => {
     if (item.source === "addic7ed") {
-      download(item);
-    } else {
-      singleDownload(item);
+      return download(item);
     }
+
+    return singleDownload(item);
   });
 
-  ipcMain.on("textSearch", async (event, query, language) => {
-    textSearch(query, language, "all");
-  });
+  ipcMain.on("textSearch", async (event, query, language) =>
+    textSearch(query, language, "all"),
+  );
 
   ipcMain.on("fileSearch", async (event, files, language) => {
-    const results = await fileSearch(files, language, "best");
+    fileSearch(files, language, "best");
   });
 });
 
