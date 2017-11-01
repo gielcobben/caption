@@ -1,7 +1,8 @@
 // Packages
 import { ipcRenderer } from "electron";
 import withRedux from "next-redux-wrapper";
-import { Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 // Components
 import Layout from "../components/Layout";
@@ -123,6 +124,16 @@ class MainApp extends Component {
     );
   }
 }
+
+MainApp.propTypes = {
+  downloadComplete: PropTypes.func.isRequired,
+  updateSearchResults: PropTypes.func.isRequired,
+  setLanguage: PropTypes.func.isRequired,
+  resetSearch: PropTypes.func.isRequired,
+  hideSearchPlaceholder: PropTypes.func.isRequired,
+  showSearchPlaceholder: PropTypes.func.isRequired,
+  startSearch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = ({ ui, search }) => ({
   language: ui.language,
