@@ -4,12 +4,13 @@ import Meta from "../components/Meta";
 import Credits from "../components/Credits";
 import FooterAbout from "../components/FooterAbout";
 
-const About = () =>
+const About = () => (
   <Layout>
     <TitleBar title="About" />
     <Meta />
     <Credits />
     <FooterAbout />
-  </Layout>;
+  </Layout>
+);
 
 export default About;

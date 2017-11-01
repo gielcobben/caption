@@ -1,7 +1,7 @@
 import * as types from "./../types";
 
 const initialState = {
-  language: "eng"
+  language: "eng",
 };
 
 export default function reducer(state = initialState, action) {
@@ -9,7 +9,7 @@ export default function reducer(state = initialState, action) {
     case types.SET_LANGUAGE:
       return {
         ...state,
-        language: action.payload.language
+        language: action.payload.language,
       };
     default:
       return state;
