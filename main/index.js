@@ -1,5 +1,5 @@
 const prepareNext = require("electron-next");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const isDev = require("electron-is-dev");
 const Store = require("electron-store");
 const { autoUpdater } = require("electron-updater");
@@ -34,8 +34,12 @@ autoUpdater.on("update-not-available", info => {
   sendStatusToWindow("Update not available.");
 });
 
-autoUpdater.on("error", err => {
+autoUpdater.on("error", (event, error) => {
   sendStatusToWindow("Error in auto-updater.");
+  dialog.showErrorBox(
+    "Error: ",
+    error == null ? "unknown" : (error.stack || error).toString()
+  );
 });
 
 autoUpdater.on("download-progress", progressObj => {
@@ -117,10 +121,10 @@ app.on("ready", async () => {
     fileSearch(files, language, "best");
   });
 
-  setTimeout(() => {
-    autoUpdater.checkForUpdates();
-  }, 10000);
-  // autoUpdater.checkForUpdatesAndNotify();
+  // setTimeout(() => {
+  //   autoUpdater.checkForUpdates();
+  // }, 10000);
+  autoUpdater.checkForUpdates();
 });
 
 // Quit the app once all windows are closed
