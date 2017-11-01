@@ -1,4 +1,5 @@
 const { app, shell, Menu } = require("electron");
+const { checkForUpdates } = require("./updater");
 
 const buildMenu = (aboutWindow, showAboutWindow) => {
   const template = [
@@ -53,6 +54,7 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
             showAboutWindow(aboutWindow);
           }
         },
+        { label: "Check for updates...", click: () => checkForUpdates() },
         { type: "separator" },
         { role: "services", submenu: [] },
         { type: "separator" },

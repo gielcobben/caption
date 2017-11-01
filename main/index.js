@@ -1,8 +1,6 @@
 const prepareNext = require("electron-next");
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
-const isDev = require("electron-is-dev");
+const { app, ipcMain } = require("electron");
 const Store = require("electron-store");
-const { autoUpdater } = require("electron-updater");
 
 const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
@@ -10,55 +8,12 @@ const { createMainWindow } = require("./main");
 const { createAboutWindow } = require("./about");
 const { singleDownload } = require("./download");
 const { download } = require("./sources/addic7ed");
+const { checkForUpdates } = require("./updater");
 
 let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
 const store = new Store();
-
-const sendStatusToWindow = text => {
-  mainWindow.webContents.send("messageFromMain", text);
-};
-
-autoUpdater.allowPrerelease = true;
-
-autoUpdater.on("checking-for-update", () => {
-  sendStatusToWindow("Checking for update...");
-});
-
-autoUpdater.on("update-available", info => {
-  sendStatusToWindow("Update available.");
-});
-
-autoUpdater.on("update-not-available", info => {
-  sendStatusToWindow("Update not available.");
-});
-
-autoUpdater.on("error", (event, error) => {
-  sendStatusToWindow("Error in auto-updater.");
-  dialog.showErrorBox(
-    "Error: ",
-    error == null ? "unknown" : (error.stack || error).toString()
-  );
-});
-
-autoUpdater.on("download-progress", progressObj => {
-  let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  log_message = log_message + " - Downloaded " + progressObj.percent + "%";
-  log_message =
-    log_message +
-    " (" +
-    progressObj.transferred +
-    "/" +
-    progressObj.total +
-    ")";
-  sendStatusToWindow(log_message);
-});
-
-autoUpdater.on("update-downloaded", info => {
-  sendStatusToWindow("Update downloaded; will install in 5 seconds");
-  autoUpdater.quitAndInstall();
-});
 
 const showAboutWindow = () => {
   aboutWindow.show();
@@ -122,9 +77,9 @@ app.on("ready", async () => {
   });
 
   // setTimeout(() => {
-  //   autoUpdater.checkForUpdates();
+  //   checkForUpdates();
   // }, 10000);
-  autoUpdater.checkForUpdates();
+  checkForUpdates();
 });
 
 // Quit the app once all windows are closed
