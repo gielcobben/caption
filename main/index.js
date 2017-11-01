@@ -2,6 +2,8 @@ const prepareNext = require("electron-next");
 const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
 const Store = require("electron-store");
+const { autoUpdater } = require("electron-updater");
+
 const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
 const { createMainWindow } = require("./main");
@@ -13,6 +15,40 @@ let aboutWindow;
 let mainWindow;
 let willQuitApp = false;
 const store = new Store();
+
+autoUpdater.on("checking-for-update", () => {
+  console.log("Checking for update...");
+});
+
+autoUpdater.on("update-available", info => {
+  console.log("Update available.");
+});
+
+autoUpdater.on("update-not-available", info => {
+  console.log("Update not available.");
+});
+
+autoUpdater.on("error", err => {
+  console.log("Error in auto-updater.");
+});
+
+autoUpdater.on("download-progress", progressObj => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + " - Downloaded " + progressObj.percent + "%";
+  log_message =
+    log_message +
+    " (" +
+    progressObj.transferred +
+    "/" +
+    progressObj.total +
+    ")";
+  console.log(log_message);
+});
+
+autoUpdater.on("update-downloaded", info => {
+  console.log("Update downloaded; will install in 5 seconds");
+  autoUpdater.quitAndInstall();
+});
 
 const showAboutWindow = () => {
   aboutWindow.show();
@@ -68,12 +104,15 @@ app.on("ready", async () => {
   });
 
   ipcMain.on("textSearch", async (event, query, language) =>
-    textSearch(query, language, "all"),
+    textSearch(query, language, "all")
   );
 
   ipcMain.on("fileSearch", async (event, files, language) => {
     fileSearch(files, language, "best");
   });
+
+  autoUpdater.checkForUpdates();
+  // autoUpdater.checkForUpdatesAndNotify();
 });
 
 // Quit the app once all windows are closed
