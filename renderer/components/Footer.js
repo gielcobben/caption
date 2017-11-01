@@ -3,7 +3,10 @@ import Info from "./Info";
 
 const Footer = ({ results = [], language, loading, onLanguageChange }) => (
   <footer>
-    <LanguageToggle language={language} onLanguageChange={onLanguageChange} />
+    <LanguageToggle
+      language={language}
+      onLanguageChange={event => onLanguageChange(event.target.value)}
+    />
     <Info results={results} loading={loading} />
 
     <style jsx>{`

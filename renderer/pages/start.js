@@ -1,33 +1,31 @@
 // Packages
 import { ipcRenderer } from "electron";
-// import Store from "electron-settings";
+import withRedux from "next-redux-wrapper";
 
 // Utils
 import { processFiles } from "../utils";
-// import { textSearch, fileSearch } from "../sources";
 
 // Components
 import Layout from "../components/Layout";
 import TitleBar from "../components/TitleBar";
 import Search from "../components/Search";
 import Content from "../components/Content";
-import Footer from "../components/Footer";
+import Footer from "../containers/Footer";
+
+// Redux store
+import initStore from "./../store";
+
+// Redux action creators
+import { setLanguage } from "./../actions";
 
 // Global variables
 const ESC_KEY = 27;
 
-export default class MainApp extends React.Component {
-  static async getInitialProps() {
-    return {
-      defaultLanguage: "eng"
-    };
-  }
-
+class MainApp extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      language: props.defaultLanguage,
       files: [],
       results: [],
       loading: false,
@@ -64,7 +62,7 @@ export default class MainApp extends React.Component {
     });
 
     ipcRenderer.on("language", (event, language) => {
-      this.setState({ language });
+      this.props.setLanguage(language);
     });
 
     ipcRenderer.send("getStore", "language");
@@ -128,13 +126,16 @@ export default class MainApp extends React.Component {
     const { results, files } = this.state;
     const language = event.target.value;
 
-    this.setState({ language }, () => {
-      if (results.length > 0 || files.length > 0) {
-        this.onSearch();
-      }
-    });
+    // this.setState({ language }, () => {
+    //   if (results.length > 0 || files.length > 0) {
+    //     this.onSearch();
+    //   }
+    // });
 
-    ipcRenderer.send("setStore", "language", language);
+    this.props.setLanguage(language);
+    if (results.length > 0 || files.length > 0) {
+      this.onSearch();
+    }
   }
 
   onSearch(event) {
@@ -162,12 +163,14 @@ export default class MainApp extends React.Component {
   }
 
   async searchQuery() {
-    const { searchQuery, language } = this.state;
+    const { searchQuery } = this.state;
+    const { language } = this.props;
     ipcRenderer.send("textSearch", searchQuery, language);
   }
 
   async searchFile() {
-    const { files, language } = this.state;
+    const { files } = this.state;
+    const { language } = this.props;
     ipcRenderer.send("fileSearch", files, language);
   }
 
@@ -177,7 +180,6 @@ export default class MainApp extends React.Component {
       searchQuery,
       files,
       results,
-      language,
       loading,
       searchCompleted
     } = this.state;
@@ -203,13 +205,17 @@ export default class MainApp extends React.Component {
           loading={loading}
           onDrop={this.onDrop}
         />
-        <Footer
-          loading={!searchCompleted}
-          results={results}
-          language={language}
-          onLanguageChange={this.onLanguageChange}
-        />
+        <Footer loading={!searchCompleted} results={results} />
       </Layout>
     );
   }
 }
+
+const mapStateToProps = ({ ui }) => ({ language: ui.language });
+const mapDispatchToProps = {
+  setLanguage
+};
+
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
+  MainApp
+);
