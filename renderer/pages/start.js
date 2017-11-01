@@ -69,6 +69,10 @@ export default class MainApp extends React.Component {
 
     ipcRenderer.send("getStore", "language");
 
+    ipcRenderer.on("messageFromMain", (event, text) => {
+      console.log(text);
+    });
+
     document.addEventListener("keydown", this.onKeyDown);
   }
 
