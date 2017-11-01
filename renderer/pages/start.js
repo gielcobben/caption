@@ -18,8 +18,9 @@ const ESC_KEY = 27;
 
 export default class MainApp extends React.Component {
   static async getInitialProps() {
-    const defaultLanguage = "eng";
-    return defaultLanguage;
+    return {
+      defaultLanguage: "eng"
+    };
   }
 
   constructor(props) {
@@ -30,6 +31,7 @@ export default class MainApp extends React.Component {
       files: [],
       results: [],
       loading: false,
+      searchCompleted: true,
       searchQuery: "",
       placeholder: "Search for a show..."
     };
@@ -53,8 +55,12 @@ export default class MainApp extends React.Component {
       this.onFinishedDownloads(downloadedItems);
     });
 
-    ipcRenderer.on("results", (event, results) => {
-      this.setState({ results, loading: false });
+    ipcRenderer.on("results", (event, { results, isFinished }) => {
+      this.setState({
+        results,
+        loading: false,
+        searchCompleted: isFinished
+      });
     });
 
     ipcRenderer.on("language", (event, language) => {
@@ -111,7 +117,8 @@ export default class MainApp extends React.Component {
       searchQuery: "",
       files: [],
       results: [],
-      loading: false
+      loading: false,
+      searchCompleted: true
     });
 
     this.onBlur();
@@ -135,7 +142,7 @@ export default class MainApp extends React.Component {
       event.preventDefault();
     }
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, searchCompleted: false });
 
     const { searchQuery, files } = this.state;
 
@@ -171,7 +178,8 @@ export default class MainApp extends React.Component {
       files,
       results,
       language,
-      loading
+      loading,
+      searchCompleted
     } = this.state;
 
     return (
@@ -196,7 +204,7 @@ export default class MainApp extends React.Component {
           onDrop={this.onDrop}
         />
         <Footer
-          loading={loading}
+          loading={!searchCompleted}
           results={results}
           language={language}
           onLanguageChange={this.onLanguageChange}

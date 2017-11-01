@@ -10,14 +10,14 @@ const textSearch = async (files, language, limit) => {
   const addic7edRef = addic7ed.textSearch(files, language, limit);
   const opensubtitlesRef = opensubtitles.textSearch(files, language, limit);
 
-  // Wait for first results to appear, return to renderer immediatly
+  // Wait for first source to finish downloading, return first set of results to renderer.
   Promise.any([opensubtitlesRef, addic7edRef]).then(results => {
     const subtitles = {
       results,
       isFinished: false
     };
 
-    mainWindow.webContents.send("results", subtitles.results);
+    mainWindow.webContents.send("results", subtitles);
   });
 
   // Check whether all sources have been checked. Return to renderer and hide loading spinner.
@@ -30,7 +30,7 @@ const textSearch = async (files, language, limit) => {
         isFinished: true
       };
 
-      return mainWindow.webContents.send("results", subtitles.results);
+      return mainWindow.webContents.send("results", subtitles);
     }
 
     const subtitles = {
@@ -38,7 +38,7 @@ const textSearch = async (files, language, limit) => {
       isFinished: true
     };
 
-    return mainWindow.webContents.send("results", subtitles.results);
+    return mainWindow.webContents.send("results", subtitles);
   });
 };
 
