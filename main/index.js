@@ -16,20 +16,26 @@ let mainWindow;
 let willQuitApp = false;
 const store = new Store();
 
+const sendStatusToWindow = text => {
+  mainWindow.webContents.send("messageFromMain", text);
+};
+
+autoUpdater.allowPrerelease = true;
+
 autoUpdater.on("checking-for-update", () => {
-  console.log("Checking for update...");
+  sendStatusToWindow("Checking for update...");
 });
 
 autoUpdater.on("update-available", info => {
-  console.log("Update available.");
+  sendStatusToWindow("Update available.");
 });
 
 autoUpdater.on("update-not-available", info => {
-  console.log("Update not available.");
+  sendStatusToWindow("Update not available.");
 });
 
 autoUpdater.on("error", err => {
-  console.log("Error in auto-updater.");
+  sendStatusToWindow("Error in auto-updater.");
 });
 
 autoUpdater.on("download-progress", progressObj => {
@@ -42,11 +48,11 @@ autoUpdater.on("download-progress", progressObj => {
     "/" +
     progressObj.total +
     ")";
-  console.log(log_message);
+  sendStatusToWindow(log_message);
 });
 
 autoUpdater.on("update-downloaded", info => {
-  console.log("Update downloaded; will install in 5 seconds");
+  sendStatusToWindow("Update downloaded; will install in 5 seconds");
   autoUpdater.quitAndInstall();
 });
 
@@ -111,7 +117,9 @@ app.on("ready", async () => {
     fileSearch(files, language, "best");
   });
 
-  autoUpdater.checkForUpdates();
+  setTimeout(() => {
+    autoUpdater.checkForUpdates();
+  }, 10000);
   // autoUpdater.checkForUpdatesAndNotify();
 });
 

@@ -7,7 +7,7 @@
     "url": "https://gielcobben.com"
   },
   "productName": "Caption",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha",
   "main": "main/index.js",
   "license": "MIT",
   "repository": "gielcobben/Caption",
@@ -16,7 +16,7 @@
     "build": "npm run test && next build renderer && next export renderer",
     "dist": "npm run build && build --mac --win --linux",
     "publish":
-      "npm run build && node -r dotenv/config node_modules/.bin/build --mac --win --linux -p always",
+      "npm run build && node -r dotenv/config node_modules/.bin/build --mac -p always",
     "test": "jest",
     "test:watch": "jest --watch"
   },

@@ -64,6 +64,10 @@ class MainApp extends Component {
 
     ipcRenderer.send("getStore", "language");
 
+    ipcRenderer.on("messageFromMain", (event, text) => {
+      console.log(text);
+    });
+
     document.addEventListener("keydown", this.onKeyDown);
   }
 
