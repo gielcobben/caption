@@ -28,7 +28,7 @@ import {
   showSearchSpinner,
   searchByFiles,
   dropFiles,
-  updateSearchResults,
+  updateSearchResults
 } from "./../actions";
 
 // Global variables
@@ -54,7 +54,7 @@ class MainApp extends Component {
     ipcRenderer.on("results", (event, { results, isFinished }) => {
       this.props.updateSearchResults({
         results,
-        searchCompleted: isFinished,
+        searchCompleted: isFinished
       });
     });
 
@@ -63,10 +63,6 @@ class MainApp extends Component {
     });
 
     ipcRenderer.send("getStore", "language");
-
-    ipcRenderer.on("messageFromMain", (event, text) => {
-      console.log(text);
-    });
 
     document.addEventListener("keydown", this.onKeyDown);
   }
@@ -117,7 +113,7 @@ class MainApp extends Component {
           onSubmit={this.onSearch}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
-          ref={(search) => {
+          ref={search => {
             this.search = search;
           }}
         />
@@ -135,7 +131,7 @@ const mapStateToProps = ({ ui, search }) => ({
   placeholder: search.placeholder,
   results: search.results,
   loading: search.loading,
-  searchCompleted: search.searchCompleted,
+  searchCompleted: search.searchCompleted
 });
 
 const mapDispatchToProps = {
@@ -150,7 +146,9 @@ const mapDispatchToProps = {
   showSearchSpinner,
   searchByFiles,
   dropFiles,
-  updateSearchResults,
+  updateSearchResults
 };
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(MainApp);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
+  MainApp
+);
