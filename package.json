@@ -6,6 +6,18 @@
     "email": "g.cobben@gmail.com",
     "url": "https://gielcobben.com"
   },
+  "contributors": [
+    {
+      "name": "Vernon de Goede",
+      "email": "info@vernondegoede.com",
+      "url": "https://github.com/vernondegoede"
+    },
+    {
+      "name": "Giel Cobben",
+      "email": "g.cobben@gmail.com",
+      "url": "https://github.com/gielcobben"
+    }
+  ],
   "productName": "Caption",
   "version": "2.0.0",
   "main": "main/index.js",
