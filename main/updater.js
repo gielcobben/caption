@@ -1,31 +1,36 @@
 const { BrowserWindow, dialog, ipcMain } = require("electron");
+const isDev = require("electron-is-dev");
 const { autoUpdater } = require("electron-updater");
 const { showProgressWindow } = require("./progress");
-
-const sendStatusToWindow = text => {
-  const mainWindow = global.windows.mainWindow;
-  mainWindow.webContents.send("messageFromMain", text);
-};
 
 ipcMain.on("cancelUpdate", event => {
   cancelUpdater();
 });
 
-autoUpdater.allowPrerelease = true;
+ipcMain.on("installUpdate", event => {
+  autoUpdater.quitAndInstall();
+});
+
+// UPDATER
+autoUpdater.allowPrerelease = isDev;
+autoUpdater.autoDownload = false;
 
 autoUpdater.on("checking-for-update", () => {
-  sendStatusToWindow("Checking for update...");
+  console.log("Checking for update...");
 });
 
 autoUpdater.on("update-available", info => {
-  sendStatusToWindow(info);
+  console.log(info);
   showProgressWindow();
+  const downloader = autoUpdater.downloadUpdate(
+    global.updater.cancellationToken
+  );
 });
 
 autoUpdater.on("update-not-available", info => {
-  sendStatusToWindow(`Update not available. ${info}`);
+  console.log(`Update not available. ${info}`);
 
-  if (!global.startup) {
+  if (!global.updater.onStartup) {
     const options = {
       type: "info",
       message: "Caption is up to date",
@@ -38,47 +43,32 @@ autoUpdater.on("update-not-available", info => {
 
 autoUpdater.on("error", (event, error) => {
   console.log(error);
-  // sendStatusToWindow("Error in auto-updater.");
-  // dialog.showErrorBox(
-  //   "Error: ",
-  //   error == null ? "unknown" : (error.stack || error).toString()
-  // );
 });
 
 autoUpdater.on("download-progress", progressObj => {
   const progressWindow = global.windows.progressWindow;
   progressWindow.webContents.send("progress", progressObj);
-
-  // let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  // log_message = log_message + " - Downloaded " + progressObj.percent + "%";
-  // log_message =
-  //   log_message +
-  //   " (" +
-  //   progressObj.transferred +
-  //   "/" +
-  //   progressObj.total +
-  //   ")";
-  // sendStatusToWindow(log_message);
 });
 
 autoUpdater.on("update-downloaded", info => {
-  sendStatusToWindow(`Update downloaded; will install in 5 seconds. ${info}`);
-  autoUpdater.quitAndInstall();
+  console.log(`Update downloaded; will install in 5 seconds. ${info}`);
 });
 
 const cancelUpdater = () => {
   const progressWindow = global.windows.progressWindow;
-
   global.updater.cancellationToken.cancel();
   progressWindow.hide();
 };
 
 const checkForUpdates = async () => {
+  console.log(autoUpdater.autoDownload);
   const checking = await autoUpdater.checkForUpdates();
+  const { cancellationToken } = checking;
+
   global.updater = {
-    cancellationToken: checking.cancellationToken
+    cancellationToken,
+    onStartup: false
   };
-  global.startup = false;
 };
 
 module.exports = { checkForUpdates };

@@ -14,29 +14,43 @@ class Progress extends React.Component {
   }
 
   componentDidMount() {
-    ipcRenderer.on("progress", (event, progressObject) => {
-      this.setState(progressObject);
+    ipcRenderer.on("progress", (event, { transferred, total, percent }) => {
+      this.setState({
+        percent,
+        total,
+        transferred
+      });
     });
   }
 
   render() {
-    const { total, delta, transferred, percent, bytesPerSecond } = this.state;
+    const { total, transferred, percent } = this.state;
 
     return (
       <Layout>
         <section>
           <Logo size={62} margin={0} />
           <div>
-            <h2>Downloading update...</h2>
+            {percent !== 100 && <h2>Downloading update...</h2>}
+            {percent === 100 && <h2>Ready to Install</h2>}
             <progress value={percent} max="100" />
-            <footer>
-              <span>
-                {fileSizeReadable(transferred)} of {fileSizeReadable(total)}
-              </span>
-              <button onClick={() => ipcRenderer.send("cancelUpdate")}>
-                Cancel
-              </button>
-            </footer>
+            {percent !== 100 && (
+              <footer>
+                <span>
+                  {fileSizeReadable(transferred)} of {fileSizeReadable(total)}
+                </span>
+                <button onClick={() => ipcRenderer.send("cancelUpdate")}>
+                  Cancel
+                </button>
+              </footer>
+            )}
+            {percent === 100 && (
+              <footer>
+                <button onClick={() => ipcRenderer.send("installUpdate")}>
+                  Install and Relaunch
+                </button>
+              </footer>
+            )}
           </div>
         </section>
 

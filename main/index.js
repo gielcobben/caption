@@ -2,17 +2,18 @@ const prepareNext = require("electron-next");
 const { app, ipcMain } = require("electron");
 const Store = require("electron-store");
 
-const { textSearch, fileSearch } = require("./sources");
-const buildMenu = require("./menu");
 const { createMainWindow } = require("./main");
 const { createAboutWindow } = require("./about");
 const { createProgressWindow } = require("./progress");
+
+const { textSearch, fileSearch } = require("./sources");
+const buildMenu = require("./menu");
 const { singleDownload } = require("./download");
 const { download } = require("./sources/addic7ed");
-const { checkForUpdates } = require("./updater");
 
 let aboutWindow;
 let mainWindow;
+let progressWindow;
 let willQuitApp = false;
 const store = new Store();
 
@@ -70,7 +71,9 @@ app.on("ready", async () => {
     aboutWindow,
     progressWindow
   };
-  global.startup = true;
+  global.updater = {
+    onStartup: true
+  };
 
   initSettings();
 
@@ -89,8 +92,6 @@ app.on("ready", async () => {
   ipcMain.on("fileSearch", async (event, files, language) => {
     fileSearch(files, language, "best");
   });
-
-  checkForUpdates();
 });
 
 // Quit the app once all windows are closed
