@@ -20,6 +20,9 @@
       "beforeColon": false,
       "afterColon": true
     }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/jsx-wrap-multilines": "off",
     "max-len": "off",
     "new-cap": ["error", {"capIsNewExceptions": ["Immutable"]}],
     "no-confusing-arrow": ["error", {"allowParens": true}],
