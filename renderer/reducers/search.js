@@ -7,6 +7,7 @@ const initialState = {
   searchCompleted: true,
   searchQuery: "",
   placeholder: "Search for a show...",
+  searchAttempts: 0,
 };
 
 export default function reducer(state = initialState, action) {
@@ -20,6 +21,7 @@ export default function reducer(state = initialState, action) {
         results: [],
         loading: false,
         searchCompleted: true,
+        searchAttempts: 0,
       };
     case types.SHOW_SEARCH_PLACEHOLDER:
       return {
@@ -61,6 +63,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         files: action.payload.files,
+      };
+    case types.INCREASE_SEARCH_ATTEMPTS:
+      return {
+        ...state,
+        searchAttempts: action.payload.attempts,
       };
     default:
       return state;

@@ -67,11 +67,24 @@ export const searchByFiles = () => (dispatch, getState) => {
   ipcRenderer.send("fileSearch", files, language);
 };
 
+export const increaseSearchAttempts = () => (dispatch, getState) => {
+  const state = getState();
+  const previousSearchAttempts = state.search.searchAttempts;
+
+  dispatch({
+    type: types.INCREASE_SEARCH_ATTEMPTS,
+    payload: {
+      attempts: previousSearchAttempts + 1,
+    },
+  });
+};
+
 export const startSearch = () => (dispatch, getState) => {
   const state = getState();
   const { searchQuery, files } = state.search;
 
   dispatch(showSearchSpinner());
+  dispatch(increaseSearchAttempts());
 
   if (searchQuery !== "") {
     return dispatch(searchByQuery());
