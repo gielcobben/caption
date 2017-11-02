@@ -1,17 +1,13 @@
-const Logo = () => (
+const Logo = ({ size = 80, margin = "0 auto" }) => (
   <div>
     <img src="/static/icon.png" draggable="false" />
 
     <style jsx>{`
-      div {
-        background: #fff;
-      }
-
       img {
         display: block;
-        margin: 0 auto;
-        width: 80px;
-        height: 80px;
+        margin: ${margin};
+        width: ${size}px;
+        height: ${size}px;
       }
     `}</style>
   </div>

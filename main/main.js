@@ -53,6 +53,4 @@ const createMainWindow = () => {
   return mainWindow;
 };
 
-const getMainWindow = () => mainWindow;
-
-module.exports = { createMainWindow, getMainWindow };
+module.exports = { createMainWindow };

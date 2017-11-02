@@ -15,7 +15,8 @@ module.exports = {
     // in the production version of your app
     return {
       "/start": { page: "/start" },
-      "/about": { page: "/about" }
+      "/about": { page: "/about" },
+      "/progress": { page: "/progress" }
     };
   }
 };

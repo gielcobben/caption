@@ -3,10 +3,9 @@ const addic7ed = require("./addic7ed");
 const opensubtitles = require("./opensubtitles");
 const { multipleDownload } = require("../download");
 const Promise = require("bluebird");
-const { getMainWindow } = require("../main");
 
 const textSearch = async (files, language, limit) => {
-  const mainWindow = getMainWindow();
+  const mainWindow = global.windows.mainWindow;
   const addic7edRef = addic7ed.textSearch(files, language, limit);
   const opensubtitlesRef = opensubtitles.textSearch(files, language, limit);
 
