@@ -11,3 +11,9 @@ npm-debug.log
 
 # mac
 .DS_Store
+
+# dotenv
+.env
+
+# update files
+dev-app-update.yml

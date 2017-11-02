@@ -1,6 +1,5 @@
 const addic7ed = require("addic7ed-api");
 const { dialog } = require("electron");
-const { getMainWindow } = require("../main");
 
 const transform = (query, items) => {
   const results = [];
@@ -46,7 +45,7 @@ const textSearch = async (query, language, limit) => {
 const fileSearch = async (files, language, limit) => {};
 
 const download = async item => {
-  const mainWindow = getMainWindow();
+  const mainWindow = global.windows.mainWindow;
   const path = await new Promise(resolve => {
     dialog.showSaveDialog(
       mainWindow,

@@ -1,16 +1,19 @@
 const prepareNext = require("electron-next");
-const { app, BrowserWindow, ipcMain } = require("electron");
-const isDev = require("electron-is-dev");
+const { app, ipcMain } = require("electron");
 const Store = require("electron-store");
-const { textSearch, fileSearch } = require("./sources");
-const buildMenu = require("./menu");
+
 const { createMainWindow } = require("./main");
 const { createAboutWindow } = require("./about");
+const { createProgressWindow } = require("./progress");
+
+const { textSearch, fileSearch } = require("./sources");
+const buildMenu = require("./menu");
 const { singleDownload } = require("./download");
 const { download } = require("./sources/addic7ed");
 
 let aboutWindow;
 let mainWindow;
+let progressWindow;
 let willQuitApp = false;
 const store = new Store();
 
@@ -52,10 +55,25 @@ const initSettings = () => {
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext("./renderer");
+
+  // Windows
   mainWindow = createMainWindow();
   aboutWindow = createAboutWindow();
+  progressWindow = createProgressWindow();
+
+  // Menu
   const menu = buildMenu(aboutWindow, showAboutWindow);
   aboutWindow.on("close", event => onCloseAboutWindow(event));
+
+  // Setting globals
+  global.windows = {
+    mainWindow,
+    aboutWindow,
+    progressWindow
+  };
+  global.updater = {
+    onStartup: true
+  };
 
   initSettings();
 
@@ -72,7 +90,7 @@ app.on("ready", async () => {
   });
 
   ipcMain.on("textSearch", async (event, query, language) =>
-    textSearch(query, language, "all"),
+    textSearch(query, language, "all")
   );
 
   ipcMain.on("fileSearch", async (event, files, language) => {
