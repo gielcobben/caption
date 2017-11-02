@@ -60,6 +60,10 @@ app.on("ready", async () => {
   initSettings();
 
   ipcMain.on("downloadSubtitle", (event, item) => {
+    if (!item) {
+      return false;
+    }
+    
     if (item.source === "addic7ed") {
       return download(item);
     }
