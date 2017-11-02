@@ -1,14 +1,13 @@
 import { remote } from "electron";
 
-import Title from "./Title";
 import Logo from "./Logo";
 
-const Meta = () =>
+const Meta = ({ appVersion }) =>
   <section>
     <Logo />
     <div>
       <h1>Caption</h1>
-      Version: <span>2.0.0</span>
+      Version: <span>{appVersion}</span>
     </div>
 
     <style jsx>{`
@@ -38,7 +37,8 @@ const Meta = () =>
         font-weight: 500;
         color: #000;
       }
-    `}</style>
+    `}
+    </style>
   </section>;
 
 export default Meta;
