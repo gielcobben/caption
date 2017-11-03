@@ -5,7 +5,7 @@
     "jest": true,
     "node": true
   },
-  "globals" : {
+  "globals": {
     __CLIENT__: true,
     __DEVELOPMENT__: true,
     __PRODUCTION__: true
@@ -14,28 +14,35 @@
   "rules": {
     "class-methods-use-this": "warn",
     "global-require": "off",
-    "indent": ["error", 2, {"SwitchCase": 1}],
-    "key-spacing": ["error", {
-      "mode": "minimum",
-      "beforeColon": false,
-      "afterColon": true
-    }],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "key-spacing": [
+      "error",
+      {
+        "mode": "minimum",
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
     "react/react-in-jsx-scope": "off",
+    "arrow-parens": "off",
     "react/jsx-curly-brace-presence": "off",
     "react/jsx-wrap-multilines": "off",
     "max-len": "off",
-    "new-cap": ["error", {"capIsNewExceptions": ["Immutable"]}],
-    "no-confusing-arrow": ["error", {"allowParens": true}],
-    "no-fallthrough": ["error", {"commentPattern": "break[\\s\\w]*omitted"}],
+    "new-cap": ["error", { "capIsNewExceptions": ["Immutable"] }],
+    "no-confusing-arrow": ["error", { "allowParens": true }],
+    "no-fallthrough": ["error", { "commentPattern": "break[\\s\\w]*omitted" }],
     "no-lonely-if": "warn",
     "no-mixed-operators": "warn",
-    "no-multi-spaces": ["error", {
-      "exceptions": {
-        "VariableDeclarator": true,
-        "AssignmentExpression": true,
-        "ImportDeclaration": true
+    "no-multi-spaces": [
+      "error",
+      {
+        "exceptions": {
+          "VariableDeclarator": true,
+          "AssignmentExpression": true,
+          "ImportDeclaration": true
+        }
       }
-    }],
+    ],
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
     "no-use-before-define": "warn",
@@ -43,10 +50,13 @@
     "quotes": 0,
     // React rules
     "react/forbid-prop-types": "off",
-    "react/jsx-filename-extension": ["error", {"extensions": [".jsx", ".js"]}],
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".js"] }
+    ],
     "react/jsx-first-prop-new-line": "off",
     "react/no-unused-prop-types": "off",
-    "react/self-closing-comp": ["error", {"component": true, "html": false}],
+    "react/self-closing-comp": ["error", { "component": true, "html": false }],
     // jsx-a11y
     "jsx-a11y/img-has-alt": "warn",
     "jsx-a11y/label-has-for": "warn",
@@ -62,30 +72,16 @@
     "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
     "jsx-a11y/no-noninteractive-element-interactions": "off"
   },
-  "plugins": [
-    "react",
-    "import",
-  ],
+  "plugins": ["react", "import"],
   "settings": {
-    "import/ignore": [
-      "node_modules",
-      ".(scss|less|css|svg)$"
-    ],
+    "import/ignore": ["node_modules", ".(scss|less|css|svg)$"],
     "import/parser": "babel-eslint",
     "import/resolver": {
       "webpack": {
         "config": {
           "resolve": {
-            "extensions": [
-              "",
-              ".js",
-              ".jsx",
-              ".json"
-            ],
-            "modulesDirectories": [
-              "node_modules",
-              "src"
-            ]
+            "extensions": ["", ".js", ".jsx", ".json"],
+            "modulesDirectories": ["node_modules", "src"]
           }
         }
       }
