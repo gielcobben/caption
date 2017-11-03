@@ -29,7 +29,7 @@ import {
   showSearchSpinner,
   searchByFiles,
   dropFiles,
-  updateSearchResults
+  updateSearchResults,
 } from "./../actions";
 
 // Global variables
@@ -40,6 +40,7 @@ class MainApp extends Component {
     super(props);
 
     this.onLanguageChange = this.onLanguageChange.bind(this);
+    this.checkIfOnline = this.checkIfOnline.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.onFocus = this.onFocus.bind(this);
@@ -48,6 +49,8 @@ class MainApp extends Component {
 
   // handling escape close
   componentDidMount() {
+    this.checkIfOnline();
+
     ipcRenderer.once("download-complete", () => {
       this.props.downloadComplete();
     });
@@ -55,7 +58,7 @@ class MainApp extends Component {
     ipcRenderer.on("results", (event, { results, isFinished }) => {
       this.props.updateSearchResults({
         results,
-        searchCompleted: isFinished
+        searchCompleted: isFinished,
       });
     });
 
@@ -70,6 +73,7 @@ class MainApp extends Component {
 
   componentWillUnmount() {
     document.removeEventListener("keydown", this.onKeyDown);
+    window.removeEventListener("online");
   }
 
   onKeyDown(event) {
@@ -104,6 +108,13 @@ class MainApp extends Component {
     }
 
     this.props.startSearch();
+  }
+
+  checkIfOnline() {
+    ipcRenderer.send("online", navigator.onLine);
+    window.addEventListener("offline", () => {
+      ipcRenderer.send("online", navigator.onLine);
+    });
   }
 
   render() {
@@ -142,7 +153,7 @@ const mapStateToProps = ({ ui, search }) => ({
   placeholder: search.placeholder,
   results: search.results,
   loading: search.loading,
-  searchCompleted: search.searchCompleted
+  searchCompleted: search.searchCompleted,
 });
 
 const mapDispatchToProps = {
@@ -157,9 +168,7 @@ const mapDispatchToProps = {
   showSearchSpinner,
   searchByFiles,
   dropFiles,
-  updateSearchResults
+  updateSearchResults,
 };
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
-  MainApp
-);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(MainApp);

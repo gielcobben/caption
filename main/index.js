@@ -1,5 +1,5 @@
 const prepareNext = require("electron-next");
-const { app, ipcMain } = require("electron");
+const { app, ipcMain, dialog } = require("electron");
 const Store = require("electron-store");
 
 const { createMainWindow } = require("./main");
@@ -69,10 +69,10 @@ app.on("ready", async () => {
   global.windows = {
     mainWindow,
     aboutWindow,
-    progressWindow
+    progressWindow,
   };
   global.updater = {
-    onStartup: true
+    onStartup: true,
   };
 
   initSettings();
@@ -81,7 +81,7 @@ app.on("ready", async () => {
     if (!item) {
       return false;
     }
-    
+
     if (item.source === "addic7ed") {
       return download(item);
     }
@@ -90,11 +90,19 @@ app.on("ready", async () => {
   });
 
   ipcMain.on("textSearch", async (event, query, language) =>
-    textSearch(query, language, "all")
-  );
+    textSearch(query, language, "all"));
 
   ipcMain.on("fileSearch", async (event, files, language) => {
     fileSearch(files, language, "best");
+  });
+
+  ipcMain.on("online", (event, online) => {
+    if (!online) {
+      dialog.showErrorBox(
+        "Oops, something went wrong",
+        "It seems like your computer is offline! Please connect to the internet to use Caption.",
+      );
+    }
   });
 });
 
