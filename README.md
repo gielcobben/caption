@@ -18,12 +18,9 @@
 This app is developed by the same people who are using it. If you are one of them (actually... us) and want to make our app even better, you're more than welcome to contribute.
 
 1. Fork this repository to your own GitHub account and then clone it to your local device
-2. Install the dependencies: `npm install`
-3. Run the app by building the code and watch for changes: `npm start`
-
-<strong>To make sure that your code works in the finished app, you can generate the binary:</strong>
-
-4. `npm run dist`
+2. Install the dependencies: npm install
+3. Run the app by building the code and watch for changes: npm start
+4. Build the actual app for all platforms (Mac, Windows and Linux): `npm run dist`
 
 <br>
 <br>
@@ -34,7 +31,7 @@ Due to this project's open-source nature, the sources' management was designed t
 - [x] OpenSubtitles
 - [x] Addi7ed
 
-### How to add a source
+### Add sources
 1. Fork this repository to your own GitHub account and then clone it to your local device
 2. Install the dependencies: `npm install`
 3. Create a new file with the name of the source: `./main/soures/[yoursource].js`
@@ -52,7 +49,8 @@ return {
 ```
 6. Create a pull request and add Giel Cobben or Vernon de Goede as Reviewer.
 
-
+<br>
+<br>
 
 ## 🔑 License
 
