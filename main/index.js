@@ -99,8 +99,8 @@ app.on("ready", async () => {
   ipcMain.on("online", (event, online) => {
     if (!online) {
       dialog.showErrorBox(
-        "Oeps, something went wrong",
-        "It's seems like your computer is offline! Please connect to the internet to use Caption.",
+        "Oops, something went wrong",
+        "It seems like your computer is offline! Please connect to the internet to use Caption.",
       );
     }
   });
