@@ -1,6 +1,7 @@
 const prepareNext = require("electron-next");
 const { app, ipcMain, dialog } = require("electron");
 const Store = require("electron-store");
+const { moveToApplications } = require("electron-lets-move");
 
 const { createMainWindow } = require("./main");
 const { createAboutWindow } = require("./about");
@@ -55,6 +56,11 @@ const initSettings = () => {
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext("./renderer");
+
+  if (!store.get("moved")) {
+    await moveToApplications();
+    store.set("moved", true);
+  }
 
   // Windows
   mainWindow = createMainWindow();
