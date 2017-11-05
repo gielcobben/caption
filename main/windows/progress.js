@@ -3,10 +3,8 @@ const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 
-let progressWindow;
-
 const createProgressWindow = () => {
-  progressWindow = new BrowserWindow({
+  const progressWindow = new BrowserWindow({
     width: 400,
     height: 130,
     title: "Updating Caption",
@@ -35,13 +33,16 @@ const createProgressWindow = () => {
 };
 
 const showProgressWindow = () => {
+  const { progressWindow } = global.windows;
   progressWindow.show();
   progressWindow.focus();
 };
 
 const closeProgressWindow = (event, willQuitApp) => {
+  const { progressWindow } = global.windows;
+
   if (willQuitApp) {
-    progressWindow = null;
+    global.windows.progressWindow = null;
     return;
   }
 

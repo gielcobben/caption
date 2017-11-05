@@ -3,10 +3,8 @@ const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 
-let aboutWindow;
-
 const createAboutWindow = () => {
-  aboutWindow = new BrowserWindow({
+  const aboutWindow = new BrowserWindow({
     width: 260,
     height: 340,
     resizable: false,
@@ -39,13 +37,15 @@ const createAboutWindow = () => {
 };
 
 const showAboutWindow = () => {
+  const { aboutWindow } = global.windows;
   aboutWindow.show();
   aboutWindow.focus();
 };
 
 const closeAboutWindow = (event, willQuitApp) => {
+  const { aboutWindow } = global.windows;
   if (willQuitApp) {
-    aboutWindow = null;
+    global.windows.aboutWindow = null;
     return;
   }
 

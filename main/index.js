@@ -1,11 +1,15 @@
 // Packages
 const { app, ipcMain, dialog } = require("electron");
+const { moveToApplications } = require("electron-lets-move");
 const prepareNext = require("electron-next");
+const Store = require("electron-store");
 const buildMenu = require("./menu");
 const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
 const { download } = require("./sources/addic7ed");
 const { singleDownload } = require("./download");
+
+const store = new Store();
 
 // Windows
 const { createMainWindow } = require("./windows/main");
@@ -17,10 +21,6 @@ const {
 } = require("./windows/progress");
 
 // Window variables
-let mainWindow;
-let aboutWindow;
-let checkWindow;
-let progressWindow;
 let willQuitApp = false;
 
 // Functions
@@ -57,8 +57,10 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
+  const { mainWindow } = global.windows;
+
   if (mainWindow === null) {
-    mainWindow = createMainWindow();
+    global.windows.mainWindow = createMainWindow();
   }
 });
 
@@ -70,26 +72,33 @@ app.on("ready", async () => {
     store.set("moved", true);
   }
 
-  // Windows
-  mainWindow = createMainWindow();
-  aboutWindow = createAboutWindow();
-  checkWindow = createCheckWindow();
-  progressWindow = createProgressWindow();
-
-  aboutWindow.on("close", event => closeAboutWindow(event, willQuitApp));
-  checkWindow.on("close", event => closeCheckWindow(event, willQuitApp));
-  progressWindow.on("close", event => closeProgressWindow(event, willQuitApp));
-
-  global.windows = {
-    mainWindow,
-    aboutWindow,
-    checkWindow,
-    progressWindow,
-  };
+  global.store = store;
 
   global.updater = {
     onStartup: true,
   };
+
+  // Windows
+  global.windows = {
+    mainWindow: createMainWindow(),
+    aboutWindow: createAboutWindow(),
+    checkWindow: createCheckWindow(),
+    progressWindow: createProgressWindow(),
+  };
+
+  const {
+    mainWindow,
+    aboutWindow,
+    checkWindow,
+    progressWindow,
+  } = global.windows;
+
+  mainWindow.on("close", () => {
+    global.windows.mainWindow = null;
+  });
+  aboutWindow.on("close", event => closeAboutWindow(event, willQuitApp));
+  checkWindow.on("close", event => closeCheckWindow(event, willQuitApp));
+  progressWindow.on("close", event => closeProgressWindow(event, willQuitApp));
 
   // Setup
   buildMenu();

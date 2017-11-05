@@ -1,8 +1,8 @@
-const Store = require("electron-store");
-
-const store = new Store();
+const { ipcMain } = require("electron");
 
 const initSettings = () => {
+  const { store } = global;
+
   if (!store.has("language")) {
     store.set("language", "eng");
   }

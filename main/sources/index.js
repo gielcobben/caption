@@ -5,7 +5,7 @@ const opensubtitles = require("./opensubtitles");
 const { multipleDownload } = require("../download");
 
 const textSearch = async (files, language, limit) => {
-  const mainWindow = global.windows.mainWindow;
+  const { mainWindow } = global.windows;
   const addic7edRef = addic7ed.textSearch(files, language, limit);
   const opensubtitlesRef = opensubtitles.textSearch(files, language, limit);
 

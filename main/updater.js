@@ -5,13 +5,14 @@ const { showProgressWindow } = require("./windows/progress");
 
 // Functions
 const cancelUpdater = () => {
-  const progressWindow = global.windows.progressWindow;
-  global.updater.cancellationToken.cancel();
+  const { progressWindow } = global.windows;
+  const { cancellationToken } = global.updater;
+
+  cancellationToken.cancel();
   progressWindow.hide();
 };
 
 const checkForUpdates = async () => {
-  console.log(autoUpdater.autoDownload);
   const checking = await autoUpdater.checkForUpdates();
   const { cancellationToken } = checking;
 
@@ -40,14 +41,16 @@ autoUpdater.on("checking-for-update", () => {
 
 autoUpdater.on("update-available", info => {
   console.log("available  ", info);
+  const { cancellationToken } = global.updater;
   showProgressWindow();
-  const downloader = autoUpdater.downloadUpdate(global.updater.cancellationToken);
+  autoUpdater.downloadUpdate(cancellationToken);
 });
 
 autoUpdater.on("update-not-available", info => {
-  console.log(`Update not available. ${info}`);
+  console.log(`Update not available`, info);
+  const { onStartup } = global.updater;
 
-  if (!global.updater.onStartup) {
+  if (!onStartup) {
     const options = {
       type: "info",
       message: "Caption is up to date",
@@ -63,12 +66,12 @@ autoUpdater.on("error", (event, error) => {
 });
 
 autoUpdater.on("download-progress", progressObj => {
-  const progressWindow = global.windows.progressWindow;
+  const { progressWindow } = global.windows;
   progressWindow.webContents.send("progress", progressObj);
 });
 
 autoUpdater.on("update-downloaded", info => {
-  console.log(`Update downloaded; will install in 5 seconds. ${info}`);
+  console.log(`Update downloaded; will install in 5 seconds.`, info);
 });
 
 module.exports = { checkForUpdates };

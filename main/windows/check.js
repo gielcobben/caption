@@ -3,10 +3,8 @@ const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 
-let checkWindow;
-
 const createCheckWindow = () => {
-  checkWindow = new BrowserWindow({
+  const checkWindow = new BrowserWindow({
     width: 400,
     height: 130,
     title: "Looking for Updates...",
@@ -35,13 +33,15 @@ const createCheckWindow = () => {
 };
 
 const showCheckWindow = () => {
+  const { checkWindow } = global.windows;
   checkWindow.show();
   checkWindow.focus();
 };
 
 const closeCheckWindow = (event, willQuitApp) => {
+  const { checkWindow } = global.windows;
   if (willQuitApp) {
-    checkWindow = null;
+    global.windows.checkWindow = null;
     return;
   }
 
