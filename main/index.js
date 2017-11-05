@@ -65,6 +65,11 @@ app.on("activate", () => {
 app.on("ready", async () => {
   await prepareNext("./renderer");
 
+  if (!store.get("moved")) {
+    await moveToApplications();
+    store.set("moved", true);
+  }
+
   // Windows
   mainWindow = createMainWindow();
   aboutWindow = createAboutWindow();
