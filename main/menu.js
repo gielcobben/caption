@@ -1,7 +1,8 @@
 const { app, shell, Menu } = require("electron");
 const { checkForUpdates } = require("./updater");
+const { showAboutWindow } = require("./windows/about");
 
-const buildMenu = (aboutWindow, showAboutWindow) => {
+const buildMenu = () => {
   const template = [
     {
       label: "Edit",
@@ -14,8 +15,8 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
         { role: "paste" },
         { role: "pasteandmatchstyle" },
         { role: "delete" },
-        { role: "selectall" }
-      ]
+        { role: "selectall" },
+      ],
     },
     {
       label: "View",
@@ -24,12 +25,12 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
         { role: "forcereload" },
         { role: "toggledevtools" },
         { type: "separator" },
-        { role: "togglefullscreen" }
-      ]
+        { role: "togglefullscreen" },
+      ],
     },
     {
       role: "window",
-      submenu: [{ role: "minimize" }, { role: "close" }]
+      submenu: [{ role: "minimize" }, { role: "close" }],
     },
     {
       role: "help",
@@ -38,10 +39,10 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
           label: "Learn More",
           click() {
             shell.openExternal("https://electron.atom.io");
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   ];
 
   if (process.platform === "darwin") {
@@ -51,8 +52,8 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
         {
           label: `About ${app.getName()}`,
           click: () => {
-            showAboutWindow(aboutWindow);
-          }
+            showAboutWindow();
+          },
         },
         { label: "Check for updates...", click: () => checkForUpdates() },
         { type: "separator" },
@@ -62,8 +63,8 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
         { role: "hideothers" },
         { role: "unhide" },
         { type: "separator" },
-        { role: "quit" }
-      ]
+        { role: "quit" },
+      ],
     });
 
     // Edit menu
@@ -71,8 +72,8 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
       { type: "separator" },
       {
         label: "Speech",
-        submenu: [{ role: "startspeaking" }, { role: "stopspeaking" }]
-      }
+        submenu: [{ role: "startspeaking" }, { role: "stopspeaking" }],
+      },
     );
 
     // Window menu
@@ -80,7 +81,7 @@ const buildMenu = (aboutWindow, showAboutWindow) => {
       { role: "close" },
       { role: "minimize" },
       { type: "separator" },
-      { role: "front" }
+      { role: "front" },
     ];
   }
 

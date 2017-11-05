@@ -1,8 +1,8 @@
 const { flatMap } = require("lodash");
+const Promise = require("bluebird");
 const addic7ed = require("./addic7ed");
 const opensubtitles = require("./opensubtitles");
 const { multipleDownload } = require("../download");
-const Promise = require("bluebird");
 
 const textSearch = async (files, language, limit) => {
   const mainWindow = global.windows.mainWindow;
@@ -13,7 +13,7 @@ const textSearch = async (files, language, limit) => {
   Promise.any([opensubtitlesRef, addic7edRef]).then(results => {
     const subtitles = {
       results,
-      isFinished: false
+      isFinished: false,
     };
 
     mainWindow.webContents.send("results", subtitles);
@@ -26,7 +26,7 @@ const textSearch = async (files, language, limit) => {
     if (emptyResultSet.length === 0) {
       const subtitles = {
         results: [],
-        isFinished: true
+        isFinished: true,
       };
 
       return mainWindow.webContents.send("results", subtitles);
@@ -34,7 +34,7 @@ const textSearch = async (files, language, limit) => {
 
     const subtitles = {
       results: flatMap(results),
-      isFinished: true
+      isFinished: true,
     };
 
     return mainWindow.webContents.send("results", subtitles);

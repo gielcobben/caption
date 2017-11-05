@@ -1,7 +1,4 @@
-// Native
 const { format } = require("url");
-
-// Packages
 const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
@@ -25,22 +22,35 @@ const createAboutWindow = () => {
     acceptFirstMouse: true,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: true
-    }
+      webSecurity: true,
+    },
   });
 
   const devPath = "http://localhost:8000/about";
-
   const prodPath = format({
     pathname: resolve("renderer/out/about/index.html"),
     protocol: "file:",
-    slashes: true
+    slashes: true,
   });
-
   const url = isDev ? devPath : prodPath;
   aboutWindow.loadURL(url);
 
   return aboutWindow;
 };
 
-module.exports = { createAboutWindow };
+const showAboutWindow = () => {
+  aboutWindow.show();
+  aboutWindow.focus();
+};
+
+const closeAboutWindow = (event, willQuitApp) => {
+  if (willQuitApp) {
+    aboutWindow = null;
+    return;
+  }
+
+  event.preventDefault();
+  aboutWindow.hide();
+};
+
+module.exports = { createAboutWindow, showAboutWindow, closeAboutWindow };

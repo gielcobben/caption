@@ -1,111 +1,109 @@
-const prepareNext = require("electron-next");
+// Packages
 const { app, ipcMain, dialog } = require("electron");
-const Store = require("electron-store");
-
-const { createMainWindow } = require("./main");
-const { createAboutWindow } = require("./about");
-const { createProgressWindow } = require("./progress");
-
-const { textSearch, fileSearch } = require("./sources");
+const prepareNext = require("electron-next");
 const buildMenu = require("./menu");
-const { singleDownload } = require("./download");
+const initSettings = require("./settings");
+const { textSearch, fileSearch } = require("./sources");
 const { download } = require("./sources/addic7ed");
+const { singleDownload } = require("./download");
 
-let aboutWindow;
+// Windows
+const { createMainWindow } = require("./windows/main");
+const { createAboutWindow, closeAboutWindow } = require("./windows/about");
+const { createCheckWindow, closeCheckWindow } = require("./windows/check");
+const {
+  createProgressWindow,
+  closeProgressWindow,
+} = require("./windows/progress");
+
+// Window variables
 let mainWindow;
+let aboutWindow;
+let checkWindow;
 let progressWindow;
 let willQuitApp = false;
-const store = new Store();
 
-const showAboutWindow = () => {
-  aboutWindow.show();
-  aboutWindow.focus();
-};
-
-const onCloseAboutWindow = event => {
-  if (willQuitApp) {
-    aboutWindow = null;
-    return;
+// Functions
+const downloadSubtitle = item => {
+  if (!item) {
+    return false;
   }
 
-  event.preventDefault();
-  aboutWindow.hide();
-};
-
-const initSettings = () => {
-  // Set default language
-  if (!store.has("language")) {
-    store.set("language", "eng");
+  if (item.source === "addi7ted") {
+    return download(item);
   }
 
-  // Get settings
-  ipcMain.on("getStore", (event, setting) => {
-    if (setting === "language") {
-      const language = store.get("language");
-      mainWindow.webContents.send("language", language);
-    }
-  });
-
-  // Set settings
-  ipcMain.on("setStore", (event, key, value) => {
-    store.set(key, value);
-  });
+  return singleDownload(item);
 };
 
-// Prepare the renderer once the app is ready
+const showErrorDialog = online => {
+  if (!online) {
+    dialog.showErrorBox(
+      "Oops, something went wrong",
+      "It seems like your computer is offline! Please connect to the internet to use Caption.",
+    );
+  }
+};
+
+// App Events
+app.on("before-quit", () => {
+  willQuitApp = true;
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
+
+app.on("activate", () => {
+  if (mainWindow === null) {
+    mainWindow = createMainWindow();
+  }
+});
+
 app.on("ready", async () => {
   await prepareNext("./renderer");
 
   // Windows
   mainWindow = createMainWindow();
   aboutWindow = createAboutWindow();
+  checkWindow = createCheckWindow();
   progressWindow = createProgressWindow();
 
-  // Menu
-  const menu = buildMenu(aboutWindow, showAboutWindow);
-  aboutWindow.on("close", event => onCloseAboutWindow(event));
+  aboutWindow.on("close", event => closeAboutWindow(event, willQuitApp));
+  checkWindow.on("close", event => closeCheckWindow(event, willQuitApp));
+  progressWindow.on("close", event => closeProgressWindow(event, willQuitApp));
 
-  // Setting globals
   global.windows = {
     mainWindow,
     aboutWindow,
+    checkWindow,
     progressWindow,
   };
+
   global.updater = {
     onStartup: true,
   };
 
+  // Setup
+  buildMenu();
   initSettings();
 
-  ipcMain.on("downloadSubtitle", (event, item) => {
-    if (!item) {
-      return false;
-    }
-
-    if (item.source === "addic7ed") {
-      return download(item);
-    }
-
-    return singleDownload(item);
+  // IPC Events
+  ipcMain.on("textSearch", (event, query, language) => {
+    textSearch(query, language, "all");
   });
 
-  ipcMain.on("textSearch", async (event, query, language) =>
-    textSearch(query, language, "all"));
-
-  ipcMain.on("fileSearch", async (event, files, language) => {
+  ipcMain.on("fileSearch", (event, files, language) => {
     fileSearch(files, language, "best");
   });
 
+  ipcMain.on("downloadSubtitle", (event, item) => {
+    downloadSubtitle(item);
+  });
+
   ipcMain.on("online", (event, online) => {
-    if (!online) {
-      dialog.showErrorBox(
-        "Oops, something went wrong",
-        "It seems like your computer is offline! Please connect to the internet to use Caption.",
-      );
-    }
+    showErrorDialog(online);
   });
 });
-
-// Quit the app once all windows are closed
-app.on("before-quit", () => (willQuitApp = true));
-app.on("window-all-closed", app.quit);
