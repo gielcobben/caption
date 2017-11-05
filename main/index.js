@@ -9,7 +9,7 @@ const { createProgressWindow } = require("./progress");
 const { textSearch, fileSearch } = require("./sources");
 const buildMenu = require("./menu");
 const { singleDownload } = require("./download");
-const { download } = require("./sources/addic7ed");
+const { downloadAddic7ed } = require("./sources/utils");
 
 let aboutWindow;
 let mainWindow;
@@ -83,7 +83,7 @@ app.on("ready", async () => {
     }
     
     if (item.source === "addic7ed") {
-      return download(item);
+      return downloadAddic7ed(item);
     }
 
     return singleDownload(item);
