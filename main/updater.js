@@ -44,7 +44,6 @@ autoUpdater.on("checking-for-update", () => {
 });
 
 autoUpdater.on("update-available", info => {
-  console.log("available  ", info);
   const { cancellationToken } = global.updater;
   closeCheckWindow();
   showProgressWindow();
@@ -52,7 +51,6 @@ autoUpdater.on("update-available", info => {
 });
 
 autoUpdater.on("update-not-available", info => {
-  console.log(`Update not available`, info);
   const { onStartup } = global.updater;
   closeCheckWindow();
 

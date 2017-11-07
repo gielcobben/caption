@@ -7,7 +7,7 @@ const Content = ({
   files = [],
   results = [],
   loading,
-  onDrop
+  onDrop,
 }) => (
   <section className={loading ? "loading" : ""}>
     {searchQuery !== "" && results.length === 0 && <ListEmpty />}
@@ -15,19 +15,20 @@ const Content = ({
     {files.length > 0 && <List results={files} />}
     {results.length > 0 && <List results={results} />}
 
-    <style jsx>{`
-      section {
-        height: calc(100vh - 120px);
-        overflow: hidden;
-        overflow-y: scroll;
-      }
+    <style jsx>
+      {`
+        section {
+          height: 100%;
+          overflow: hidden;
+        }
 
-      .loading {
-        opacity: 0.4;
-        overflow-y: hidden;
-        pointer-events: none;
-      }
-    `}</style>
+        .loading {
+          opacity: 0.4;
+          overflow-y: hidden;
+          pointer-events: none;
+        }
+      `}
+    </style>
   </section>
 );
 

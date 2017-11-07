@@ -2,7 +2,7 @@
 
 exports[`<Content /> should render <List /> when files dropped are dropped 1`] = `
 <section
-  className="jsx-607015341 "
+  className="jsx-1759955757 "
 >
   <ul
     className="jsx-565981134"
@@ -75,7 +75,7 @@ exports[`<Content /> should render <List /> when files dropped are dropped 1`] =
     />
   </ul>
   <ul
-    className="jsx-1528968591"
+    className="jsx-631033484"
   >
     <li
       className="jsx-3663839241 "
@@ -95,10 +95,10 @@ exports[`<Content /> should render <List /> when files dropped are dropped 1`] =
 
 exports[`<Content /> should render <List /> when there are results 1`] = `
 <section
-  className="jsx-607015341 "
+  className="jsx-1759955757 "
 >
   <ul
-    className="jsx-1528968591"
+    className="jsx-631033484"
   >
     <li
       className="jsx-3663839241 "
@@ -118,10 +118,10 @@ exports[`<Content /> should render <List /> when there are results 1`] = `
 
 exports[`<Content /> should show <Drop /> when there is no searchQuery and no files dropped 1`] = `
 <section
-  className="jsx-607015341 "
+  className="jsx-1759955757 "
 >
   <div
-    className="jsx-4267466600"
+    className="jsx-246188302"
   >
     <FakeDropzone
       activeStyle={
@@ -141,7 +141,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
       }
     >
       <p
-        className="jsx-4267466600"
+        className="jsx-246188302"
       >
         Drop an episode or season...
       </p>
@@ -152,7 +152,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
 
 exports[`<Content /> should show <ListEmpty /> when there is a query but no results 1`] = `
 <section
-  className="jsx-607015341 "
+  className="jsx-1759955757 "
 >
   <ul
     className="jsx-565981134"

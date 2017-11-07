@@ -149,6 +149,14 @@ const Layout = ({ children }) => (
           border-collapse: collapse;
           border-spacing: 0;
         }
+
+        main {
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          width: 100vw;
+          overflow: hidden;
+        }
       `}
     </style>
   </main>

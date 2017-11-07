@@ -106,6 +106,7 @@ app.on("ready", async () => {
   // Setup
   buildMenu();
   initSettings();
+  checkForUpdates();
 
   // IPC events
   ipcMain.on("textSearch", (event, query, language) => {

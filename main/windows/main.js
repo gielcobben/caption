@@ -3,7 +3,6 @@ const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 const windowStateKeeper = require("electron-window-state");
-const { checkForUpdates } = require("../updater");
 
 const createMainWindow = () => {
   const windowState = windowStateKeeper({
@@ -45,7 +44,6 @@ const createMainWindow = () => {
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.show();
     mainWindow.focus();
-    checkForUpdates();
   });
 
   return mainWindow;

@@ -86,7 +86,7 @@ const buildMenu = () => {
   }
 
   const menu = Menu.buildFromTemplate(template);
-  return Menu.setApplicationMenu(menu);
+  Menu.setApplicationMenu(menu);
 };
 
 module.exports = buildMenu;
