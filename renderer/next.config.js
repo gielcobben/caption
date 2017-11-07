@@ -16,6 +16,7 @@ module.exports = {
     return {
       "/start": { page: "/start" },
       "/about": { page: "/about" },
+      "/check": { page: "/check" },
       "/progress": { page: "/progress" },
     };
   },

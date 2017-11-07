@@ -1,6 +1,7 @@
 const { dialog, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
 const { autoUpdater } = require("electron-updater");
+const { showCheckWindow, closeCheckWindow } = require("./windows/check");
 const { showProgressWindow } = require("./windows/progress");
 
 // Functions
@@ -36,12 +37,16 @@ autoUpdater.allowPrerelease = isDev;
 autoUpdater.autoDownload = false;
 
 autoUpdater.on("checking-for-update", () => {
-  console.log("Checking for update...");
+  const { onStartup } = global.updater;
+  if (!onStartup) {
+    showCheckWindow();
+  }
 });
 
 autoUpdater.on("update-available", info => {
   console.log("available  ", info);
   const { cancellationToken } = global.updater;
+  closeCheckWindow();
   showProgressWindow();
   autoUpdater.downloadUpdate(cancellationToken);
 });
@@ -49,6 +54,7 @@ autoUpdater.on("update-available", info => {
 autoUpdater.on("update-not-available", info => {
   console.log(`Update not available`, info);
   const { onStartup } = global.updater;
+  closeCheckWindow();
 
   if (!onStartup) {
     const options = {
@@ -63,6 +69,7 @@ autoUpdater.on("update-not-available", info => {
 
 autoUpdater.on("error", (event, error) => {
   console.log(error);
+  closeCheckWindow();
 });
 
 autoUpdater.on("download-progress", progressObj => {

@@ -47,6 +47,7 @@ const showErrorDialog = online => {
 
 // App Events
 app.on("before-quit", () => {
+  global.windows.checkWindow = null;
   willQuitApp = true;
 });
 
@@ -94,7 +95,9 @@ app.on("ready", async () => {
   } = global.windows;
 
   mainWindow.on("close", () => {
-    global.windows.mainWindow = null;
+    global.windows = null;
+    app.exit();
+    app.quit();
   });
   aboutWindow.on("close", event => closeAboutWindow(event, willQuitApp));
   checkWindow.on("close", event => closeCheckWindow(event, willQuitApp));

@@ -38,14 +38,8 @@ const showCheckWindow = () => {
   checkWindow.focus();
 };
 
-const closeCheckWindow = (event, willQuitApp) => {
+const closeCheckWindow = () => {
   const { checkWindow } = global.windows;
-  if (willQuitApp) {
-    global.windows.checkWindow = null;
-    return;
-  }
-
-  event.preventDefault();
   checkWindow.hide();
 };
 
