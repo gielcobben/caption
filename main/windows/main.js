@@ -42,10 +42,6 @@ const createMainWindow = () => {
   const url = isDev ? devPath : prodPath;
   mainWindow.loadURL(url);
 
-  if (isDev) {
-    mainWindow.webContents.toggleDevTools();
-  }
-
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.show();
     mainWindow.focus();

@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://getcaption.co/CaptionIcon.png" width="160" alt="icon"><br>
+  <img src="https://getcaption.co/CaptionIcon.png" width="64" alt="icon"><br>
   Caption
   <br>
   <br>
