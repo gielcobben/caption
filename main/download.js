@@ -48,9 +48,6 @@ const singleDownload = async item => {
     saveAs: true,
   };
 
-  console.log('item', item);
-  console.log('mainWindow', mainWindow);
-
   try {
     await download(mainWindow, item.download, options);
   } catch (err) {

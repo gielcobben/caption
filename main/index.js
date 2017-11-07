@@ -29,7 +29,7 @@ const downloadSubtitle = item => {
     return false;
   }
 
-  if (item.source === "addi7ted") {
+  if (item.source === "addic7ed") {
     return downloadAddic7ed(item);
   }
 
