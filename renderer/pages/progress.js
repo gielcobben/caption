@@ -9,7 +9,7 @@ class Progress extends React.Component {
     this.state = {
       total: 0,
       transferred: 0,
-      percent: 0
+      percent: 0,
     };
   }
 
@@ -18,7 +18,7 @@ class Progress extends React.Component {
       this.setState({
         percent,
         total,
-        transferred
+        transferred,
       });
     });
   }
@@ -91,7 +91,8 @@ class Progress extends React.Component {
           button {
             font-size: 13px;
           }
-        `}</style>
+        `}
+        </style>
       </Layout>
     );
   }

@@ -1,15 +1,10 @@
-// Native
 const { format } = require("url");
-
-// Packages
 const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 
-let progressWindow;
-
 const createProgressWindow = () => {
-  progressWindow = new BrowserWindow({
+  const progressWindow = new BrowserWindow({
     width: 400,
     height: 130,
     title: "Updating Caption",
@@ -20,7 +15,7 @@ const createProgressWindow = () => {
     maximizable: false,
     closable: false,
     fullscreenable: false,
-    backgroundColor: "#ECECEC"
+    backgroundColor: "#ECECEC",
   });
 
   const devPath = "http://localhost:8000/progress";
@@ -28,7 +23,7 @@ const createProgressWindow = () => {
   const prodPath = format({
     pathname: resolve("renderer/out/progress/index.html"),
     protocol: "file:",
-    slashes: true
+    slashes: true,
   });
 
   const url = isDev ? devPath : prodPath;
@@ -38,8 +33,25 @@ const createProgressWindow = () => {
 };
 
 const showProgressWindow = () => {
+  const { progressWindow } = global.windows;
   progressWindow.show();
   progressWindow.focus();
 };
 
-module.exports = { createProgressWindow, showProgressWindow };
+const closeProgressWindow = (event, willQuitApp) => {
+  const { progressWindow } = global.windows;
+
+  if (willQuitApp) {
+    global.windows.progressWindow = null;
+    return;
+  }
+
+  event.preventDefault();
+  progressWindow.hide();
+};
+
+module.exports = {
+  createProgressWindow,
+  showProgressWindow,
+  closeProgressWindow,
+};

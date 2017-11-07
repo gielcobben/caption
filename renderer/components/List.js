@@ -14,7 +14,7 @@ class List extends React.Component {
     super(props);
 
     this.state = {
-      selected: null
+      selected: null,
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -85,8 +85,8 @@ class List extends React.Component {
         label: "Download",
         click: async () => {
           ipcRenderer.send("downloadSubtitle", item);
-        }
-      }
+        },
+      },
     ]);
 
     // Wait till state is set.
@@ -118,7 +118,8 @@ class List extends React.Component {
           ul {
             height: 100%;
           }
-        `}</style>
+        `}
+        </style>
       </ul>
     );
   }

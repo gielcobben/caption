@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://getcaption.co/CaptionIcon.png" width="160" alt="icon"><br>
+  <img src="https://getcaption.co/CaptionIcon.png" width="64" alt="icon"><br>
   Caption
   <br>
   <br>
@@ -11,6 +11,7 @@
   <h6 align="center">INTRODUCTION</h6>
   <p align="center">Caption is a great little app that takes the effort out of finding and setting up the right subtitles. It has a simple, uncomplicated design, a drag &amp; drop search feature, automatic downloading and automatic renaming. Caption is completely <strong>open-source</strong> and made with web technology.</p>
  <p align="center"><a href="https://getcaption.co">Download Caption.</a></p>
+ <p align="center"><img src="https://img.shields.io/github/downloads/gielcobben/Caption/total.svg" /></p>
 </p>
 <br>
 
