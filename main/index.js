@@ -4,10 +4,10 @@ const { moveToApplications } = require("electron-lets-move");
 const prepareNext = require("electron-next");
 const Store = require("electron-store");
 const buildMenu = require("./menu");
+const { singleDownload } = require("./download");
+const { downloadAddic7ed } = require("./sources/utils");
 const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
-const { download } = require("./sources/addic7ed");
-const { singleDownload } = require("./download");
 
 const store = new Store();
 
@@ -29,8 +29,8 @@ const downloadSubtitle = item => {
     return false;
   }
 
-  if (item.source === "addi7ted") {
-    return download(item);
+  if (item.source === "addic7ed") {
+    return downloadAddic7ed(item);
   }
 
   return singleDownload(item);
@@ -107,7 +107,7 @@ app.on("ready", async () => {
   buildMenu();
   initSettings();
 
-  // IPC Events
+  // IPC events
   ipcMain.on("textSearch", (event, query, language) => {
     textSearch(query, language, "all");
   });
