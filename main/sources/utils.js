@@ -1,7 +1,7 @@
 const addic7ed = require("addic7ed-api");
 const { dialog } = require("electron");
 
-export const downloadAddi7ed = async item => {
+const downloadAddic7ed = async item => {
   const { mainWindow } = global.windows;
   const path = await new Promise(resolve => {
     dialog.showSaveDialog(
@@ -22,5 +22,5 @@ export const downloadAddi7ed = async item => {
 };
 
 module.exports = {
-  downloadAddi7ed,
+  downloadAddic7ed,
 };
