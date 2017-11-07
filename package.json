@@ -65,6 +65,7 @@
     "opensubtitles-api": "latest",
     "prop-types": "^15.6.0",
     "react-dropzone": "^4.1.0",
+    "react-ga": "^2.3.5",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
