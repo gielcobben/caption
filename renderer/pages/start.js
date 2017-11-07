@@ -32,6 +32,9 @@ import {
   updateSearchResults,
 } from "./../actions";
 
+// Analytics
+import { initGA, logPageView } from "./../utils/tracking";
+
 // Global variables
 const ESC_KEY = 27;
 
@@ -49,6 +52,9 @@ class MainApp extends Component {
 
   // handling escape close
   componentDidMount() {
+    initGA();
+    logPageView();
+
     this.checkIfOnline();
 
     ipcRenderer.once("download-complete", () => {
