@@ -53,10 +53,6 @@ class MainApp extends Component {
   componentDidMount() {
     this.checkIfOnline();
 
-    ipcRenderer.on("updater", (event, message) => {
-      console.log(message);
-    });
-
     ipcRenderer.once("download-complete", () => {
       this.props.downloadComplete();
     });
