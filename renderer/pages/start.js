@@ -1,4 +1,5 @@
 // Packages
+import { platform } from "os";
 import { ipcRenderer } from "electron";
 import withRedux from "next-redux-wrapper";
 import React, { Component } from "react";
@@ -39,6 +40,7 @@ class MainApp extends Component {
   constructor(props) {
     super(props);
 
+    this.isWindows = platform() === "win32";
     this.onLanguageChange = this.onLanguageChange.bind(this);
     this.checkIfOnline = this.checkIfOnline.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -120,7 +122,7 @@ class MainApp extends Component {
   render() {
     return (
       <Layout>
-        <TitleBar title="Caption" />
+        {!this.isWindows && <TitleBar title="Caption" />}
         <Search
           onSubmit={this.onSearch}
           onFocus={this.onFocus}

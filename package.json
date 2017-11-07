@@ -26,9 +26,8 @@
   "scripts": {
     "start": "electron --inspect=5858 .",
     "build": "npm run test && next build renderer && next export renderer",
-    "dist": "npm run build && build --mac",
-    "publish":
-      "npm run build && node -r dotenv/config node_modules/.bin/build --mac -p always",
+    "dist": "npm run build && build --mac --windows --linux",
+    "publish": "npm run build && node -r dotenv/config node_modules/.bin/build --mac --windows --linux -p always",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -79,17 +78,29 @@
         "repo": "Caption"
       }
     ],
-    "files": ["**/*", "!.env", "!renderer", "renderer/out"],
+    "files": [
+      "**/*",
+      "!.env",
+      "!renderer",
+      "renderer/out"
+    ],
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "icon": "./renderer/static/icon.icns"
     },
     "linux": {
-      "target": ["deb"],
+      "target": [
+        "deb"
+      ],
       "icon": "./renderer/static/icon.iconset/"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "./renderer/static/icon.ico"
     }
   }

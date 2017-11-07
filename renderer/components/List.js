@@ -114,11 +114,13 @@ class List extends React.Component {
           />
         ))}
 
-        <style jsx>{`
-          ul {
-            height: 100%;
-          }
-        `}
+        <style jsx>
+          {`
+            ul {
+              height: 100%;
+              overflow-y: scroll;
+            }
+          `}
         </style>
       </ul>
     );

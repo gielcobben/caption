@@ -2,7 +2,7 @@
 
 exports[`<Info /> should show a loader when there are no results yet 1`] = `
 <div
-  className="jsx-2590038799"
+  className="jsx-3536369025"
 >
   <span
     className="jsx-904518150"
@@ -17,10 +17,10 @@ exports[`<Info /> should show a loader when there are no results yet 1`] = `
 
 exports[`<Info /> should show an empty state when no results are found 1`] = `
 <div
-  className="jsx-2590038799"
+  className="jsx-3536369025"
 >
   <span
-    className="jsx-2590038799"
+    className="jsx-3536369025"
   >
     Nothing Found
   </span>
@@ -29,10 +29,10 @@ exports[`<Info /> should show an empty state when no results are found 1`] = `
 
 exports[`<Info /> should show the total results if any are present 1`] = `
 <div
-  className="jsx-2590038799"
+  className="jsx-3536369025"
 >
   <span
-    className="jsx-2590038799"
+    className="jsx-3536369025"
   >
     2 Results
   </span>
