@@ -8,6 +8,7 @@ const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
 const { download } = require("./sources/addic7ed");
 const { singleDownload } = require("./download");
+const { checkForUpdates } = require("./updater");
 
 const store = new Store();
 
@@ -106,6 +107,7 @@ app.on("ready", async () => {
   // Setup
   buildMenu();
   initSettings();
+  checkForUpdates();
 
   // IPC Events
   ipcMain.on("textSearch", (event, query, language) => {

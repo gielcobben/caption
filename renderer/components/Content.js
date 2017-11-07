@@ -18,7 +18,7 @@ const Content = ({
     <style jsx>
       {`
         section {
-          height: calc(100vh - 120px);
+          height: 100%;
           overflow: hidden;
         }
 
