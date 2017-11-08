@@ -1,11 +1,7 @@
-const { TouchBar, shell, nativeImage } = require("electron");
-const { resolve } = require("app-root-path");
+const { TouchBar, shell } = require("electron");
 
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 const { showAboutWindow } = require("./windows/about");
-
-const imgPath = resolve("renderer/static/icon.png");
-const aboutIcon = nativeImage.createFromPath(imgPath);
 
 const aboutCaptionButton = new TouchBarButton({
   label: "🎬 About Caption",
