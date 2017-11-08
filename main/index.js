@@ -8,6 +8,7 @@ const { singleDownload } = require("./download");
 const { downloadAddic7ed } = require("./sources/utils");
 const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
+const { checkForUpdates } = require('./updater');
 
 const store = new Store();
 
