@@ -1,5 +1,4 @@
 // Packages
-import fs from "fs";
 import movieExtentsion from "../data/extenstions";
 
 // Process files

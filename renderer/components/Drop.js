@@ -7,10 +7,11 @@ const styleDefault = {
   borderRadius: "5px",
   width: "100%",
   height: "100%",
+  transition: "all .2s ease-out",
 };
 
 const styleActive = {
-  border: "1px dashed red",
+  border: "1px dashed #0095ff",
 };
 
 // Component
