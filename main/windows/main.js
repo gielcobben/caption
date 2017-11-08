@@ -4,6 +4,8 @@ const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 const windowStateKeeper = require("electron-window-state");
 
+const touchBar = require('./../touchbar');
+
 const createMainWindow = () => {
   const windowState = windowStateKeeper({
     defaultWidth: 360,
@@ -45,6 +47,11 @@ const createMainWindow = () => {
     mainWindow.show();
     mainWindow.focus();
   });
+
+  // Add Touchbar support for MacOS
+  if (process.platform === "darwin") {
+    mainWindow.setTouchBar(touchBar);
+  }
 
   return mainWindow;
 };
