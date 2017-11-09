@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://gielcobben.com/github/caption/icon_256x256.png" width="100" alt="icon" draggable="false"><br>
+  <img src="https://gielcobben.com/github/caption/icon_256x256.png?v=2" width="100" alt="icon" draggable="false"><br>
   Caption
   <br>
   <br>
