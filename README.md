@@ -1,6 +1,6 @@
 <h1 align="center">
   <img src="https://getcaption.co/CaptionIcon.png" width="64" alt="icon"><br>
-  Caption
+  Caption: Start watching
   <br>
   <br>
 </h1>
@@ -9,19 +9,21 @@
   <img src="https://getcaption.co/CaptionCover.png" width="840" alt="banner">
   <br>
   <h6 align="center">INTRODUCTION</h6>
-  <p align="center">Caption is a great little app that takes the effort out of finding and setting up the right subtitles. It has a simple, uncomplicated design, a drag &amp; drop search feature, automatic downloading and automatic renaming. Caption is completely <strong>open-source</strong> and made with web technology.</p>
+  <p align="center">Caption takes the effort out of finding and setting up the right subtitles. Simple design, drag & drop search, and automatic downloading & renaming, help you to just start watching. Caption is multi-platform, open-source and made entirely on web technology.</p>
  <p align="center"><a href="https://getcaption.co">Download Caption.</a></p>
  <p align="center"><img src="https://img.shields.io/github/downloads/gielcobben/Caption/total.svg" /></p>
 </p>
 <br>
 
 ## ⚡️ Contribute
-This app is developed by the same people who are using it. If you are one of them (actually... us) and want to make our app even better, you're more than welcome to contribute.
+Caption is entirely open-source and we've tried to make it as easy as possible for anyone to contribute. If you'd like to help out by adding features, working on bug fixes, or assisting in other parts of development, here's how to get started:
 
-1. Fork this repository to your own GitHub account and then clone it to your local device
-2. Install the dependencies: npm install
-3. Run the app by building the code and watch for changes: npm start
-4. Build the actual app for all platforms (Mac, Windows and Linux): `npm run dist`
+1. Fork this repository to your own GitHub account
+2. Clone it to your local device: `git clone git@github.com:gielcobben/caption.git`
+3. Install the dependencies: `npm install`
+4. Run the app by starting electron, building the code and watch for changes: `npm start`
+---
+5. Build the actual app for all platforms (Mac, Windows and Linux): `npm run dist`
 
 <br>
 <br>
@@ -55,4 +57,4 @@ return {
 
 ## 🔑 License
 
-[MIT](https://github.com/gielcobben/Caption/blob/master/LICENSE) © Giel Cobben
+[MIT](https://github.com/gielcobben/Caption/blob/master/LICENSE) © [Giel Cobben](https://twitter.com/gielcobben)
