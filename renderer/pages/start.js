@@ -62,7 +62,14 @@ class MainApp extends Component {
 
     ipcRenderer.once("download-complete", (event, items) => {
       this.props.downloadComplete();
-      this.props.showNotification(`${items.length} subtitles succesfully downloaded!`);
+
+      if (items.length > 0) {
+        this.props.showNotification(`${items.length} subtitle succesfully downloaded!`);
+      }
+
+      if (items.length > 1) {
+        this.props.showNotification(`${items.length} subtitles succesfully downloaded!`);
+      }
     });
 
     ipcRenderer.on("results", (event, { results, isFinished }) => {
@@ -87,7 +94,7 @@ class MainApp extends Component {
 
   componentWillUnmount() {
     document.removeEventListener("keydown", this.onKeyDown);
-    window.removeEventListener("online");
+    window.removeEventListener("online", this.checkIfOnline);
   }
 
   onKeyDown(event) {
