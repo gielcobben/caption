@@ -1,12 +1,12 @@
 <h1 align="center">
-  <img src="https://getcaption.co/CaptionIcon.png" width="64" alt="icon"><br>
-  Caption: Start watching
+  <img src="https://gielcobben.com/github/caption/icon_256x256.png" width="64" alt="icon"><br>
+  Caption
   <br>
   <br>
 </h1>
 <br>
 <p align="center">  
-  <img src="https://getcaption.co/CaptionCover.png" width="840" alt="banner">
+  <img src="https://gielcobben.com/github/caption/github_cover.png" width="840" alt="banner">
   <br>
   <h6 align="center">INTRODUCTION</h6>
   <p align="center">Caption takes the effort out of finding and setting up the right subtitles. Simple design, drag & drop search, and automatic downloading & renaming, help you to just start watching. Caption is multi-platform, open-source and made entirely on web technology.</p>
@@ -18,11 +18,12 @@
 ## ⚡️ Contribute
 Caption is entirely open-source and we've tried to make it as easy as possible for anyone to contribute. If you'd like to help out by adding features, working on bug fixes, or assisting in other parts of development, here's how to get started:
 
+###### Get started:
 1. Fork this repository to your own GitHub account
 2. Clone it to your local device: `git clone git@github.com:gielcobben/caption.git`
 3. Install the dependencies: `npm install`
 4. Run the app by starting electron, building the code and watch for changes: `npm start`
----
+###### Build the app:
 5. Build the actual app for all platforms (Mac, Windows and Linux): `npm run dist`
 
 <br>
@@ -34,7 +35,7 @@ Due to this project's open-source nature, the sources' management was designed t
 - [x] OpenSubtitles
 - [x] Addi7ed
 
-### Add sources
+###### Add sources
 1. Fork this repository to your own GitHub account and then clone it to your local device
 2. Install the dependencies: `npm install`
 3. Create a new file with the name of the source: `./main/soures/[yoursource].js`
