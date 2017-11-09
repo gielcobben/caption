@@ -60,8 +60,9 @@ class MainApp extends Component {
 
     this.checkIfOnline();
 
-    ipcRenderer.once("download-complete", () => {
+    ipcRenderer.once("download-complete", (event, items) => {
       this.props.downloadComplete();
+      this.props.showNotification(`${items.length} subtitles succesfully downloaded!`);
     });
 
     ipcRenderer.on("results", (event, { results, isFinished }) => {
