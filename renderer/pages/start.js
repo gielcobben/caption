@@ -20,6 +20,7 @@ import initStore from "./../store";
 // Redux action creators
 import {
   setLanguage,
+  showNotification,
   resetSearch,
   showSearchPlaceholder,
   hideSearchPlaceholder,
@@ -75,6 +76,10 @@ class MainApp extends Component {
     });
 
     ipcRenderer.send("getStore", "language");
+
+    ipcRenderer.on("singleDownloadSuccesfull", (event, item) => {
+      this.props.showNotification(`${item.name} downloaded succesfully!`);
+    });
 
     document.addEventListener("keydown", this.onKeyDown);
   }
@@ -152,6 +157,7 @@ MainApp.propTypes = {
   hideSearchPlaceholder: PropTypes.func.isRequired,
   showSearchPlaceholder: PropTypes.func.isRequired,
   startSearch: PropTypes.func.isRequired,
+  showNotification: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ui, search }) => ({
@@ -166,6 +172,7 @@ const mapStateToProps = ({ ui, search }) => ({
 
 const mapDispatchToProps = {
   setLanguage,
+  showNotification,
   resetSearch,
   showSearchPlaceholder,
   hideSearchPlaceholder,

@@ -50,6 +50,7 @@ const singleDownload = async item => {
 
   try {
     await download(mainWindow, item.download, options);
+    mainWindow.webContents.send("singleDownloadSuccesfull", item);
   } catch (err) {
     console.log("err", err);
   }

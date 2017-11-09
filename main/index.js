@@ -1,5 +1,11 @@
 // Packages
-const { app, ipcMain, dialog } = require("electron");
+const {
+  app,
+  ipcMain,
+  dialog,
+  Notification,
+  NotificationAction,
+} = require("electron");
 const { moveToApplications } = require("electron-lets-move");
 const prepareNext = require("electron-next");
 const Store = require("electron-store");
@@ -8,7 +14,7 @@ const { singleDownload } = require("./download");
 const { downloadAddic7ed } = require("./sources/utils");
 const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
-const { checkForUpdates } = require('./updater');
+const { checkForUpdates } = require("./updater");
 
 const store = new Store();
 
@@ -124,5 +130,16 @@ app.on("ready", async () => {
 
   ipcMain.on("online", (event, online) => {
     showErrorDialog(online);
+  });
+
+  ipcMain.on("notification", (event, message) => {
+    if (Notification.isSupported()) {
+      const notification = new Notification({
+        title: "Caption",
+        body: message,
+        actions: [{ type: "button", text: "Show" }],
+      });
+      notification.show();
+    }
   });
 });
