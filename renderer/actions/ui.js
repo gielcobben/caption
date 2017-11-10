@@ -21,3 +21,11 @@ export const setLanguage = language => (dispatch, getState) => {
     dispatch(startSearch());
   }
 };
+
+export const showNotification = message => dispatch => {
+  dispatch({
+    type: types.SHOW_NOTIFICATION,
+  });
+
+  ipcRenderer.send("notification", message);
+};

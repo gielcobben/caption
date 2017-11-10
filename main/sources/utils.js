@@ -1,5 +1,6 @@
 const addic7ed = require("addic7ed-api");
 const { dialog } = require("electron");
+const notification = require("../notification");
 
 const downloadAddic7ed = async item => {
   const { mainWindow } = global.windows;
@@ -19,6 +20,7 @@ const downloadAddic7ed = async item => {
   }
 
   await addic7ed.download(item.download, path);
+  notification(`${item.name} is successfully downloaded!`);
 };
 
 module.exports = {

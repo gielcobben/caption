@@ -8,7 +8,8 @@ const { singleDownload } = require("./download");
 const { downloadAddic7ed } = require("./sources/utils");
 const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
-const { checkForUpdates } = require('./updater');
+const { checkForUpdates } = require("./updater");
+const notification = require("./notification");
 
 const store = new Store();
 
@@ -124,5 +125,9 @@ app.on("ready", async () => {
 
   ipcMain.on("online", (event, online) => {
     showErrorDialog(online);
+  });
+
+  ipcMain.on("notification", (event, message) => {
+    notification(message);
   });
 });
