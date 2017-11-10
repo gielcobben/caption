@@ -1,4 +1,6 @@
 // Packages
+const fs = require("fs");
+const path = require("path");
 const { app, ipcMain, dialog } = require("electron");
 const { moveToApplications } = require("electron-lets-move");
 const prepareNext = require("electron-next");
@@ -65,6 +67,28 @@ app.on("activate", () => {
   if (mainWindow === null) {
     global.windows.mainWindow = createMainWindow();
   }
+});
+
+app.on("will-finish-launching", () => {
+  app.on("open-file", (event, filePath) => {
+    event.preventDefault();
+    const { mainWindow } = global.windows;
+
+    fs.stat(filePath, (error, stats) => {
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      const file = {
+        name: path.basename(filePath),
+        size: stats.size,
+        path: filePath,
+      };
+
+      mainWindow.webContents.send("openFile", file);
+    });
+  });
 });
 
 app.on("ready", async () => {

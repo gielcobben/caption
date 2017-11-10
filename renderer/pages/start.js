@@ -36,6 +36,7 @@ import {
 
 // Analytics
 import { initGA, logPageView } from "./../utils/tracking";
+import { processFiles } from "../utils";
 
 // Global variables
 const ESC_KEY = 27;
@@ -72,6 +73,12 @@ class MainApp extends Component {
 
     ipcRenderer.once("download-complete", (event, items) => {
       this.props.downloadComplete();
+    });
+
+    ipcRenderer.on("openFile", async (event, file) => {
+      const rawFiles = [file];
+      const files = await processFiles(rawFiles);
+      this.props.dropFiles(files);
     });
 
     ipcRenderer.send("getStore", "language");
@@ -152,6 +159,7 @@ MainApp.propTypes = {
   showSearchPlaceholder: PropTypes.func.isRequired,
   startSearch: PropTypes.func.isRequired,
   showNotification: PropTypes.func.isRequired,
+  dropFiles: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ui, search }) => ({

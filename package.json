@@ -91,7 +91,8 @@
         "dmg",
         "zip"
       ],
-      "icon": "./renderer/static/icon.icns"
+      "icon": "./renderer/static/icon.icns",
+      "extendInfo": []
     },
     "linux": {
       "target": [
@@ -104,6 +105,239 @@
         "nsis"
       ],
       "icon": "./renderer/static/icon.ico"
-    }
+    },
+    "fileAssociations": [
+      {
+        "ext": "3g2"
+      },
+      {
+        "ext": "3gp"
+      },
+      {
+        "ext": "3gp2"
+      },
+      {
+        "ext": "3gpp"
+      },
+      {
+        "ext": "60d"
+      },
+      {
+        "ext": "ajp"
+      },
+      {
+        "ext": "asf"
+      },
+      {
+        "ext": "asx"
+      },
+      {
+        "ext": "avchd"
+      },
+      {
+        "ext": "avi"
+      },
+      {
+        "ext": "bik"
+      },
+      {
+        "ext": "bix"
+      },
+      {
+        "ext": "box"
+      },
+      {
+        "ext": "cam"
+      },
+      {
+        "ext": "dat"
+      },
+      {
+        "ext": "divx"
+      },
+      {
+        "ext": "dmf"
+      },
+      {
+        "ext": "dv"
+      },
+      {
+        "ext": "dvr-ms"
+      },
+      {
+        "ext": "evo"
+      },
+      {
+        "ext": "flc"
+      },
+      {
+        "ext": "fli"
+      },
+      {
+        "ext": "flic"
+      },
+      {
+        "ext": "flv"
+      },
+      {
+        "ext": "flx"
+      },
+      {
+        "ext": "gvi"
+      },
+      {
+        "ext": "gvp"
+      },
+      {
+        "ext": "h264"
+      },
+      {
+        "ext": "m1v"
+      },
+      {
+        "ext": "m2p"
+      },
+      {
+        "ext": "m2ts"
+      },
+      {
+        "ext": "m2v"
+      },
+      {
+        "ext": "m4e"
+      },
+      {
+        "ext": "m4v"
+      },
+      {
+        "ext": "mjp"
+      },
+      {
+        "ext": "mjpeg"
+      },
+      {
+        "ext": "mjpg"
+      },
+      {
+        "ext": "mkv"
+      },
+      {
+        "ext": "moov"
+      },
+      {
+        "ext": "mov"
+      },
+      {
+        "ext": "movhd"
+      },
+      {
+        "ext": "movie"
+      },
+      {
+        "ext": "movx"
+      },
+      {
+        "ext": "mp4"
+      },
+      {
+        "ext": "mpe"
+      },
+      {
+        "ext": "mpeg"
+      },
+      {
+        "ext": "mpg"
+      },
+      {
+        "ext": "mpv"
+      },
+      {
+        "ext": "mpv2"
+      },
+      {
+        "ext": "mxf"
+      },
+      {
+        "ext": "nsv"
+      },
+      {
+        "ext": "nut"
+      },
+      {
+        "ext": "ogg"
+      },
+      {
+        "ext": "ogm"
+      },
+      {
+        "ext": "omf"
+      },
+      {
+        "ext": "ps"
+      },
+      {
+        "ext": "qt"
+      },
+      {
+        "ext": "ram"
+      },
+      {
+        "ext": "rm"
+      },
+      {
+        "ext": "rmvb"
+      },
+      {
+        "ext": "swf"
+      },
+      {
+        "ext": "ts"
+      },
+      {
+        "ext": "vfw"
+      },
+      {
+        "ext": "vid"
+      },
+      {
+        "ext": "video"
+      },
+      {
+        "ext": "viv"
+      },
+      {
+        "ext": "vivo"
+      },
+      {
+        "ext": "vob"
+      },
+      {
+        "ext": "vro"
+      },
+      {
+        "ext": "wm"
+      },
+      {
+        "ext": "wmv"
+      },
+      {
+        "ext": "wmx"
+      },
+      {
+        "ext": "wrap"
+      },
+      {
+        "ext": "wvx"
+      },
+      {
+        "ext": "wx"
+      },
+      {
+        "ext": "x264"
+      },
+      {
+        "ext": "xvi"
+      }
+    ]
   }
 }
