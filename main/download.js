@@ -1,12 +1,15 @@
 const fs = require("fs");
 const path = require("path");
 const { download } = require("electron-dl");
+const notification = require("./notification");
 
 const rename = subtitles => {
   const { mainWindow } = global.windows;
+
   subtitles.map(subtitle =>
     fs.rename(subtitle.savePath, subtitle.filename, () => console.log("done")));
 
+  notification(`${subtitles.length} subtitles downloaded succesfully!`);
   mainWindow.webContents.send("download-complete", subtitles);
 };
 
@@ -50,6 +53,7 @@ const singleDownload = async item => {
 
   try {
     await download(mainWindow, item.download, options);
+    notification(`${item.name} is succesfully downloaded!`);
     mainWindow.webContents.send("singleDownloadSuccesfull", item);
   } catch (err) {
     console.log("err", err);

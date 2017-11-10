@@ -57,20 +57,7 @@ class MainApp extends Component {
   componentDidMount() {
     initGA();
     logPageView();
-
     this.checkIfOnline();
-
-    ipcRenderer.once("download-complete", (event, items) => {
-      this.props.downloadComplete();
-
-      if (items.length > 0) {
-        this.props.showNotification(`${items.length} subtitle succesfully downloaded!`);
-      }
-
-      if (items.length > 1) {
-        this.props.showNotification(`${items.length} subtitles succesfully downloaded!`);
-      }
-    });
 
     ipcRenderer.on("results", (event, { results, isFinished }) => {
       this.props.updateSearchResults({
@@ -83,12 +70,11 @@ class MainApp extends Component {
       this.props.setLanguage(language);
     });
 
-    ipcRenderer.send("getStore", "language");
-
-    ipcRenderer.on("singleDownloadSuccesfull", (event, item) => {
-      this.props.showNotification(`${item.name} downloaded succesfully!`);
+    ipcRenderer.once("download-complete", (event, items) => {
+      this.props.downloadComplete();
     });
 
+    ipcRenderer.send("getStore", "language");
     document.addEventListener("keydown", this.onKeyDown);
   }
 
