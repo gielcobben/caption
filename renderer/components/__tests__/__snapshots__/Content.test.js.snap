@@ -126,7 +126,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
     <FakeDropzone
       activeStyle={
         Object {
-          "border": "1px dashed red",
+          "border": "1px dashed #0095ff",
         }
       }
       onDrop={undefined}
@@ -136,6 +136,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
           "border": "1px dashed rgba(202, 203, 204, 1)",
           "borderRadius": "5px",
           "height": "100%",
+          "transition": "all .2s ease-out",
           "width": "100%",
         }
       }
