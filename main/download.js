@@ -9,7 +9,7 @@ const rename = subtitles => {
   subtitles.map(subtitle =>
     fs.rename(subtitle.savePath, subtitle.filename, () => console.log("done")));
 
-  notification(`${subtitles.length} subtitles downloaded succesfully!`);
+  notification(`${subtitles.length} subtitles downloaded successfully!`);
   mainWindow.webContents.send("download-complete", subtitles);
 };
 
@@ -53,7 +53,7 @@ const singleDownload = async item => {
 
   try {
     await download(mainWindow, item.download, options);
-    notification(`${item.name} is succesfully downloaded!`);
+    notification(`${item.name} is successfully downloaded!`);
     mainWindow.webContents.send("singleDownloadSuccesfull", item);
   } catch (err) {
     console.log("err", err);

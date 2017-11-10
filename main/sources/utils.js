@@ -20,7 +20,7 @@ const downloadAddic7ed = async item => {
   }
 
   await addic7ed.download(item.download, path);
-  notification(`${item.name} is succesfully downloaded!`);
+  notification(`${item.name} is successfully downloaded!`);
 };
 
 module.exports = {
