@@ -33,6 +33,7 @@ import {
   dropFiles,
   updateSearchResults,
   logDonatedButtonClicked,
+  logAboutWindowOpend,
 } from "./../actions";
 
 // Analytics
@@ -88,6 +89,10 @@ class MainApp extends Component {
 
     ipcRenderer.on("logDonated", event => {
       this.props.logDonatedButtonClicked();
+    });
+
+    ipcRenderer.on("logAbout", event => {
+      this.props.logAboutWindowOpend();
     });
 
     ipcRenderer.send("getStore", "language");
@@ -190,6 +195,7 @@ MainApp.propTypes = {
   showNotification: PropTypes.func.isRequired,
   dropFiles: PropTypes.func.isRequired,
   logDonatedButtonClicked: PropTypes.func.isRequired,
+  logAboutWindowOpend: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ui, search }) => ({
@@ -217,6 +223,7 @@ const mapDispatchToProps = {
   dropFiles,
   updateSearchResults,
   logDonatedButtonClicked,
+  logAboutWindowOpend,
 };
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(MainApp);

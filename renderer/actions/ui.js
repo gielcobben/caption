@@ -1,7 +1,7 @@
 import * as types from "./../types";
 import { ipcRenderer } from "electron";
 
-import { logDonated } from "./../utils/tracking";
+import { logDonated, logAbout } from "./../utils/tracking";
 import { startSearch } from "./index";
 
 export const setLanguage = language => (dispatch, getState) => {
@@ -37,4 +37,12 @@ export const logDonatedButtonClicked = () => dispatch => {
   });
 
   logDonated();
+};
+
+export const logAboutWindowOpend = () => dispatch => {
+  dispatch({
+    type: types.LOG_ABOUT,
+  });
+
+  logAbout();
 };

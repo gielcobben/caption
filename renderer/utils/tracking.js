@@ -24,3 +24,10 @@ export const logDonated = () => {
     action: "Donate button clicked",
   });
 };
+
+export const logAbout = () => {
+  ReactGA.event({
+    category: "interaction",
+    action: "About window opened",
+  });
+};

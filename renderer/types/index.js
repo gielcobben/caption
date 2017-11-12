@@ -2,6 +2,7 @@
 export const SET_LANGUAGE = "SET_LANGUAGE";
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
 export const LOG_DONATED = "LOG_DONATED";
+export const LOG_ABOUT = "LOG_ABOUT";
 
 // search
 export const RESET_SEARCH = "RESET_SEARCH";
