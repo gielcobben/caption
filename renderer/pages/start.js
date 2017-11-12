@@ -60,6 +60,10 @@ class MainApp extends Component {
     logPageView();
     this.checkIfOnline();
 
+    ipcRenderer.on("log", (event, message) => {
+      console.log(message);
+    });
+
     ipcRenderer.on("results", (event, { results, isFinished }) => {
       this.props.updateSearchResults({
         results,

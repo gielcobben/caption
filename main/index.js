@@ -22,6 +22,8 @@ const {
   closeProgressWindow,
 } = require("./windows/progress");
 
+let openFilesOnLaunch = []; // eslint-disable-line prefer-const
+
 const store = new Store();
 
 // Window variables
@@ -91,7 +93,12 @@ app.on("activate", () => {
 app.on("will-finish-launching", () => {
   app.on("open-file", (event, filePath) => {
     event.preventDefault();
-    openFile(filePath);
+
+    if (global.windows && global.windows.mainWindow) {
+      openFile(filePath);
+    } else {
+      openFilesOnLaunch.push(filePath);
+    }
   });
 });
 
@@ -123,6 +130,9 @@ app.on("ready", async () => {
     checkWindow,
     progressWindow,
   } = global.windows;
+
+  openFilesOnLaunch.map(file => openFile(file));
+  openFilesOnLaunch = [];
 
   mainWindow.on("close", () => {
     global.windows = null;
