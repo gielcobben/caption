@@ -13,7 +13,7 @@ const mapStateToProps = ({ search }) => ({
   loading: search.loading,
 });
 const mapDispatchToProps = {
-  onDrop: rawFiles => async (dispatch) => {
+  onDrop: rawFiles => async dispatch => {
     const files = await processFiles(rawFiles);
     dispatch(dropFiles(files));
   },

@@ -32,10 +32,13 @@ import {
   searchByFiles,
   dropFiles,
   updateSearchResults,
+  logDonatedButtonClicked,
+  logAboutWindowOpend,
 } from "./../actions";
 
 // Analytics
 import { initGA, logPageView } from "./../utils/tracking";
+import { processFiles } from "../utils";
 
 // Global variables
 const ESC_KEY = 27;
@@ -59,6 +62,10 @@ class MainApp extends Component {
     logPageView();
     this.checkIfOnline();
 
+    ipcRenderer.on("log", (event, message) => {
+      console.log(message);
+    });
+
     ipcRenderer.on("results", (event, { results, isFinished }) => {
       this.props.updateSearchResults({
         results,
@@ -74,8 +81,41 @@ class MainApp extends Component {
       this.props.downloadComplete();
     });
 
+    ipcRenderer.on("openFile", async (event, file) => {
+      const rawFiles = [file];
+      const files = await processFiles(rawFiles);
+      this.props.dropFiles(files);
+    });
+
+    ipcRenderer.on("logDonated", event => {
+      this.props.logDonatedButtonClicked();
+    });
+
+    ipcRenderer.on("logAbout", event => {
+      this.props.logAboutWindowOpend();
+    });
+
     ipcRenderer.send("getStore", "language");
     document.addEventListener("keydown", this.onKeyDown);
+
+    // Prevent drop on document
+    document.addEventListener(
+      "dragover",
+      event => {
+        event.preventDefault();
+        return false;
+      },
+      false,
+    );
+
+    document.addEventListener(
+      "drop",
+      event => {
+        event.preventDefault();
+        return false;
+      },
+      false,
+    );
   }
 
   componentWillUnmount() {
@@ -90,6 +130,7 @@ class MainApp extends Component {
 
     if (event.keyCode === ESC_KEY) {
       this.props.resetSearch();
+      this.onBlur();
     }
   }
 
@@ -152,6 +193,9 @@ MainApp.propTypes = {
   showSearchPlaceholder: PropTypes.func.isRequired,
   startSearch: PropTypes.func.isRequired,
   showNotification: PropTypes.func.isRequired,
+  dropFiles: PropTypes.func.isRequired,
+  logDonatedButtonClicked: PropTypes.func.isRequired,
+  logAboutWindowOpend: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ui, search }) => ({
@@ -178,6 +222,8 @@ const mapDispatchToProps = {
   searchByFiles,
   dropFiles,
   updateSearchResults,
+  logDonatedButtonClicked,
+  logAboutWindowOpend,
 };
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(MainApp);

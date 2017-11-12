@@ -1,4 +1,5 @@
 const { app, shell, Menu } = require("electron");
+const isDev = require("electron-is-dev");
 const { checkForUpdates } = require("./updater");
 const { showAboutWindow } = require("./windows/about");
 
@@ -20,13 +21,14 @@ const buildMenu = () => {
     },
     {
       label: "View",
-      submenu: [
-        { role: "reload" },
-        { role: "forcereload" },
-        { role: "toggledevtools" },
-        { type: "separator" },
-        { role: "togglefullscreen" },
-      ],
+      submenu: isDev
+        ? [
+          { role: "reload" },
+          { role: "forcereload" },
+          { role: "toggledevtools" },
+          { type: "separator" },
+        ]
+        : [{ role: "togglefullscreen" }],
     },
     {
       role: "window",
@@ -36,10 +38,30 @@ const buildMenu = () => {
       role: "help",
       submenu: [
         {
-          label: "Learn More",
-          click() {
-            shell.openExternal("https://electron.atom.io");
+          label: "Donate",
+          click: () => {
+            const { mainWindow } = global.windows;
+            shell.openExternal("https://www.paypal.me/gielcobben");
+            mainWindow.webContents.send("logDonated");
           },
+        },
+        {
+          label: "Learn More",
+          click: () => shell.openExternal("https://getcaption.co/"),
+        },
+        {
+          label: "Support",
+          click: () => shell.openExternal("https://twitter.com/gielcobben"),
+        },
+        {
+          label: "Report Issue",
+          click: () =>
+            shell.openExternal("https://github.com/gielcobben/caption/issues/new"),
+        },
+        {
+          label: "Search Issues",
+          click: () =>
+            shell.openExternal("https://github.com/gielcobben/Caption/issues"),
         },
       ],
     },
@@ -51,9 +73,7 @@ const buildMenu = () => {
       submenu: [
         {
           label: `About ${app.getName()}`,
-          click: () => {
-            showAboutWindow();
-          },
+          click: () => showAboutWindow(),
         },
         { label: "Check for updates...", click: () => checkForUpdates() },
         { type: "separator" },

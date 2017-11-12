@@ -1,17 +1,17 @@
-// Packages
+const fs = require("fs");
+const path = require("path");
+const Store = require("electron-store");
+const prepareNext = require("electron-next");
 const { app, ipcMain, dialog } = require("electron");
 const { moveToApplications } = require("electron-lets-move");
-const prepareNext = require("electron-next");
-const Store = require("electron-store");
+
 const buildMenu = require("./menu");
+const initSettings = require("./settings");
+const notification = require("./notification");
+const { checkForUpdates } = require("./updater");
 const { singleDownload } = require("./download");
 const { downloadAddic7ed } = require("./sources/utils");
-const initSettings = require("./settings");
 const { textSearch, fileSearch } = require("./sources");
-const { checkForUpdates } = require("./updater");
-const notification = require("./notification");
-
-const store = new Store();
 
 // Windows
 const { createMainWindow } = require("./windows/main");
@@ -21,6 +21,10 @@ const {
   createProgressWindow,
   closeProgressWindow,
 } = require("./windows/progress");
+
+let openFilesOnLaunch = []; // eslint-disable-line prefer-const
+
+const store = new Store();
 
 // Window variables
 let willQuitApp = false;
@@ -47,6 +51,25 @@ const showErrorDialog = online => {
   }
 };
 
+const openFile = filePath => {
+  const { mainWindow } = global.windows;
+
+  fs.stat(filePath, (error, stats) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    const file = {
+      name: path.basename(filePath),
+      size: stats.size,
+      path: filePath,
+    };
+
+    mainWindow.webContents.send("openFile", file);
+  });
+};
+
 // App Events
 app.on("before-quit", () => {
   global.windows.checkWindow = null;
@@ -65,6 +88,18 @@ app.on("activate", () => {
   if (mainWindow === null) {
     global.windows.mainWindow = createMainWindow();
   }
+});
+
+app.on("will-finish-launching", () => {
+  app.on("open-file", (event, filePath) => {
+    event.preventDefault();
+
+    if (global.windows && global.windows.mainWindow) {
+      openFile(filePath);
+    } else {
+      openFilesOnLaunch.push(filePath);
+    }
+  });
 });
 
 app.on("ready", async () => {
@@ -95,6 +130,9 @@ app.on("ready", async () => {
     checkWindow,
     progressWindow,
   } = global.windows;
+
+  openFilesOnLaunch.map(file => openFile(file));
+  openFilesOnLaunch = [];
 
   mainWindow.on("close", () => {
     global.windows = null;

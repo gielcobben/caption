@@ -1,6 +1,8 @@
 // ui
 export const SET_LANGUAGE = "SET_LANGUAGE";
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
+export const LOG_DONATED = "LOG_DONATED";
+export const LOG_ABOUT = "LOG_ABOUT";
 
 // search
 export const RESET_SEARCH = "RESET_SEARCH";
@@ -14,3 +16,4 @@ export const SEARCH_BY_FILES = "SEARCH_BY_FILES";
 export const DROP_FILES = "DROP_FILES";
 export const UPDATE_SEARCH_RESULTS = "UPDATE_SEARCH_RESULTS";
 export const INCREASE_SEARCH_ATTEMPTS = "INCREASE_SEARCH_ATTEMPTS";
+export const LOG_SEARCH_QUERY = "LOG_SEARCH_QUERY";

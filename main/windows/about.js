@@ -37,9 +37,10 @@ const createAboutWindow = () => {
 };
 
 const showAboutWindow = () => {
-  const { aboutWindow } = global.windows;
+  const { aboutWindow, mainWindow } = global.windows;
   aboutWindow.show();
   aboutWindow.focus();
+  mainWindow.webContents.send("logAbout");
 };
 
 const closeAboutWindow = (event, willQuitApp) => {
