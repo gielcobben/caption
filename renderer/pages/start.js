@@ -83,6 +83,25 @@ class MainApp extends Component {
 
     ipcRenderer.send("getStore", "language");
     document.addEventListener("keydown", this.onKeyDown);
+
+    // Prevent drop on document
+    document.addEventListener(
+      "dragover",
+      event => {
+        event.preventDefault();
+        return false;
+      },
+      false,
+    );
+
+    document.addEventListener(
+      "drop",
+      event => {
+        event.preventDefault();
+        return false;
+      },
+      false,
+    );
   }
 
   componentWillUnmount() {

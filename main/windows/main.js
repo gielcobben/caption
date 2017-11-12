@@ -31,7 +31,6 @@ const createMainWindow = () => {
     opacity: isWindows ? 0.8 : 1,
     transparent: isWindows,
     webPreferences: {
-      scrollBounce: true,
       backgroundThrottling: false,
       webSecurity: true,
     },
