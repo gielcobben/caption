@@ -32,6 +32,7 @@ import {
   searchByFiles,
   dropFiles,
   updateSearchResults,
+  logDonatedButtonClicked,
 } from "./../actions";
 
 // Analytics
@@ -83,6 +84,10 @@ class MainApp extends Component {
       const rawFiles = [file];
       const files = await processFiles(rawFiles);
       this.props.dropFiles(files);
+    });
+
+    ipcRenderer.on("logDonated", event => {
+      this.props.logDonatedButtonClicked();
     });
 
     ipcRenderer.send("getStore", "language");
@@ -184,6 +189,7 @@ MainApp.propTypes = {
   startSearch: PropTypes.func.isRequired,
   showNotification: PropTypes.func.isRequired,
   dropFiles: PropTypes.func.isRequired,
+  logDonatedButtonClicked: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ui, search }) => ({
@@ -210,6 +216,7 @@ const mapDispatchToProps = {
   searchByFiles,
   dropFiles,
   updateSearchResults,
+  logDonatedButtonClicked,
 };
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(MainApp);

@@ -38,6 +38,14 @@ const buildMenu = () => {
       role: "help",
       submenu: [
         {
+          label: "Donate",
+          click: () => {
+            const { mainWindow } = global.windows;
+            shell.openExternal("https://www.paypal.me/gielcobben");
+            mainWindow.webContents.send("logDonated");
+          },
+        },
+        {
           label: "Learn More",
           click: () => shell.openExternal("https://getcaption.co/"),
         },

@@ -13,7 +13,9 @@ const aboutCaptionButton = new TouchBarButton({
 const donateButton = new TouchBarButton({
   label: "💰 Donate",
   click: () => {
+    const { mainWindow } = global.windows;
     shell.openExternal("https://www.paypal.me/gielcobben");
+    mainWindow.webContents.send("logDonated");
   },
 });
 

@@ -1,6 +1,7 @@
 import * as types from "./../types";
 import { ipcRenderer } from "electron";
 
+import { logDonated } from "./../utils/tracking";
 import { startSearch } from "./index";
 
 export const setLanguage = language => (dispatch, getState) => {
@@ -28,4 +29,12 @@ export const showNotification = message => dispatch => {
   });
 
   ipcRenderer.send("notification", message);
+};
+
+export const logDonatedButtonClicked = () => dispatch => {
+  dispatch({
+    type: types.LOG_DONATED,
+  });
+
+  logDonated();
 };
