@@ -120,6 +120,7 @@ class MainApp extends Component {
 
     if (event.keyCode === ESC_KEY) {
       this.props.resetSearch();
+      this.onBlur();
     }
   }
 

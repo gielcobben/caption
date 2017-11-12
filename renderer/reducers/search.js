@@ -5,9 +5,9 @@ const initialState = {
   results: [],
   loading: false,
   searchCompleted: true,
+  searchAttempts: 0,
   searchQuery: "",
   placeholder: "Search for a show...",
-  searchAttempts: 0,
 };
 
 export default function reducer(state = initialState, action) {
@@ -15,13 +15,13 @@ export default function reducer(state = initialState, action) {
     case types.RESET_SEARCH:
       return {
         ...state,
-        placeholder: "Search for a show...",
-        searchQuery: "",
         files: [],
         results: [],
         loading: false,
         searchCompleted: true,
         searchAttempts: 0,
+        searchQuery: "",
+        placeholder: "Search for a show...",
       };
     case types.SHOW_SEARCH_PLACEHOLDER:
       return {
