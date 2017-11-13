@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const movieExtentsion = require("./data/extenstions");
+const movieExtension = require("./data/extenstions");
 
 const transform = filePaths =>
   filePaths.map(file => ({
@@ -17,7 +17,7 @@ const readDir = dir =>
     .filter(file =>
       (fs.statSync(path.join(dir, file)).isDirectory()
         ? true
-        : movieExtentsion.indexOf(file.substr(file.lastIndexOf(".") + 1)) > 0))
+        : movieExtension.indexOf(file.substr(file.lastIndexOf(".") + 1)) > 0))
     .reduce(
       (files, file) =>
         (fs.statSync(path.join(dir, file)).isDirectory()
@@ -30,7 +30,7 @@ const processFiles = droppedItems => {
   const { mainWindow } = global.windows;
   const filePaths = [];
 
-  droppedItems.map(item => {
+  droppedItems.forEach(item => {
     if (fs.statSync(item).isDirectory()) {
       filePaths.push(...filePaths.concat(readDir(item)));
     } else {
