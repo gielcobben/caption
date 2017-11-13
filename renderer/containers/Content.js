@@ -5,6 +5,7 @@ import { dropFiles } from "./../actions";
 
 // Utils
 import { processFiles } from "../utils";
+import { ipcRenderer } from "electron";
 
 const mapStateToProps = ({ search }) => ({
   searchQuery: search.searchQuery,
@@ -12,10 +13,23 @@ const mapStateToProps = ({ search }) => ({
   results: search.results,
   loading: search.loading,
 });
+
 const mapDispatchToProps = {
   onDrop: rawFiles => async dispatch => {
-    const files = await processFiles(rawFiles);
-    dispatch(dropFiles(files));
+
+    // GIEL
+    const droppedItems = [];
+    rawFiles.map(file => droppedItems.push(file.path));
+    ipcRenderer.send("processFiles", droppedItems);
+    // END
+
+    ipcRenderer.on("processedFiles", (event, files) => {
+      console.log(files);
+      dispatch(dropFiles(files));
+    });
+
+    // const files = await processFiles(rawFiles);
+    // dispatch(dropFiles(files));
   },
 };
 
