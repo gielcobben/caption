@@ -50,7 +50,7 @@ class List extends React.Component {
   onArrowDown() {
     const { results } = this.props;
     const currentSelected = this.state.selected;
-    const length = results.length;
+    const { length } = results;
     const selected = currentSelected !== null ? currentSelected + 1 : 0;
 
     if (length !== selected) {
@@ -76,7 +76,6 @@ class List extends React.Component {
   }
 
   onContextMenu(clicked) {
-    const { Menu, MenuItem } = remote;
     const { results } = this.props;
     const item = results[clicked];
 

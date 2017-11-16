@@ -3,28 +3,42 @@ const path = require("path");
 const movieExtension = require("./data/extenstions");
 
 const transform = filePaths =>
-  filePaths.map(file => ({
-    extention: file.substr(file.lastIndexOf(".") + 1),
-    size: fs.statSync(file).size,
-    name: file.replace(/^.*[\\\/]/, ""),
-    path: file,
-    status: "loading",
-  }));
+  filePaths.map(file => {
+    const extension = file.substr(file.lastIndexOf(".") + 1);
+    const { size } = fs.statSync(file);
+    const name = file.replace(/^.*[\\\/]/, "");
+
+    return {
+      extension,
+      size,
+      name,
+      path: file,
+      status: "loading",
+    };
+  });
 
 const readDir = dir =>
   fs
     .readdirSync(dir)
-    .filter(file =>
-      (fs.statSync(path.join(dir, file)).isDirectory()
-        ? true
-        : movieExtension.indexOf(file.substr(file.lastIndexOf(".") + 1)) > 0))
-    .reduce(
-      (files, file) =>
-        (fs.statSync(path.join(dir, file)).isDirectory()
-          ? files.concat(readDir(path.join(dir, file)))
-          : files.concat(path.join(dir, file))),
-      [],
-    );
+    .filter(file => {
+      const isDirectory = fs.statSync(path.join(dir, file)).isDirectory();
+      const extension = file.substr(file.lastIndexOf(".") + 1);
+
+      if (isDirectory) {
+        return true;
+      }
+
+      return movieExtension.indexOf(extension) > 0;
+    })
+    .reduce((files, file) => {
+      const isDirectory = fs.statSync(path.join(dir, file)).isDirectory();
+
+      if (isDirectory) {
+        return files.concat(readDir(path.join(dir, file)));
+      }
+
+      return files.concat(path.join(dir, file));
+    }, []);
 
 const processFiles = droppedItems => {
   const { mainWindow } = global.windows;
@@ -38,9 +52,11 @@ const processFiles = droppedItems => {
     }
   });
 
-  // console.log(transform(filePaths));
+  const transformedObject = transform(filePaths);
 
-  mainWindow.webContents.send("processedFiles", transform(filePaths));
+  console.log(transformedObject);
+
+  mainWindow.webContents.send("processedFiles", transformedObject);
 };
 
 module.exports = processFiles;

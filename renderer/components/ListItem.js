@@ -5,7 +5,7 @@ const ListItem = ({
   selected,
   onClick,
   onDoubleClick,
-  onContextMenu
+  onContextMenu,
 }) => (
   <li
     onClick={onClick}
@@ -20,7 +20,7 @@ const ListItem = ({
       <div>
         {fileSizeReadable(item.size)}
         <span />
-        {item.extention}
+        {item.extension}
       </div>
     )}
 
@@ -64,7 +64,8 @@ const ListItem = ({
         background: rgba(0, 0, 0, 0.4);
         margin: 0 8px;
       }
-    `}</style>
+    `}
+    </style>
   </li>
 );
 
