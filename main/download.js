@@ -3,28 +3,28 @@ const { dialog } = require("electron");
 const notification = require("./notification");
 const Caption = require("caption-core");
 
-const multipleDownload = async files => {
+const multiDownload = files => {
   try {
-    for (let i = 0; i < files.length; i++) {
-      const { file, subtitle } = files[i];
-      const downloadLocation = path.dirname(file.path);
-      const originalFileName = file.name;
-      const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
+    const downloadFiles = files.map(({ file, subtitle }) =>
+      new Promise(resolve => {
+        const downloadLocation = path.dirname(file.path);
+        const originalFileName = file.name;
+        const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
-      Caption.download(
-        {
-          downloadUrl: subtitle.url,
-        },
-        "opensubtitles",
-        `${downloadLocation}/${subtitleFilename}.srt`,
-      )
-        .then(() => {
-          notification(`${originalFileName} is successfully downloaded!`);
-        })
-        .catch(err => console.log("error", err));
-    }
-  } catch (error) {
-    console.log(error);
+        return Caption.download(
+          {
+            downloadUrl: subtitle.url,
+          },
+          "opensubtitles",
+          `${downloadLocation}/${subtitleFilename}.srt`,
+        ).then(resolve);
+      }));
+
+    Promise.all(downloadFiles).then(() => {
+      console.log("all files downloaded");
+    });
+  } catch (err) {
+    console.log("error", err);
   }
 };
 
@@ -59,4 +59,4 @@ const singleDownload = async item => {
   }
 };
 
-module.exports = { multipleDownload, singleDownload };
+module.exports = { multiDownload, singleDownload };

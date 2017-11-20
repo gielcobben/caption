@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import { ipcRenderer } from "electron";
 
 import Content from "./../components/Content";
-import { dropFiles } from "./../actions";
 
 const mapStateToProps = ({ search }) => ({
   searchQuery: search.searchQuery,
@@ -12,16 +11,10 @@ const mapStateToProps = ({ search }) => ({
 });
 
 const mapDispatchToProps = {
-  onDrop: rawFiles => async dispatch => {
+  onDrop: rawFiles => () => {
     const droppedItems = [];
-
     rawFiles.map(file => droppedItems.push(file.path));
-
     ipcRenderer.send("processFiles", droppedItems);
-
-    ipcRenderer.on("processedFiles", (event, files) => {
-      dispatch(dropFiles(files));
-    });
   },
 };
 

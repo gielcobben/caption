@@ -1,4 +1,4 @@
-const { multipleDownload } = require("../download");
+const { multiDownload } = require("../download");
 const Caption = require("caption-core");
 
 const textSearch = async (...args) => {
@@ -25,7 +25,7 @@ const textSearch = async (...args) => {
 
 const fileSearch = async (...args) => {
   Caption.searchByFiles(...args).on("completed", results =>
-    multipleDownload(results));
+    multiDownload(results));
 };
 
 module.exports = { textSearch, fileSearch };

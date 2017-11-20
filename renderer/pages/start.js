@@ -61,10 +61,6 @@ class MainApp extends Component {
     logPageView();
     this.checkIfOnline();
 
-    ipcRenderer.on("log", (event, message) => {
-      console.log(message);
-    });
-
     ipcRenderer.on("results", (event, { results, isFinished }) => {
       this.props.updateSearchResults({
         results,
@@ -85,11 +81,15 @@ class MainApp extends Component {
       this.props.dropFiles(rawFiles);
     });
 
-    ipcRenderer.on("logDonated", event => {
+    ipcRenderer.on("processedFiles", (event, files) => {
+      this.props.dropFiles(files);
+    });
+
+    ipcRenderer.on("logDonated", () => {
       this.props.logDonatedButtonClicked();
     });
 
-    ipcRenderer.on("logAbout", event => {
+    ipcRenderer.on("logAbout", () => {
       this.props.logAboutWindowOpend();
     });
 

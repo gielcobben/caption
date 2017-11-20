@@ -49,12 +49,14 @@ const processFiles = droppedItems => {
   const { mainWindow } = global.windows;
   const filePaths = [];
 
-  droppedItems.forEach(item => {
+  droppedItems.map(item => {
     if (fs.statSync(item).isDirectory()) {
       filePaths.push(...filePaths.concat(readDir(item)));
     } else if (checkExtension(item)) {
       filePaths.push(item);
     }
+
+    return false;
   });
 
   const transformedObject = transform(filePaths);
