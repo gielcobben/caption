@@ -76,6 +76,7 @@ class List extends React.Component {
   }
 
   onContextMenu(clicked) {
+    const { Menu } = remote;
     const { results } = this.props;
     const item = results[clicked];
 
