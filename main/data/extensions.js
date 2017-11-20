@@ -1,4 +1,4 @@
-const extentions = [
+const extensions = [
   "3g2",
   "3gp",
   "3gp2",
@@ -78,4 +78,4 @@ const extentions = [
   "xvid",
 ];
 
-module.exports = extentions;
+module.exports = extensions;

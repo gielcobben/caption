@@ -9,7 +9,10 @@ const rename = subtitles => {
   subtitles.map(subtitle =>
     fs.rename(subtitle.savePath, subtitle.filename, () => console.log("done")));
 
-  notification(`${subtitles.length} subtitles downloaded successfully!`);
+  if (subtitles.length > 0) {
+    notification(`${subtitles.length} subtitles downloaded successfully!`);
+  }
+
   mainWindow.webContents.send("download-complete", subtitles);
 };
 

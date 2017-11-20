@@ -16,6 +16,10 @@ const createProgressWindow = () => {
     closable: false,
     fullscreenable: false,
     backgroundColor: "#ECECEC",
+    webPreferences: {
+      backgroundThrottling: false,
+      webSecurity: false,
+    },
   });
 
   const devPath = "http://localhost:8000/progress";
