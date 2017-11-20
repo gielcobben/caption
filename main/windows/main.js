@@ -27,7 +27,7 @@ const createMainWindow = () => {
     show: false,
     center: true,
     autoHideMenuBar: true,
-    acceptFirstMouse: true,
+    acceptFirstMouse: false,
     opacity: isWindows ? 0.8 : 1,
     transparent: isWindows,
     webPreferences: {
