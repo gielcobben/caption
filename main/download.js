@@ -4,6 +4,9 @@ const notification = require("./notification");
 const Caption = require("caption-core");
 
 const multiDownload = files => {
+  const resultSet = [];
+  const { mainWindow } = global.windows;
+
   try {
     const downloadFiles = files.map(({ file, subtitle }) =>
       new Promise(resolve => {
@@ -17,11 +20,15 @@ const multiDownload = files => {
           },
           "opensubtitles",
           `${downloadLocation}/${subtitleFilename}.srt`,
-        ).then(resolve);
+        ).then(() => {
+          resultSet.push(`${downloadLocation}/${subtitleFilename}.srt`);
+          resolve();
+        });
       }));
 
     Promise.all(downloadFiles).then(() => {
-      console.log("all files downloaded");
+      notification(`${resultSet.length} subtitles have been successfully downloaded!`);
+      mainWindow.webContents.send("fileSearchFinished");
     });
   } catch (err) {
     console.log("error", err);
