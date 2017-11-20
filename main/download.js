@@ -1,26 +1,10 @@
-const fs = require("fs");
 const path = require("path");
-const { download } = require("electron-dl");
 const { dialog } = require("electron");
 const notification = require("./notification");
 const Caption = require("caption-core");
 
-const rename = subtitles => {
-  const { mainWindow } = global.windows;
-
-  subtitles.map(subtitle =>
-    fs.rename(subtitle.savePath, subtitle.filename, () => console.log("done")));
-
-  if (subtitles.length > 0) {
-    notification(`${subtitles.length} subtitles downloaded successfully!`);
-  }
-
-  mainWindow.webContents.send("download-complete", subtitles);
-};
-
 const multipleDownload = async files => {
-  const { mainWindow } = global.windows;
-  const items = [];
+  // const { mainWindow } = global.windows;
 
   try {
     for (let i = 0; i < files.length; i++) {
@@ -29,25 +13,21 @@ const multipleDownload = async files => {
       const originalFileName = file.name;
       const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
-      const options = {
-        saveAs: false,
-        directory: downloadLocation,
-      };
-
-      const dl = await download(mainWindow, subtitle.url, options);
-
-      const downloadedItem = {
-        savePath: dl.getSavePath(),
-        filename: `${downloadLocation}/${subtitleFilename}.srt`,
-      };
-
-      items.push(downloadedItem);
+      Caption.download(
+        {
+          downloadUrl: subtitle.url,
+        },
+        "opensubtitles",
+        `${downloadLocation}/${subtitleFilename}.srt`,
+      )
+        .then(() => {
+          notification(`${originalFileName} is successfully downloaded!`);
+        })
+        .catch(err => console.log("error", err));
     }
   } catch (error) {
     console.log(error);
   }
-
-  rename(items);
 };
 
 const singleDownload = async item => {
