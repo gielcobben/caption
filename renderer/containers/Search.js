@@ -5,11 +5,11 @@ import Search from "./../components/Search";
 import { updateSearchQuery } from "./../actions";
 
 const mapStateToProps = ({ search }) => ({
-  value: search.searchQuery,
+  value: search.searchQuery || search.dropFilePath,
   placeholder: search.placeholder,
 });
 const mapDispatchToProps = {
-  onChange: event => (dispatch) => {
+  onChange: event => dispatch => {
     const searchQuery = event.target.value;
     dispatch(updateSearchQuery(searchQuery));
   },

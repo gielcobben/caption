@@ -38,7 +38,6 @@ import {
 
 // Analytics
 import { initGA, logPageView } from "./../utils/tracking";
-import { processFiles } from "../utils";
 
 // Global variables
 const ESC_KEY = 27;
@@ -83,8 +82,7 @@ class MainApp extends Component {
 
     ipcRenderer.on("openFile", async (event, file) => {
       const rawFiles = [file];
-      const files = await processFiles(rawFiles);
-      this.props.dropFiles(files);
+      this.props.dropFiles(rawFiles);
     });
 
     ipcRenderer.on("logDonated", event => {

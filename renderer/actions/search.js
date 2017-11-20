@@ -1,3 +1,4 @@
+import path from "path";
 import { ipcRenderer } from "electron";
 import { logQuery } from "./../utils/tracking";
 import * as types from "./../types";
@@ -65,6 +66,15 @@ export const searchByQuery = () => (dispatch, getState) => {
   ipcRenderer.send("textSearch", searchQuery, language);
 };
 
+export const updateDroppedFilePath = filePath => dispatch => {
+  dispatch({
+    type: types.SET_DROPPED_FILE_PATH,
+    payload: {
+      path: filePath,
+    },
+  });
+};
+
 export const searchByFiles = () => (dispatch, getState) => {
   const state = getState();
   const { language } = state.ui;
@@ -73,6 +83,11 @@ export const searchByFiles = () => (dispatch, getState) => {
   dispatch({
     type: types.SEARCH_BY_FILES,
   });
+
+  if (files.length > 0) {
+    const directory = path.dirname(files[0].path);
+    dispatch(updateDroppedFilePath(directory));
+  }
 
   ipcRenderer.send("fileSearch", files, language);
 };

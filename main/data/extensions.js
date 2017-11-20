@@ -75,7 +75,7 @@ const extentions = [
   "wvx",
   "wx",
   "x264",
-  "xvid"
+  "xvid",
 ];
 
-export default extentions;
+module.exports = extentions;

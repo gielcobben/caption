@@ -8,6 +8,7 @@ const initialState = {
   searchAttempts: 0,
   searchQuery: "",
   placeholder: "Search for a show...",
+  dropFilePath: "",
 };
 
 export default function reducer(state = initialState, action) {
@@ -22,6 +23,7 @@ export default function reducer(state = initialState, action) {
         searchAttempts: 0,
         searchQuery: "",
         placeholder: "Search for a show...",
+        dropFilePath: "",
       };
     case types.SHOW_SEARCH_PLACEHOLDER:
       return {
@@ -39,6 +41,7 @@ export default function reducer(state = initialState, action) {
         files: [],
         results: [],
         searchQuery: action.payload.query,
+        dropFilePath: "",
       };
     case types.SHOW_SEARCH_SPINNER:
       return {
@@ -68,6 +71,12 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         searchAttempts: action.payload.attempts,
+      };
+    case types.SET_DROPPED_FILE_PATH:
+      return {
+        ...state,
+        dropFilePath: action.payload.path,
+        searchQuery: "",
       };
     default:
       return state;
