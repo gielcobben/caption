@@ -82,8 +82,7 @@ class MainApp extends Component {
 
     ipcRenderer.on("openFile", async (event, file) => {
       const rawFiles = [file];
-      // const files = await processFiles(rawFiles);
-      this.props.dropFiles(files);
+      this.props.dropFiles(rawFiles);
     });
 
     ipcRenderer.on("logDonated", event => {

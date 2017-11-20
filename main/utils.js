@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const movieExtension = require("./data/extenstions");
+const movieExtension = require("./data/extensions");
 
 const transform = filePaths =>
   filePaths.map(file => {
@@ -53,8 +53,6 @@ const processFiles = droppedItems => {
   });
 
   const transformedObject = transform(filePaths);
-
-  console.log(transformedObject);
 
   mainWindow.webContents.send("processedFiles", transformedObject);
 };
