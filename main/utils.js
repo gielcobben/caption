@@ -17,6 +17,11 @@ const transform = filePaths =>
     };
   });
 
+const checkExtension = file => {
+  const extension = file.substr(file.lastIndexOf(".") + 1);
+  return movieExtension.indexOf(extension) > 0;
+};
+
 const readDir = dir =>
   fs
     .readdirSync(dir)
@@ -28,7 +33,7 @@ const readDir = dir =>
         return true;
       }
 
-      return movieExtension.indexOf(extension) > 0;
+      return checkExtension(file);
     })
     .reduce((files, file) => {
       const isDirectory = fs.statSync(path.join(dir, file)).isDirectory();
@@ -47,7 +52,7 @@ const processFiles = droppedItems => {
   droppedItems.forEach(item => {
     if (fs.statSync(item).isDirectory()) {
       filePaths.push(...filePaths.concat(readDir(item)));
-    } else {
+    } else if (checkExtension(item)) {
       filePaths.push(item);
     }
   });

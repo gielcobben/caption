@@ -32,7 +32,7 @@ const createMainWindow = () => {
     transparent: isWindows,
     webPreferences: {
       backgroundThrottling: false,
-      webSecurity: true,
+      webSecurity: false,
     },
   });
 

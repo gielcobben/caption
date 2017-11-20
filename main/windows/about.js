@@ -19,8 +19,8 @@ const createAboutWindow = () => {
     autoHideMenuBar: true,
     acceptFirstMouse: true,
     webPreferences: {
-      nodeIntegration: true,
-      webSecurity: true,
+      backgroundThrottling: false,
+      webSecurity: false,
     },
   });
 
