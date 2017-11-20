@@ -1,7 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const { download } = require("electron-dl");
+const { dialog } = require("electron");
 const notification = require("./notification");
+const Caption = require("caption-core");
 
 const rename = subtitles => {
   const { mainWindow } = global.windows;
@@ -49,16 +51,26 @@ const multipleDownload = async files => {
 };
 
 const singleDownload = async item => {
+  const hasExtension = item.name.includes(".srt");
+  const filename = hasExtension ? item.name : `${item.name}.srt`;
   const { mainWindow } = global.windows;
-  // const options = {
-  //   saveAs: true,
-  // };
+  const saveToPath = await new Promise(resolve => {
+    dialog.showSaveDialog(
+      mainWindow,
+      {
+        title: "Download",
+        defaultPath: filename,
+      },
+      resolve,
+    );
+  });
 
-  console.log("item", item);
+  if (!saveToPath) {
+    return;
+  }
 
   try {
-    item
-      .download(item, "/Users/vernon/Movies/test.srt")
+    Caption.download(item, item.source, saveToPath)
       .then(() => {
         notification(`${item.name} is successfully downloaded!`);
         mainWindow.webContents.send("singleDownloadSuccesfull", item);
