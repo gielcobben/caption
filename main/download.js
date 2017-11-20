@@ -4,8 +4,6 @@ const notification = require("./notification");
 const Caption = require("caption-core");
 
 const multipleDownload = async files => {
-  // const { mainWindow } = global.windows;
-
   try {
     for (let i = 0; i < files.length; i++) {
       const { file, subtitle } = files[i];

@@ -11,7 +11,6 @@ const notification = require("./notification");
 const processFiles = require("./utils");
 const { checkForUpdates } = require("./updater");
 const { singleDownload } = require("./download");
-const { downloadAddic7ed } = require("./sources/utils");
 const { textSearch, fileSearch } = require("./sources");
 
 // Windows
