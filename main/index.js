@@ -36,10 +36,6 @@ const downloadSubtitle = item => {
     return false;
   }
 
-  if (item.source === "addic7ed") {
-    return downloadAddic7ed(item);
-  }
-
   return singleDownload(item);
 };
 

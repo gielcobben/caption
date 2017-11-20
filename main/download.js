@@ -47,14 +47,20 @@ const multipleDownload = async files => {
 
 const singleDownload = async item => {
   const { mainWindow } = global.windows;
-  const options = {
-    saveAs: true,
-  };
+  // const options = {
+  //   saveAs: true,
+  // };
+
+  console.log("item", item);
 
   try {
-    await download(mainWindow, item.download, options);
-    notification(`${item.name} is successfully downloaded!`);
-    mainWindow.webContents.send("singleDownloadSuccesfull", item);
+    item
+      .download(item, "/Users/vernon/Movies/test.srt")
+      .then(() => {
+        notification(`${item.name} is successfully downloaded!`);
+        mainWindow.webContents.send("singleDownloadSuccesfull", item);
+      })
+      .catch(err => console.log("error", err));
   } catch (err) {
     console.log("err", err);
   }
