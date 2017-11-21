@@ -34,6 +34,7 @@ import {
   updateSearchResults,
   logDonatedButtonClicked,
   logAboutWindowOpend,
+  updateFileSearchStatus,
 } from "./../actions";
 
 // Analytics
@@ -72,7 +73,7 @@ class MainApp extends Component {
       this.props.setLanguage(language);
     });
 
-    ipcRenderer.on("allFilesDownloaded", (event, items) => {
+    ipcRenderer.on("allFilesDownloaded", () => {
       this.props.downloadComplete();
     });
 
@@ -91,6 +92,10 @@ class MainApp extends Component {
 
     ipcRenderer.on("logAbout", () => {
       this.props.logAboutWindowOpend();
+    });
+
+    ipcRenderer.on("updateFileSearchStatus", (event, { filePath, status }) => {
+      this.props.updateFileSearchStatus(filePath, status);
     });
 
     ipcRenderer.send("getStore", "language");
@@ -194,6 +199,7 @@ MainApp.propTypes = {
   dropFiles: PropTypes.func.isRequired,
   logDonatedButtonClicked: PropTypes.func.isRequired,
   logAboutWindowOpend: PropTypes.func.isRequired,
+  updateFileSearchStatus: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ui, search }) => ({
@@ -222,6 +228,7 @@ const mapDispatchToProps = {
   updateSearchResults,
   logDonatedButtonClicked,
   logAboutWindowOpend,
+  updateFileSearchStatus,
 };
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(MainApp);

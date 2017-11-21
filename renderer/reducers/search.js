@@ -1,3 +1,5 @@
+/* eslint no-case-declarations: 0 */
+
 import * as types from "./../types";
 
 const initialState = {
@@ -77,6 +79,20 @@ export default function reducer(state = initialState, action) {
         ...state,
         dropFilePath: action.payload.path,
         searchQuery: "",
+      };
+    case types.UPDATE_FILE_SEARCH_STATUS:
+      const correspondingFile = state.files.find(file => file.path === action.payload.filePath);
+      const otherFiles = state.files.filter(file => file.path !== action.payload.filePath);
+
+      return {
+        ...state,
+        files: [
+          ...otherFiles,
+          {
+            ...correspondingFile,
+            status: action.payload.status,
+          },
+        ],
       };
     default:
       return state;

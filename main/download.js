@@ -22,6 +22,10 @@ const multiDownload = files => {
           `${downloadLocation}/${subtitleFilename}.srt`,
         ).then(() => {
           resultSet.push(`${downloadLocation}/${subtitleFilename}.srt`);
+          mainWindow.webContents.send("updateFileSearchStatus", {
+            filePath: file.path,
+            status: "done",
+          });
           resolve();
         });
       }));

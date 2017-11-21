@@ -13,6 +13,8 @@ const ListItem = ({
     onContextMenu={onContextMenu}
     className={selected ? "selected" : ""}
   >
+    {console.log("item", item)}
+
     {item.name}
     {item.filename}
 
@@ -24,6 +26,8 @@ const ListItem = ({
       </div>
     )}
 
+    {item.status === "done" && <div className="file-download-status">Done</div>}
+
     <style jsx>
       {`
         li {
@@ -34,10 +38,17 @@ const ListItem = ({
           overflow: hidden;
           text-overflow: ellipsis;
           overflow: hidden;
+          position: relative;
         }
 
         li:nth-child(even) {
           background: rgba(255, 255, 255, 0.3);
+        }
+
+        .file-download-status {
+          position: absolute;
+          right: 15px;
+          top: 15px;
         }
 
         .selected {

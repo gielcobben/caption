@@ -133,6 +133,16 @@ export const dropFiles = files => dispatch => {
   dispatch(startSearch());
 };
 
+export const updateFileSearchStatus = (filePath, status) => dispatch => {
+  dispatch({
+    type: types.UPDATE_FILE_SEARCH_STATUS,
+    payload: {
+      filePath,
+      status,
+    },
+  });
+};
+
 export const updateSearchResults = ({
   results,
   searchCompleted,
