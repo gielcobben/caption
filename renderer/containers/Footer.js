@@ -8,6 +8,7 @@ const mapStateToProps = ({ ui, search }) => ({
   loading: !search.searchCompleted,
   results: search.results,
   showResults: search.searchAttempts > 0,
+  isFileSearch: search.files.length > 0,
 });
 const mapDispatchToProps = {
   onLanguageChange: setLanguage,

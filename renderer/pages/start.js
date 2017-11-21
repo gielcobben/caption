@@ -72,7 +72,7 @@ class MainApp extends Component {
       this.props.setLanguage(language);
     });
 
-    ipcRenderer.once("download-complete", (event, items) => {
+    ipcRenderer.on("allFilesDownloaded", (event, items) => {
       this.props.downloadComplete();
     });
 

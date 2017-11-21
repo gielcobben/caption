@@ -7,6 +7,7 @@ const Footer = ({
   loading,
   onLanguageChange,
   showResults,
+  isFileSearch,
 }) => (
   <footer>
     <LanguageToggle
@@ -14,7 +15,9 @@ const Footer = ({
       onLanguageChange={event => onLanguageChange(event.target.value)}
     />
 
-    {showResults && <Info results={results} loading={loading} />}
+    {showResults && (
+      <Info results={results} loading={loading} isFileSearch={isFileSearch} />
+    )}
 
     <style jsx>
       {`

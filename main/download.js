@@ -28,7 +28,7 @@ const multiDownload = files => {
 
     Promise.all(downloadFiles).then(() => {
       notification(`${resultSet.length} subtitles have been successfully downloaded!`);
-      mainWindow.webContents.send("fileSearchFinished");
+      mainWindow.webContents.send("allFilesDownloaded");
     });
   } catch (err) {
     console.log("error", err);

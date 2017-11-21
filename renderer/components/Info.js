@@ -1,12 +1,10 @@
 import Loading from "./Loading";
 
-const Info = ({ results = [], loading = false }) => (
+const Info = ({ results = [], loading = false, isFileSearch = false }) => (
   <div>
-    {!loading && (
-      <span>
-        {results.length <= 0 ? `Nothing Found` : `${results.length} Results`}
-      </span>
-    )}
+    {(!loading && !isFileSearch) && (<span>
+      {results.length <= 0 ? `Nothing Found` : `${results.length} Results`}
+    </span>)}
 
     {loading && <Loading />}
     <style jsx>
