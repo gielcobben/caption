@@ -1,23 +1,5 @@
 import { fileSizeReadable } from "../utils";
 
-const successIcon = (
-  <svg width="12" height="10">
-    <path
-      fill="#4BD964"
-      d="M4.172 6.414l-2.83-2.828L-.07 5 4.17 9.243l7.07-7.07L9.83.756"
-    />
-  </svg>
-);
-
-const failedIcon = (
-  <svg width="10" height="10">
-    <path
-      fill="#FF3B30"
-      d="M6.414 5l2.83-2.828L7.827.757 5 3.587 2.172.756.757 2.172 3.587 5 .756 7.828l1.415 1.415L5 6.413l2.828 2.83 1.415-1.415"
-    />
-  </svg>
-);
-
 const ListItem = ({
   item,
   selected,
@@ -48,6 +30,18 @@ const ListItem = ({
           <path
             fill="#4BD964"
             d="M4.172 6.414l-2.83-2.828L-.07 5 4.17 9.243l7.07-7.07L9.83.756"
+          />
+        </svg>
+      </span>
+    )}
+
+    {item.status === "not_found" && (
+      <span className="status">
+        {" "}
+        <svg width="10" height="10">
+          <path
+            fill="#FF3B30"
+            d="M6.414 5l2.83-2.828L7.827.757 5 3.587 2.172.756.757 2.172 3.587 5 .756 7.828l1.415 1.415L5 6.413l2.828 2.83 1.415-1.415"
           />
         </svg>
       </span>

@@ -61,9 +61,6 @@ const processFiles = droppedItems => {
   });
 
   const transformedObject = transform(filePaths);
-
-  console.log("transformedObject", transformedObject);
-
   mainWindow.webContents.send("processedFiles", transformedObject);
 };
 

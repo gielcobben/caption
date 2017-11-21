@@ -23,9 +23,25 @@ const textSearch = async (...args) => {
     });
 };
 
-const fileSearch = async (...args) => {
-  Caption.searchByFiles(...args).on("completed", results =>
-    multiDownload(results));
+const markFilesNotFound = files => {
+  const { mainWindow } = global.windows;
+
+  files.forEach(file => {
+    mainWindow.webContents.send("updateFileSearchStatus", {
+      filePath: file.path,
+      status: "not_found",
+    });
+  });
+};
+
+const fileSearch = async (files, ...args) => {
+  Caption.searchByFiles(files, ...args).on("completed", results => {
+    const foundFilePaths = results.map(({ file }) => file.path);
+    const notFound = files.filter(({ path }) => !foundFilePaths.includes(path));
+
+    markFilesNotFound(notFound);
+    multiDownload(results);
+  });
 };
 
 module.exports = { textSearch, fileSearch };
