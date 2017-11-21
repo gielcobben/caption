@@ -31,7 +31,12 @@ const multiDownload = files => {
       }));
 
     Promise.all(downloadFiles).then(() => {
-      notification(`${resultSet.length} subtitles have been successfully downloaded!`);
+      const message =
+        resultSet.length > 0
+          ? `${resultSet.length} subtitles have been successfully downloaded!`
+          : "Could not find any subtitles.";
+
+      notification(message);
       mainWindow.webContents.send("allFilesDownloaded");
     });
   } catch (err) {

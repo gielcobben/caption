@@ -9,6 +9,8 @@ const mapStateToProps = ({ ui, search }) => ({
   results: search.results,
   showResults: search.searchAttempts > 0,
   isFileSearch: search.files.length > 0,
+  totalFiles: search.files.length,
+  foundFiles: search.files.filter(({ status }) => status === "done").length,
 });
 const mapDispatchToProps = {
   onLanguageChange: setLanguage,

@@ -1,10 +1,24 @@
 import Loading from "./Loading";
 
-const Info = ({ results = [], loading = false, isFileSearch = false }) => (
+const Info = ({
+  results = [],
+  loading = false,
+  isFileSearch = false,
+  totalFiles = 0,
+  foundFiles = 0,
+}) => (
   <div>
-    {(!loading && !isFileSearch) && (<span>
-      {results.length <= 0 ? `Nothing Found` : `${results.length} Results`}
-    </span>)}
+    {!loading &&
+      !isFileSearch && (
+        <span>
+          {results.length <= 0 ? `Nothing Found` : `${results.length} Results`}
+        </span>
+      )}
+
+    {!loading &&
+      isFileSearch && (
+        <span>{`${foundFiles} / ${totalFiles} Subtitles found`}</span>
+      )}
 
     {loading && <Loading />}
     <style jsx>
