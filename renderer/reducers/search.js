@@ -67,6 +67,7 @@ export default function reducer(state = initialState, action) {
     case types.DROP_FILES:
       return {
         ...state,
+        searchQuery: "",
         files: action.payload.files,
       };
     case types.INCREASE_SEARCH_ATTEMPTS:
