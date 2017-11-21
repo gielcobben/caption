@@ -31,10 +31,7 @@ const ListItem = ({
     onContextMenu={onContextMenu}
     className={selected ? "selected" : ""}
   >
-    {console.log("item", item)}
-
     {item.name}
-    {item.filename}
 
     {item.size && (
       <div>
@@ -44,13 +41,23 @@ const ListItem = ({
       </div>
     )}
 
-    {item.status === "done" && <span className="status">{successIcon}</span>}
+    {item.status === "done" && (
+      <span className="status">
+        {" "}
+        <svg width="12" height="10">
+          <path
+            fill="#4BD964"
+            d="M4.172 6.414l-2.83-2.828L-.07 5 4.17 9.243l7.07-7.07L9.83.756"
+          />
+        </svg>
+      </span>
+    )}
 
     <style jsx>
       {`
         li {
           display: block;
-          padding: 15px 30px 15px 20px;
+          padding: 15px 35px 15px 20px;
           width: 100%;
           white-space: nowrap;
           overflow: hidden;
@@ -78,6 +85,18 @@ const ListItem = ({
           background: #199fff;
         }
 
+        .selected div {
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .selected .dot {
+          background: rgba(255, 255, 255, 0.8);
+        }
+
+        .selected path {
+          fill: #fff;
+        }
+
         div {
           display: block;
           font-size: 11px;
@@ -102,7 +121,6 @@ const ListItem = ({
           height: 100%;
           display: flex;
           align-items: center;
-          margin-top: -8px;
         }
       `}
     </style>

@@ -72,22 +72,46 @@ class List extends React.Component {
     const { selected } = this.state;
     const item = results[selected];
 
-    ipcRenderer.send("downloadSubtitle", item);
+    // If size is specified, the file is dropped.
+    if (item.size) {
+      shell.openItem(item.path);
+    } else {
+      ipcRenderer.send("downloadSubtitle", item);
+    }
   }
 
   onContextMenu(clicked) {
+    let template;
     const { Menu } = remote;
     const { results } = this.props;
     const item = results[clicked];
 
-    const template = Menu.buildFromTemplate([
-      {
-        label: "Download",
-        click: async () => {
-          ipcRenderer.send("downloadSubtitle", item);
+    // If size is specified, the file is dropped.
+    if (item.size) {
+      template = Menu.buildFromTemplate([
+        {
+          label: "Open",
+          click: () => {
+            shell.openItem(item.path);
+          },
         },
-      },
-    ]);
+        {
+          label: "Reveal in Folder...",
+          click: () => {
+            shell.showItemInFolder(item.path);
+          },
+        },
+      ]);
+    } else {
+      template = Menu.buildFromTemplate([
+        {
+          label: "Download",
+          click: () => {
+            ipcRenderer.send("downloadSubtitle", item);
+          },
+        },
+      ]);
+    }
 
     // Wait till state is set.
     this.setState({ selected: clicked }, () => {
