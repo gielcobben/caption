@@ -11,9 +11,14 @@ const mapStateToProps = ({ search }) => ({
 });
 
 const mapDispatchToProps = {
-  onDrop: rawFiles => () => {
+  onDrop: event => () => {
     const droppedItems = [];
-    rawFiles.map(file => droppedItems.push(file.path));
+    const rawFiles = event.dataTransfer
+      ? event.dataTransfer.files
+      : event.target.files;
+
+    Object.keys(rawFiles).map(key => droppedItems.push(rawFiles[key].path));
+
     ipcRenderer.send("processFiles", droppedItems);
   },
 };

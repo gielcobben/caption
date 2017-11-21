@@ -1,4 +1,4 @@
-const { multiDownload } = require("../download");
+const { multiDownload } = require("./download");
 const Caption = require("caption-core");
 
 const textSearch = async (...args) => {
