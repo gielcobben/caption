@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import Drop from "../components/Drop";
 import ListEmpty from "../components/ListEmpty";
 import List from "../components/List";
 
 const Content = ({
-  searchQuery,
+  searchQuery = "",
   files = [],
   results = [],
   loading,
@@ -31,5 +32,19 @@ const Content = ({
     </style>
   </section>
 );
+
+Content.propTypes = {
+  searchQuery: PropTypes.string,
+  files: PropTypes.array,
+  results: PropTypes.array,
+  loading: PropTypes.bool.isRequired,
+  onDrop: PropTypes.func.isRequired,
+};
+
+Content.defaultProps = {
+  searchQuery: "",
+  files: [],
+  results: [],
+};
 
 export default Content;
