@@ -3,88 +3,19 @@
 exports[`<Content /> should render <List /> when files dropped are dropped 1`] = `
 <section
   className="jsx-1759955757 "
+  onDrop={undefined}
 >
-  <ul
-    className="jsx-565981134"
-  >
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-    <li
-      className="jsx-565981134"
-    />
-  </ul>
   <ul
     className="jsx-631033484"
   >
     <li
-      className="jsx-372683689 "
+      className="jsx-2669069869 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
     />
     <li
-      className="jsx-372683689 "
+      className="jsx-2669069869 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
@@ -96,18 +27,35 @@ exports[`<Content /> should render <List /> when files dropped are dropped 1`] =
 exports[`<Content /> should render <List /> when there are results 1`] = `
 <section
   className="jsx-1759955757 "
+  onDrop={undefined}
 >
+  <div
+    className="jsx-3534139585 drop"
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
+  >
+    <div
+      className="jsx-3534139585 zone "
+    >
+      <p
+        className="jsx-3534139585"
+      >
+        Drop an episode or season...
+      </p>
+    </div>
+  </div>
   <ul
     className="jsx-631033484"
   >
     <li
-      className="jsx-372683689 "
+      className="jsx-2669069869 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
     />
     <li
-      className="jsx-372683689 "
+      className="jsx-2669069869 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
@@ -119,34 +67,23 @@ exports[`<Content /> should render <List /> when there are results 1`] = `
 exports[`<Content /> should show <Drop /> when there is no searchQuery and no files dropped 1`] = `
 <section
   className="jsx-1759955757 "
+  onDrop={undefined}
 >
   <div
-    className="jsx-246188302"
+    className="jsx-3534139585 drop"
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
   >
-    <FakeDropzone
-      activeStyle={
-        Object {
-          "border": "1px dashed #0095ff",
-        }
-      }
-      onDrop={undefined}
-      preventDropOnDocument={true}
-      style={
-        Object {
-          "border": "1px dashed rgba(202, 203, 204, 1)",
-          "borderRadius": "5px",
-          "height": "100%",
-          "transition": "all .2s ease-out",
-          "width": "100%",
-        }
-      }
+    <div
+      className="jsx-3534139585 zone "
     >
       <p
-        className="jsx-246188302"
+        className="jsx-3534139585"
       >
         Drop an episode or season...
       </p>
-    </FakeDropzone>
+    </div>
   </div>
 </section>
 `;
@@ -154,6 +91,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
 exports[`<Content /> should show <ListEmpty /> when there is a query but no results 1`] = `
 <section
   className="jsx-1759955757 "
+  onDrop={undefined}
 >
   <ul
     className="jsx-565981134"

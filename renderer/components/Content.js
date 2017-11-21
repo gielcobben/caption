@@ -37,8 +37,7 @@ Content.propTypes = {
   searchQuery: PropTypes.string,
   files: PropTypes.array,
   results: PropTypes.array,
-  loading: PropTypes.bool.isRequired,
-  onDrop: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };
 
 Content.defaultProps = {
