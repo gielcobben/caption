@@ -15,12 +15,11 @@ const styleActive = {
 };
 
 // Component
-const Drop = ({ onDrop }) => (
+const Drop = () => (
   <div>
     <Dropzone
       style={styleDefault}
       activeStyle={styleActive}
-      onDrop={onDrop}
       preventDropOnDocument
     >
       <p>Drop an episode or season...</p>

@@ -9,9 +9,9 @@ const Content = ({
   loading,
   onDrop,
 }) => (
-  <section className={loading ? "loading" : ""}>
+  <section className={loading ? "loading" : ""} onDrop={onDrop}>
     {searchQuery !== "" && results.length === 0 && <ListEmpty />}
-    {searchQuery === "" && files.length === 0 && <Drop onDrop={onDrop} />}
+    {searchQuery === "" && files.length === 0 && <Drop />}
     {files.length > 0 && <List results={files} />}
     {results.length > 0 && <List results={results} />}
 
