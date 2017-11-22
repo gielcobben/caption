@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import LanguageToggle from "./LanguageToggle";
 import Info from "./Info";
 
@@ -42,5 +43,16 @@ const Footer = ({
     </style>
   </footer>
 );
+
+Footer.propTypes = {
+  results: PropTypes.array.isRequired,
+  language: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  onLanguageChange: PropTypes.func.isRequired,
+  showResults: PropTypes.bool.isRequired,
+  isFileSearch: PropTypes.bool.isRequired,
+  totalFiles: PropTypes.number.isRequired,
+  foundFiles: PropTypes.number.isRequired,
+};
 
 export default Footer;

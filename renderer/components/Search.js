@@ -59,11 +59,15 @@ Search.propTypes = {
   value: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   dropFilePath: PropTypes.string.isRequired,
-  dropFilePathClean: PropTypes.string.isRequired,
+  dropFilePathClean: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
+};
+
+Search.defaultProps = {
+  dropFilePathClean: undefined,
 };
 
 export default Search;
