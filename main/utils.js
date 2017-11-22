@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { dialog } = require("electron");
 const movieExtension = require("./data/extensions");
 
 const transform = filePaths =>
@@ -64,4 +65,22 @@ const processFiles = droppedItems => {
   mainWindow.webContents.send("processedFiles", transformedObject);
 };
 
-module.exports = processFiles;
+const triggerDonateWindow = () => {
+
+  const callback = () => {
+    console.log("callback fired");
+  };
+  dialog.showMessageBox(
+    {
+      buttons: ["Donate", "Later"],
+      defaultId: 0,
+      title: "Thank you for using Caption!",
+      message:
+        "Thanks for using Caption! Caption is and will always be free. If you enjoy using it, please consider a donation to the authors.",
+      checkboxLabel: "Don't show again for this version",
+    },
+    callback,
+  );
+};
+
+module.exports = { processFiles, triggerDonateWindow };

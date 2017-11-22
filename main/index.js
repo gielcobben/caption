@@ -8,7 +8,7 @@ const { moveToApplications } = require("electron-lets-move");
 const buildMenu = require("./menu");
 const initSettings = require("./settings");
 const notification = require("./notification");
-const processFiles = require("./utils");
+const { processFiles, triggerDonateWindow } = require("./utils");
 const { checkForUpdates } = require("./updater");
 const { singleDownload } = require("./download");
 const { textSearch, fileSearch } = require("./sources");
@@ -166,6 +166,7 @@ app.on("ready", async () => {
   });
 
   ipcMain.on("processFiles", (event, droppedItems) => {
+    triggerDonateWindow();
     processFiles(droppedItems);
   });
 });
