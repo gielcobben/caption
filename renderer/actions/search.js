@@ -85,7 +85,7 @@ export const searchByFiles = () => (dispatch, getState) => {
   });
 
   if (files.length > 0) {
-    const directory = path.dirname(files[0].path);
+    const directory = path.basename(files[0].path);
     dispatch(updateDroppedFilePath(directory));
   }
 
