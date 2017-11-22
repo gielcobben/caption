@@ -78,7 +78,8 @@ export default function reducer(state = initialState, action) {
     case types.SET_DROPPED_FILE_PATH:
       return {
         ...state,
-        dropFilePath: action.payload.path,
+        dropFilePath: action.payload.realPath,
+        dropFilePathClean: action.payload.cleanPath,
         searchQuery: "",
       };
     case types.UPDATE_FILE_SEARCH_STATUS:

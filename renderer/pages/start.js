@@ -139,12 +139,12 @@ class MainApp extends Component {
 
   onFocus() {
     this.props.hideSearchPlaceholder();
-    this.search.getWrappedInstance().textInput.focus();
+    this.search.getWrappedInstance().searchField.textInput.focus();
   }
 
   onBlur() {
     this.props.showSearchPlaceholder();
-    this.search.getWrappedInstance().textInput.blur();
+    this.search.getWrappedInstance().searchField.textInput.blur();
   }
 
   onLanguageChange(event) {
