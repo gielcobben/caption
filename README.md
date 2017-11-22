@@ -13,7 +13,7 @@
   <h6 align="center">INTRODUCTION</h6>
   <p align="center">Caption takes the effort out of finding and setting up the right subtitles. A simple design, drag & drop search, and automatic downloading & renaming let you just start watching. Caption is multi-platform, open-source, and build entirely on web technology.</p>
  <p align="center"><a href="https://getcaption.co">Download Caption.</a></p>
- <p align="center"><a href="https://getcaption.co"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/caption/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/caption/sponsors/badge.svg" /></a> <img src="https://img.shields.io/github/downloads/gielcobben/Caption/total.svg" /></a></p>
+ <p align="center"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/caption/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/caption/sponsors/badge.svg" /></a><a href="https://getcaption.co"><img src="https://img.shields.io/github/downloads/gielcobben/Caption/total.svg" /></a></p>
 </p>
 
 <br>
