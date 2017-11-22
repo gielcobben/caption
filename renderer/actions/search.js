@@ -66,11 +66,12 @@ export const searchByQuery = () => (dispatch, getState) => {
   ipcRenderer.send("textSearch", searchQuery, language);
 };
 
-export const updateDroppedFilePath = filePath => dispatch => {
+export const updateDroppedFilePath = (realPath, cleanPath) => dispatch => {
   dispatch({
     type: types.SET_DROPPED_FILE_PATH,
     payload: {
-      path: filePath,
+      realPath,
+      cleanPath,
     },
   });
 };
@@ -85,8 +86,9 @@ export const searchByFiles = () => (dispatch, getState) => {
   });
 
   if (files.length > 0) {
-    const directory = path.dirname(files[0].path);
-    dispatch(updateDroppedFilePath(directory));
+    const cleanPath = path.basename(path.dirname(files[files.length - 1].path));
+    const realPath = path.dirname(files[files.length - 1].path);
+    dispatch(updateDroppedFilePath(realPath, cleanPath));
   }
 
   ipcRenderer.send("fileSearch", files, language);

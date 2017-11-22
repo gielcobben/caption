@@ -54,7 +54,6 @@ const ListItem = ({
           padding: 15px 35px 15px 20px;
           width: 100%;
           white-space: nowrap;
-          overflow: hidden;
           text-overflow: ellipsis;
           overflow: hidden;
           position: relative;
