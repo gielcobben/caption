@@ -44,7 +44,6 @@ const readDir = dir =>
       return files.concat(path.join(dir, file));
     }, []);
 
-// @TODO: Filter duplicate files based on combination of path + filename.
 const processFiles = droppedItems => {
   const { mainWindow } = global.windows;
   const filePaths = [];
@@ -63,4 +62,4 @@ const processFiles = droppedItems => {
   mainWindow.webContents.send("processedFiles", transformedObject);
 };
 
-module.exports = processFiles;
+module.exports = { processFiles };

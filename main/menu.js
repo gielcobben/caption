@@ -2,6 +2,7 @@ const { app, shell, Menu } = require("electron");
 const isDev = require("electron-is-dev");
 const { checkForUpdates } = require("./updater");
 const { showAboutWindow } = require("./windows/about");
+const { allowFuturePopups: allowDonationPopups } = require("./donate");
 
 const buildMenu = () => {
   const template = [
@@ -26,6 +27,11 @@ const buildMenu = () => {
           { role: "reload" },
           { role: "forcereload" },
           { role: "toggledevtools" },
+          { type: "separator" },
+          {
+            label: "Allow donation popups",
+            click: () => allowDonationPopups(),
+          },
           { type: "separator" },
         ]
         : [{ role: "togglefullscreen" }],
