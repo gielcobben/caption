@@ -27,7 +27,6 @@ const readDir = dir =>
     .readdirSync(dir)
     .filter(file => {
       const isDirectory = fs.statSync(path.join(dir, file)).isDirectory();
-      const extension = file.substr(file.lastIndexOf(".") + 1);
 
       if (isDirectory) {
         return true;
