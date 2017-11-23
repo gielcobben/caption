@@ -21,10 +21,33 @@ const folderIcon = (
   </svg>
 );
 
-const FilePath = ({ dropFilePath, dropFilePathClean }) => (
-  <div onClick={() => shell.showItemInFolder(dropFilePath)}>
-    <span className="icon">{folderIcon}</span>
-    <span className="location">{dropFilePathClean}</span>
+const FilePath = ({ dropFilePath, dropFilePathClean, onReset }) => (
+  <div>
+    <span className="folder">{folderIcon}</span>
+    <span
+      className="location"
+      onClick={() => shell.showItemInFolder(dropFilePath)}
+    >
+      {dropFilePathClean}
+    </span>
+    <span className="reset" onClick={onReset}>
+      {" "}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+      >
+        <g fill="none" fillRule="evenodd">
+          <circle cx="7" cy="7" r="7" fill="#C8C8C8" />
+          <path
+            fill="#FFF"
+            fillRule="nonzero"
+            d="M8.06066017,7 L10.0303301,5.03033009 C10.3232233,4.73743687 10.3232233,4.26256313 10.0303301,3.96966991 C9.73743687,3.6767767 9.26256313,3.6767767 8.96966991,3.96966991 L7,5.93933983 L5.03033009,3.96966991 C4.3232233,3.26256313 3.26256313,4.3232233 3.96966991,5.03033009 L5.93933983,7 L3.96966991,8.96966991 C3.6767767,9.26256313 3.6767767,9.73743687 3.96966991,10.0303301 C4.26256313,10.3232233 4.73743687,10.3232233 5.03033009,10.0303301 L7,8.06066017 L8.96966991,10.0303301 C9.6767767,10.7374369 10.7374369,9.6767767 10.0303301,8.96966991 L8.06066017,7 Z"
+          />
+        </g>
+      </svg>
+    </span>
 
     <style jsx>
       {`
@@ -33,14 +56,10 @@ const FilePath = ({ dropFilePath, dropFilePathClean }) => (
           align-items: center;
         }
 
-        .icon {
+        .folder {
           width: 20px;
           vertical-align: center;
           margin-right: 8px;
-        }
-
-        svg {
-          width: 100%;
         }
 
         .location {
@@ -48,10 +67,23 @@ const FilePath = ({ dropFilePath, dropFilePathClean }) => (
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
+          flex: 1;
         }
 
         .location:hover {
           color: rgba(0, 0, 0, 0.5);
+        }
+
+        .reset {
+          margin-left: 12px;
+        }
+
+        .reset:hover circle {
+          fill: #949494;
+        }
+
+        svg {
+          width: 100%;
         }
       `}
     </style>

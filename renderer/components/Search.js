@@ -10,6 +10,7 @@ class Search extends React.Component {
       placeholder,
       dropFilePath,
       dropFilePathClean,
+      onReset,
       onSubmit,
       onChange,
       onFocus,
@@ -22,6 +23,7 @@ class Search extends React.Component {
           <FilePath
             dropFilePath={dropFilePath}
             dropFilePathClean={dropFilePathClean}
+            onReset={onReset}
           />
         )}
 
