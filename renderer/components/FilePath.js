@@ -93,6 +93,7 @@ const FilePath = ({ dropFilePath, dropFilePathClean, onReset }) => (
 FilePath.propTypes = {
   dropFilePath: PropTypes.string.isRequired,
   dropFilePathClean: PropTypes.string.isRequired,
+  onReset: PropTypes.func.isRequired,
 };
 
 export default FilePath;

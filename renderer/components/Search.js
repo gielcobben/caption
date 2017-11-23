@@ -62,6 +62,7 @@ Search.propTypes = {
   placeholder: PropTypes.string.isRequired,
   dropFilePath: PropTypes.string.isRequired,
   dropFilePathClean: PropTypes.string,
+  onReset: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
