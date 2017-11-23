@@ -9,13 +9,13 @@ exports[`<Content /> should render <List /> when files dropped are dropped 1`] =
     className="jsx-631033484"
   >
     <li
-      className="jsx-2669069869 "
+      className="jsx-572805028 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
     />
     <li
-      className="jsx-2669069869 "
+      className="jsx-572805028 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
@@ -49,13 +49,13 @@ exports[`<Content /> should render <List /> when there are results 1`] = `
     className="jsx-631033484"
   >
     <li
-      className="jsx-2669069869 "
+      className="jsx-572805028 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
     />
     <li
-      className="jsx-2669069869 "
+      className="jsx-572805028 "
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
