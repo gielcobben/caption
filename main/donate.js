@@ -33,6 +33,7 @@ const showDonatePopup = () => {
       preventFuturePopups();
     }
   };
+  
   dialog.showMessageBox(
     {
       buttons: ["Donate", "Later"],
