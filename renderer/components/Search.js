@@ -10,6 +10,7 @@ class Search extends React.Component {
       placeholder,
       dropFilePath,
       dropFilePathClean,
+      onReset,
       onSubmit,
       onChange,
       onFocus,
@@ -22,6 +23,7 @@ class Search extends React.Component {
           <FilePath
             dropFilePath={dropFilePath}
             dropFilePathClean={dropFilePathClean}
+            onReset={onReset}
           />
         )}
 
@@ -60,6 +62,7 @@ Search.propTypes = {
   placeholder: PropTypes.string.isRequired,
   dropFilePath: PropTypes.string.isRequired,
   dropFilePathClean: PropTypes.string,
+  onReset: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,

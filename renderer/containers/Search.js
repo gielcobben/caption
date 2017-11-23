@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import Search from "./../components/Search";
 
-import { updateSearchQuery } from "./../actions";
+import { updateSearchQuery, resetSearch } from "./../actions";
 
 const mapStateToProps = ({ search }) => ({
   value: search.searchQuery || search.dropFilePath,
@@ -16,6 +16,7 @@ const mapDispatchToProps = {
     const searchQuery = event.target.value;
     dispatch(updateSearchQuery(searchQuery));
   },
+  onReset: resetSearch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
