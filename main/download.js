@@ -2,6 +2,7 @@ const path = require("path");
 const { dialog } = require("electron");
 const notification = require("./notification");
 const Caption = require("caption-core");
+const { triggerDonateWindow } = require("./donate");
 
 const multiDownload = files => {
   const resultSet = [];
@@ -38,6 +39,8 @@ const multiDownload = files => {
 
       notification(message);
       mainWindow.webContents.send("allFilesDownloaded");
+
+      triggerDonateWindow();
     });
   } catch (err) {
     console.log("error", err);
@@ -68,6 +71,8 @@ const singleDownload = async item => {
       .then(() => {
         notification(`${item.name} is successfully downloaded!`);
         mainWindow.webContents.send("singleDownloadSuccesfull", item);
+
+        triggerDonateWindow();
       })
       .catch(err => console.log("error", err));
   } catch (err) {
