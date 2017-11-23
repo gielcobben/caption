@@ -1,57 +1,76 @@
+import PropTypes from "prop-types";
+import { shell } from "electron";
+import FilePath from "./FilePath";
+import SearchField from "./SearchField";
+
 class Search extends React.Component {
   render() {
     const {
-      placeholder,
       value,
+      placeholder,
+      dropFilePath,
+      dropFilePathClean,
+      onReset,
       onSubmit,
       onChange,
       onFocus,
-      onBlur
+      onBlur,
     } = this.props;
 
     return (
       <section>
-        <form onSubmit={onSubmit}>
-          <input
+        {dropFilePath && (
+          <FilePath
+            dropFilePath={dropFilePath}
+            dropFilePathClean={dropFilePathClean}
+            onReset={onReset}
+          />
+        )}
+
+        {!dropFilePath && (
+          <SearchField
             value={value}
-            type="search"
             placeholder={placeholder}
+            onSubmit={onSubmit}
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
-            ref={input => {
-              this.textInput = input;
+            ref={searchField => {
+              this.searchField = searchField;
             }}
           />
-        </form>
+        )}
 
-        <style jsx>{`
-          section {
-            background: #fff;
-            padding: 0px 12px 12px 12px;
-            box-shadow: 0px 0.5px 0px #cacbcc;
-          }
-
-          form {
-          }
-
-          input {
-            font-size: 24px;
-            font-weight: 300;
-            width: 100%;
-            appearence: none;
-            border: none;
-            outline: none;
-          }
-
-          ::-webkit-input-placeholder {
-            text-align: center;
-            color: rgba(0, 0, 0, 0.2);
-          }
-        `}</style>
+        <style jsx>
+          {`
+            section {
+              background: #fff;
+              padding: 0px 12px 12px 12px;
+              box-shadow: 0px 0.5px 0px #cacbcc;
+              font-size: 24px;
+              font-weight: 300;
+            }
+          `}
+        </style>
       </section>
     );
   }
 }
+
+Search.propTypes = {
+  value: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  dropFilePath: PropTypes.string.isRequired,
+  dropFilePathClean: PropTypes.string,
+  onReset: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
+};
+
+Search.defaultProps = {
+  dropFilePathClean: undefined,
+};
 
 export default Search;

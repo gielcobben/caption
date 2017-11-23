@@ -26,7 +26,7 @@
   "scripts": {
     "start": "electron --inspect=5858 .",
     "build": "npm run test && next build renderer && next export renderer",
-    "dist": "npm run build && build --mac",
+    "dist": "npm run build && build --mac --linux --windows",
     "publish":
       "npm run build && node -r dotenv/config node_modules/.bin/build --mac --linux --windows -p always",
     "test": "jest",
