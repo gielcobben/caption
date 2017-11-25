@@ -50,7 +50,7 @@ const processFiles = droppedItems => {
 
   droppedItems.map(item => {
     if (fs.statSync(item).isDirectory()) {
-      filePaths.push(...filePaths.concat(readDir(item)));
+      filePaths.push(...readDir(item));
     } else if (checkExtension(item)) {
       filePaths.push(item);
     }
