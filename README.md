@@ -11,7 +11,7 @@
   <img src="https://gielcobben.com/github/caption/github_cover.png" width="840" alt="banner" draggable="false">
   <br>
   <h6 align="center">INTRODUCTION</h6>
-  <p align="center">Caption takes the effort out of finding and setting up the right subtitles. A simple design, drag & drop search, and automatic downloading & renaming let you just start watching. Caption is multi-platform, open-source, and build entirely on web technology.</p>
+  <p align="center">Caption takes the effort out of finding and setting up the right subtitles. A simple design, drag & drop search, and automatic downloading & renaming let you just start watching. Caption is multi-platform, open-source, and built entirely on web technology.</p>
  <p align="center"><a href="https://getcaption.co">Download Caption.</a></p>
  <p align="center"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/caption/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/caption/sponsors/badge.svg" /></a><a href="https://getcaption.co"><img src="https://img.shields.io/github/downloads/gielcobben/Caption/total.svg" /></a></p>
 </p>
@@ -56,20 +56,20 @@ Caption currently uses 2 sources to gather subtitles. We're continuously adding 
 
 <br>
 
-## Contributors
+## 👭 Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
-<a href="graphs/contributors"><img src="https://opencollective.com/caption/contributors.svg?width=890" /></a>
+<a href="https://github.com/gielcobben/caption/graphs/contributors"><img src="https://opencollective.com/caption/contributors.svg?width=890" /></a>
 
 
-## Backers
+## 🎖 Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/caption#backer)]
 
 <a href="https://opencollective.com/caption#backers" target="_blank"><img src="https://opencollective.com/caption/backers.svg?width=890"></a>
 
 
-## Sponsors
+## 🏅 Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/caption#sponsor)]
 

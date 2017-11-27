@@ -10,14 +10,10 @@
 We also welcome financial contributions in full transparency on our [open collective](https://opencollective.com/caption).
 Anyone can file an expense. If the expense makes sense for the development of the community, it will be "merged" in the ledger of our open collective by the core contributors and the person who filed the expense will be reimbursed.
 
-
-## Credits
-
-
 ### Contributors
 
-Thank you to all the people who have already contributed to caption!
-<a href="graphs/contributors"><img src="https://opencollective.com/caption/contributors.svg?width=890" /></a>
+Thank you to all the people who have already contributed to Caption!
+<a href="https://github.com/gielcobben/caption/graphs/contributors"><img src="https://opencollective.com/caption/contributors.svg?width=890" /></a>
 
 
 ### Backers
