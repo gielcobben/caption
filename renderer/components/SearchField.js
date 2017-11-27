@@ -39,6 +39,7 @@ class SearchField extends React.Component {
               appearence: none;
               border: none;
               outline: none;
+              line-height: normal;
             }
 
             ::-webkit-input-placeholder {

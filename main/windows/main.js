@@ -1,12 +1,9 @@
-const { platform } = require("os");
 const { format } = require("url");
 const { BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { resolve } = require("app-root-path");
 const windowStateKeeper = require("electron-window-state");
 const touchBar = require("./../touchbar");
-
-const isWindows = platform() === "win32";
 
 const createMainWindow = () => {
   const windowState = windowStateKeeper({
@@ -28,8 +25,7 @@ const createMainWindow = () => {
     center: true,
     autoHideMenuBar: true,
     acceptFirstMouse: true,
-    opacity: isWindows ? 0.8 : 1,
-    transparent: isWindows,
+    opacity: 1,
     webPreferences: {
       backgroundThrottling: false,
       webSecurity: false,

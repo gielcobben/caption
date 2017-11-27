@@ -19,7 +19,7 @@
     }
   ],
   "productName": "Caption",
-  "version": "2.0.0-beta",
+  "version": "2.0.0-beta.2",
   "main": "main/index.js",
   "license": "MIT",
   "repository": "gielcobben/Caption",
