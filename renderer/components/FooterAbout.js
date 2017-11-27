@@ -3,7 +3,7 @@ import { shell } from "electron";
 const FooterAbout = () => (
   <footer>
     <span onClick={() => shell.openExternal("https://twitter.com/gielcobben")}>
-      Made with 💝 by Giel Cobben
+      Made with 💝 by Giel & Vernon
     </span>
     <style jsx>{`
       footer {

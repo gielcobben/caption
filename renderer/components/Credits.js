@@ -9,11 +9,11 @@ const Credits = () => (
   <section>
     <h2>Special thanks to:</h2>
     <ul>
-      <li onClick={() => shell.openExternal("https://twitter.com/vernon_dg")}>
-        Vernon de Goede
-      </li>
       <li onClick={() => shell.openExternal("https://twitter.com/rygu")}>
         Rick Wong
+      </li>
+      <li onClick={() => shell.openExternal("https://twitter.com/gelissenhuub")}>
+        Huub Gelissen
       </li>
       <li onClick={() => shell.openExternal("https://www.opensubtitles.org/")}>
         Opensubtitles
