@@ -180,7 +180,7 @@ class MainApp extends Component {
             this.search = search;
           }}
         />
-        <Content />
+        <Content isWindows={this.isWindows} />
         <Footer />
       </Layout>
     );

@@ -2,7 +2,7 @@
 
 exports[`<Content /> should render <List /> when files dropped are dropped 1`] = `
 <section
-  className="jsx-1759955757 "
+  className="jsx-3838599344 "
   onDrop={undefined}
 >
   <ul
@@ -26,7 +26,7 @@ exports[`<Content /> should render <List /> when files dropped are dropped 1`] =
 
 exports[`<Content /> should render <List /> when there are results 1`] = `
 <section
-  className="jsx-1759955757 "
+  className="jsx-3838599344 "
   onDrop={undefined}
 >
   <div
@@ -66,7 +66,7 @@ exports[`<Content /> should render <List /> when there are results 1`] = `
 
 exports[`<Content /> should show <Drop /> when there is no searchQuery and no files dropped 1`] = `
 <section
-  className="jsx-1759955757 "
+  className="jsx-3838599344 "
   onDrop={undefined}
 >
   <div
@@ -90,7 +90,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
 
 exports[`<Content /> should show <ListEmpty /> when there is a query but no results 1`] = `
 <section
-  className="jsx-1759955757 "
+  className="jsx-3838599344 "
   onDrop={undefined}
 >
   <ul
