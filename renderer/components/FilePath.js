@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
+import { platform } from "os";
 import { shell } from "electron";
+import PropTypes from "prop-types";
 
-const folderIcon = (
+const defaultFolderIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
@@ -21,74 +22,116 @@ const folderIcon = (
   </svg>
 );
 
-const FilePath = ({ dropFilePath, dropFilePathClean, onReset }) => (
-  <div>
-    <span className="folder">{folderIcon}</span>
-    <span
-      className="location"
-      onClick={() => shell.showItemInFolder(dropFilePath)}
-    >
-      {dropFilePathClean}
-    </span>
-    <span className="reset" onClick={onReset}>
-      {" "}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-      >
-        <g fill="none" fillRule="evenodd">
-          <circle cx="7" cy="7" r="7" fill="#C8C8C8" />
-          <path
-            fill="#FFF"
-            fillRule="nonzero"
-            d="M8.06066017,7 L10.0303301,5.03033009 C10.3232233,4.73743687 10.3232233,4.26256313 10.0303301,3.96966991 C9.73743687,3.6767767 9.26256313,3.6767767 8.96966991,3.96966991 L7,5.93933983 L5.03033009,3.96966991 C4.3232233,3.26256313 3.26256313,4.3232233 3.96966991,5.03033009 L5.93933983,7 L3.96966991,8.96966991 C3.6767767,9.26256313 3.6767767,9.73743687 3.96966991,10.0303301 C4.26256313,10.3232233 4.73743687,10.3232233 5.03033009,10.0303301 L7,8.06066017 L8.96966991,10.0303301 C9.6767767,10.7374369 10.7374369,9.6767767 10.0303301,8.96966991 L8.06066017,7 Z"
-          />
-        </g>
-      </svg>
-    </span>
-
-    <style jsx>
-      {`
-        div {
-          display: flex;
-          align-items: center;
-        }
-
-        .folder {
-          width: 20px;
-          vertical-align: center;
-          margin-right: 8px;
-        }
-
-        .location {
-          font-size: 21px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          flex: 1;
-        }
-
-        .location:hover {
-          color: rgba(0, 0, 0, 0.5);
-        }
-
-        .reset {
-          margin-left: 12px;
-        }
-
-        .reset:hover circle {
-          fill: #949494;
-        }
-
-        svg {
-          width: 100%;
-        }
-      `}
-    </style>
-  </div>
+const windowsFilderIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="17"
+    viewBox="0 0 20 17"
+  >
+    <defs>
+      <path
+        id="windows-b"
+        d="M1.2819426,-3.84858923e-16 L5.90765539,9.29294867e-16 C6.21103281,8.7356534e-16 6.31896694,0.0157932918 6.4366466,0.0511608368 C6.55432626,0.0865283817 6.65698595,0.14147018 6.75169045,0.219767192 C6.84639496,0.298064204 6.91940686,0.379110287 7.08769037,0.631535555 L7.5789763,1.36846445 C7.74725981,1.62088971 7.8202717,1.7019358 7.91497621,1.78023281 C8.00968072,1.85852982 8.11234041,1.91347162 8.23002007,1.94883916 C8.34769973,1.98420671 8.45563386,2 8.75901128,2 L17.4361148,2 C18.3276335,2 18.6509198,2.09282561 18.9768457,2.2671327 C19.3027716,2.4414398 19.5585602,2.69722837 19.7328673,3.0231543 C19.9071744,3.34908022 20,3.67236646 20,4.5638852 L20,13.4361148 C20,14.3276335 19.9071744,14.6509198 19.7328673,14.9768457 C19.5585602,15.3027716 19.3027716,15.5585602 18.9768457,15.7328673 C18.6509198,15.9071744 18.3276335,16 17.4361148,16 L2.5638852,16 C1.67236646,16 1.34908022,15.9071744 1.0231543,15.7328673 C0.697228371,15.5585602 0.441439796,15.3027716 0.267132704,14.9768457 C0.0928256111,14.6509198 3.59283722e-15,14.3276335 3.48365766e-15,13.4361148 L-1.73331231e-16,1.2819426 C-4.25877936e-16,0.83618323 0.0464128056,0.674540111 0.133566352,0.511577148 C0.220719898,0.348614185 0.348614185,0.220719898 0.511577148,0.133566352 C0.674540111,0.0464128056 0.83618323,-3.02974255e-16 1.2819426,-3.84858923e-16 Z"
+      />
+    </defs>
+    <g fill="none" fillRule="evenodd">
+      <use fill="#000" filter="url(#windows-a)" xlinkHref="#windows-b" />
+      <use fill="#FFE884" xlinkHref="#windows-b" />
+      <path
+        fill="#FFD100"
+        d="M1.2819426,7.13355485e-14 L5.873499,7.96092444e-14 C6.13123835,8.00197355e-14 6.2203614,0.00929110178 6.31915407,0.0319894108 C6.41794674,0.0546877199 6.50536907,0.0907932362 6.5913874,0.144422065 C6.67740573,0.198050894 6.74711179,0.254356387 6.92973803,0.436227845 L8.22655201,1.72768216 L8.22655201,1.72768216 C8.35699606,1.85758709 8.3574331,2.06864163 8.22752817,2.19908567 C8.21607959,2.21058177 8.20380696,2.22122667 8.19080814,2.23093549 L6.4916998,3.5 L-4.54747351e-13,3.5 L-4.54171897e-13,1.2819426 C-4.5402853e-13,0.83618323 0.0464128056,0.674540111 0.133566352,0.511577148 C0.220719898,0.348614185 0.348614185,0.220719898 0.511577148,0.133566352 C0.674540111,0.0464128056 0.83618323,7.14174331e-14 1.2819426,7.13355485e-14 Z"
+      />
+      <path
+        fill="#00B4EB"
+        fillRule="nonzero"
+        d="M16,17 L16,12.5945946 C16,11.1616396 14.8060927,10 13.3333333,10 L6.66666667,10 C5.19390733,10 4,11.1616396 4,12.5945946 L4,17 L6,17 L6,12.64 C6,12.2865378 6.29847683,12 6.66666667,12 L13.3333333,12 C13.7015232,12 14,12.2865378 14,12.64 L14,17 L16,17 Z"
+      />
+    </g>
+  </svg>
 );
+
+class FilePath extends React.Component {
+  constructor(props) {
+    super(props);
+    this.isWindows = platform() === "win32";
+  }
+
+  render() {
+    const { dropFilePath, dropFilePathClean, onReset } = this.props;
+
+    return (
+      <div>
+        <span className="folder">
+          {this.isWindows ? windowsFilderIcon : defaultFolderIcon}
+        </span>
+        <span
+          className="location"
+          onClick={() => shell.showItemInFolder(dropFilePath)}
+        >
+          {dropFilePathClean}
+        </span>
+        <span className="reset" onClick={onReset}>
+          {" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+          >
+            <g fill="none" fillRule="evenodd">
+              <circle cx="7" cy="7" r="7" fill="#C8C8C8" />
+              <path
+                fill="#FFF"
+                fillRule="nonzero"
+                d="M8.06066017,7 L10.0303301,5.03033009 C10.3232233,4.73743687 10.3232233,4.26256313 10.0303301,3.96966991 C9.73743687,3.6767767 9.26256313,3.6767767 8.96966991,3.96966991 L7,5.93933983 L5.03033009,3.96966991 C4.3232233,3.26256313 3.26256313,4.3232233 3.96966991,5.03033009 L5.93933983,7 L3.96966991,8.96966991 C3.6767767,9.26256313 3.6767767,9.73743687 3.96966991,10.0303301 C4.26256313,10.3232233 4.73743687,10.3232233 5.03033009,10.0303301 L7,8.06066017 L8.96966991,10.0303301 C9.6767767,10.7374369 10.7374369,9.6767767 10.0303301,8.96966991 L8.06066017,7 Z"
+              />
+            </g>
+          </svg>
+        </span>
+
+        <style jsx>
+          {`
+            div {
+              display: flex;
+              align-items: center;
+            }
+
+            .folder {
+              width: 20px;
+              vertical-align: center;
+              margin-right: 8px;
+            }
+
+            .location {
+              font-size: 21px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              flex: 1;
+            }
+
+            .location:hover {
+              color: rgba(0, 0, 0, 0.5);
+            }
+
+            .reset {
+              margin-left: 12px;
+            }
+
+            .reset:hover circle {
+              fill: #949494;
+            }
+
+            svg {
+              width: 100%;
+            }
+          `}
+        </style>
+      </div>
+    );
+  }
+}
 
 FilePath.propTypes = {
   dropFilePath: PropTypes.string.isRequired,
