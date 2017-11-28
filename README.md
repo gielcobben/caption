@@ -94,7 +94,7 @@ with a link to your website.
 <a href="https://opencollective.com/caption/sponsor/0/website" target="_blank">
 <img src="https://opencollective.com/caption/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/caption/sponsor/1/website" target="_blank">
-<img src="https://opencollective.com/caption/sponsor/1/avatar.svg"></a>
+<img src="https://opencollective.com/caption/sponsor/1/avatar.svg?v=2"></a>
 <a href="https://opencollective.com/caption/sponsor/2/website" target="_blank">
 <img src="https://opencollective.com/caption/sponsor/2/avatar.svg"></a>
 <a href="https://opencollective.com/caption/sponsor/3/website" target="_blank">
