@@ -10,11 +10,11 @@ import rootReducer from "./../reducers";
 
 const initStore = (initialState = {}) => {
   const loggerMiddleware = createLogger();
-  
+
   return createStore(
     rootReducer,
     initialState,
-    composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware))
+    composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware)),
   );
 };
 
