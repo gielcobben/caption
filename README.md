@@ -19,59 +19,78 @@
 <br>
 
 ## ⚡️ Contribute
-Caption is completely open-source. We've tried to make it as easy as possible to contribute. If you'd like to help out by adding features, working on bug fixes, or assisting in other parts of development, here's how to get started:
+
+Caption is completely open-source. We've tried to make it as easy as possible to
+contribute. If you'd like to help out by adding features, working on bug fixes,
+or assisting in other parts of development, here's how to get started:
 
 ###### To begin working locally:
-1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account
-2. [Clone](https://help.github.com/articles/cloning-a-repository/) it to your local device: `git clone git@github.com:gielcobben/caption.git`
+
+1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your
+   own GitHub account
+2. [Clone](https://help.github.com/articles/cloning-a-repository/) it to your
+   local device: `git clone git@github.com:gielcobben/caption.git`
 3. Install the dependencies: `npm install`
-4. Run the app by starting electron, building the code and watch for changes: `npm start`
-###### To build for production (should not generally be used):
-5. Build the actual app for all platforms (Mac, Windows and Linux): `npm run dist`
+4. Run the app by starting electron, building the code and watch for changes:
+   `npm start`
+   ###### To build for production (should not generally be used):
+5. Build the actual app for all platforms (Mac, Windows and Linux): `npm run
+   dist`
 
 <br>
 
 ## 📦 Sources
-Caption currently uses 2 sources to gather subtitles. We're continuously adding sources, but the app's open-source nature also allows you to add your own when desired. This can be done in [Caption Core](https://github.com/gielcobben/caption-core).
+
+Caption currently uses 2 sources to gather subtitles. We're continuously adding
+sources, but the app's open-source nature also allows you to add your own when
+desired. This can be done in
+[Caption Core](https://github.com/gielcobben/caption-core).
 
 ###### Standard sources:
-- [x] OpenSubtitles
-- [x] Addic7ed
+
+* [x] OpenSubtitles
+* [x] Addic7ed
 
 <br>
 
 ## ⭐️ Links
 
 ###### Authors:
-- [Giel Cobben](https://github.com/gielcobben)
-- [Vernon de Goede](https://github.com/vernondegoede)
+
+* [Giel Cobben](https://github.com/gielcobben)
+* [Vernon de Goede](https://github.com/vernondegoede)
 
 ###### Friends:
-- [Rick Wong](https://github.com/RickWong)
-- [Huub Gelissen](https://twitter.com/gelissenhuub)
+
+* [Rick Wong](https://github.com/RickWong)
+* [Huub Gelissen](https://twitter.com/gelissenhuub)
 
 ###### Repositories:
-- [Caption Core](https://github.com/gielcobben/caption-core)
-- [Caption Website](https://github.com/gielcobben/getcaption.co)
+
+* [Caption Core](https://github.com/gielcobben/caption-core)
+* [Caption Website](https://github.com/gielcobben/getcaption.co)
 
 <br>
 
-## 👭 Contributors
+## 👨‍👨‍👧‍👦 Open-Source
 
-This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
+###### Contributors:
+
+This project exists thanks to all the people who contribute.
+[Contribute](CONTRIBUTING.md).
 <a href="https://github.com/gielcobben/caption/graphs/contributors"><img src="https://opencollective.com/caption/contributors.svg?width=890" /></a>
 
+###### Backers:
 
-## 🎖 Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/caption#backer)]
-
+Thank you to all our backers! 🙏
+[Become a backer](https://opencollective.com/caption#backer)
 <a href="https://opencollective.com/caption#backers" target="_blank"><img src="https://opencollective.com/caption/backers.svg?width=890"></a>
 
+###### Sponsors:
 
-## 🏅 Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/caption#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a
+link to your website.
+[Become a sponsor](https://opencollective.com/caption#sponsor)
 
 <a href="https://opencollective.com/caption/sponsor/0/website" target="_blank"><img src="https://opencollective.com/caption/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/caption/sponsor/1/website" target="_blank"><img src="https://opencollective.com/caption/sponsor/1/avatar.svg"></a>
@@ -84,8 +103,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/caption/sponsor/8/website" target="_blank"><img src="https://opencollective.com/caption/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/caption/sponsor/9/website" target="_blank"><img src="https://opencollective.com/caption/sponsor/9/avatar.svg"></a>
 
-
-
 ## 🔑 License
 
-[MIT](https://github.com/gielcobben/Caption/blob/master/LICENSE) © [Giel Cobben](https://twitter.com/gielcobben)
+[MIT](https://github.com/gielcobben/Caption/blob/master/LICENSE) ©
+[Giel Cobben](https://twitter.com/gielcobben)
