@@ -76,7 +76,7 @@ desired. This can be done in
 
 <br>
 
-## 👨‍👨‍👧‍👦 Open-Source
+## 👨‍👨‍👧‍👦 Open-source
 
 ###### Contributors:
 
