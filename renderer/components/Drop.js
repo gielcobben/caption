@@ -40,7 +40,7 @@ class Drop extends React.Component {
         onDragOver={this.onDragOver}
       >
         <div className={`zone ${dragging ? "dragging" : ""}`}>
-          <p>Drop an episode or season...</p>
+          <p>Drop an episode or season.</p>
         </div>
 
         <style jsx>

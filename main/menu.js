@@ -3,6 +3,9 @@ const isDev = require("electron-is-dev");
 const { checkForUpdates } = require("./updater");
 const { showAboutWindow } = require("./windows/about");
 const { allowFuturePopups: allowDonationPopups } = require("./donate");
+const { platform } = require("os");
+
+const isWindows = platform() === "win32";
 
 const buildMenu = () => {
   const template = [
@@ -43,6 +46,9 @@ const buildMenu = () => {
     {
       role: "help",
       submenu: [
+        isWindows
+          ? { label: "Check for updates...", click: () => checkForUpdates() }
+          : null,
         {
           label: "Donate",
           click: () => {

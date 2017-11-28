@@ -41,7 +41,7 @@ exports[`<Content /> should render <List /> when there are results 1`] = `
       <p
         className="jsx-3534139585"
       >
-        Drop an episode or season...
+        Drop an episode or season.
       </p>
     </div>
   </div>
@@ -81,7 +81,7 @@ exports[`<Content /> should show <Drop /> when there is no searchQuery and no fi
       <p
         className="jsx-3534139585"
       >
-        Drop an episode or season...
+        Drop an episode or season.
       </p>
     </div>
   </div>
