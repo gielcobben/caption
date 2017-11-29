@@ -36,6 +36,13 @@ const helpMenu = [
   },
 ];
 
+if (isWindows) {
+  helpMenu.splice(0, 0, {
+    label: "Check for updates...",
+    click: () => checkForUpdates(),
+  });
+}
+
 const buildMenu = () => {
   const template = [
     {
@@ -74,14 +81,7 @@ const buildMenu = () => {
     },
     {
       role: "help",
-      submenu: [
-        isWindows
-          ? helpMenu.splice(0, 0, {
-            label: "Check for updates...",
-            click: () => checkForUpdates(),
-          })
-          : helpMenu,
-      ],
+      submenu: helpMenu,
     },
   ];
 
