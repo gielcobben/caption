@@ -7,6 +7,35 @@ const { platform } = require("os");
 
 const isWindows = platform() === "win32";
 
+const helpMenu = [
+  {
+    label: "Donate",
+    click: () => {
+      const { mainWindow } = global.windows;
+      shell.openExternal("https://www.paypal.me/gielcobben");
+      mainWindow.webContents.send("logDonated");
+    },
+  },
+  {
+    label: "Learn More",
+    click: () => shell.openExternal("https://getcaption.co/"),
+  },
+  {
+    label: "Support",
+    click: () => shell.openExternal("https://twitter.com/gielcobben"),
+  },
+  {
+    label: "Report Issue",
+    click: () =>
+      shell.openExternal("https://github.com/gielcobben/caption/issues/new"),
+  },
+  {
+    label: "Search Issues",
+    click: () =>
+      shell.openExternal("https://github.com/gielcobben/Caption/issues"),
+  },
+];
+
 const buildMenu = () => {
   const template = [
     {
@@ -47,34 +76,11 @@ const buildMenu = () => {
       role: "help",
       submenu: [
         isWindows
-          ? { label: "Check for updates...", click: () => checkForUpdates() }
-          : null,
-        {
-          label: "Donate",
-          click: () => {
-            const { mainWindow } = global.windows;
-            shell.openExternal("https://www.paypal.me/gielcobben");
-            mainWindow.webContents.send("logDonated");
-          },
-        },
-        {
-          label: "Learn More",
-          click: () => shell.openExternal("https://getcaption.co/"),
-        },
-        {
-          label: "Support",
-          click: () => shell.openExternal("https://twitter.com/gielcobben"),
-        },
-        {
-          label: "Report Issue",
-          click: () =>
-            shell.openExternal("https://github.com/gielcobben/caption/issues/new"),
-        },
-        {
-          label: "Search Issues",
-          click: () =>
-            shell.openExternal("https://github.com/gielcobben/Caption/issues"),
-        },
+          ? helpMenu.splice(0, 0, {
+            label: "Check for updates...",
+            click: () => checkForUpdates(),
+          })
+          : helpMenu,
       ],
     },
   ];
