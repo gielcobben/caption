@@ -1,6 +1,6 @@
 import path from "path";
 import { ipcRenderer } from "electron";
-import { sortBy, first } from 'lodash';
+import { sortBy, first } from "lodash";
 import { logQuery } from "./../utils/tracking";
 import * as types from "./../types";
 
@@ -88,7 +88,7 @@ export const searchByFiles = () => (dispatch, getState) => {
 
   if (files.length > 0) {
     const folders = files.map(file => path.dirname(file.path));
-    const highestFolder = first(sortBy(folders, 'length'));
+    const highestFolder = first(sortBy(folders, "length"));
     const cleanPath = highestFolder;
     const realPath = path.basename(cleanPath);
 
