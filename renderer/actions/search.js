@@ -1,5 +1,6 @@
 import path from "path";
 import { ipcRenderer } from "electron";
+import { sortBy, first } from "lodash";
 import { logQuery } from "./../utils/tracking";
 import * as types from "./../types";
 
@@ -86,9 +87,12 @@ export const searchByFiles = () => (dispatch, getState) => {
   });
 
   if (files.length > 0) {
-    const cleanPath = path.basename(path.dirname(files[files.length - 1].path));
-    const realPath = path.dirname(files[files.length - 1].path);
-    dispatch(updateDroppedFilePath(realPath, cleanPath));
+    const folders = files.map(file => path.dirname(file.path));
+    const highestFolder = first(sortBy(folders, "length"));
+    const cleanPath = highestFolder;
+    const realPath = path.basename(cleanPath);
+
+    dispatch(updateDroppedFilePath(cleanPath, realPath));
   }
 
   ipcRenderer.send("fileSearch", files, language);
