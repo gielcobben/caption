@@ -6,6 +6,7 @@ const { allowFuturePopups: allowDonationPopups } = require("./donate");
 const { platform } = require("os");
 
 const isWindows = platform() === "win32";
+const isLinux = platform() === "linux";
 
 const helpMenu = [
   {
@@ -36,7 +37,7 @@ const helpMenu = [
   },
 ];
 
-if (isWindows) {
+if (isWindows || isLinux) {
   helpMenu.splice(0, 0, {
     label: "Check for updates...",
     click: () => checkForUpdates(),
