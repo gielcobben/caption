@@ -327,7 +327,8 @@
     },
     "win": {
       "target": ["nsis"],
-      "icon": "./renderer/static/icon.ico"
+      "icon": "./renderer/static/icon.ico",
+      "publisherName": "Defringe"
     }
   },
   "collective": {
