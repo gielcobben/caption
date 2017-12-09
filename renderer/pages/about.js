@@ -13,7 +13,7 @@ class About extends Component {
     super(props);
 
     this.state = {
-      version: '0.0.0'
+      version: "0.0.0",
     };
 
     this.remote = electron.remote || false;
@@ -33,7 +33,7 @@ class About extends Component {
     }
 
     this.setState({
-      version
+      version,
     });
   }
 
