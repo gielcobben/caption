@@ -127,8 +127,10 @@ app.on("ready", async () => {
     progressWindow,
   } = global.windows;
 
-  openFilesOnLaunch.map(file => openFile(file));
-  openFilesOnLaunch = [];
+  mainWindow.on("show", () => {
+    openFilesOnLaunch.map(file => openFile(file));
+    openFilesOnLaunch = [];
+  });
 
   mainWindow.on("close", () => {
     global.windows = null;
