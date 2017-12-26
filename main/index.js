@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const Store = require("electron-store");
 const prepareNext = require("electron-next");
 const { app, ipcMain, dialog } = require("electron");
@@ -21,8 +19,6 @@ const {
   createProgressWindow,
   closeProgressWindow,
 } = require("./windows/progress");
-
-let openFilesOnLaunch = []; // eslint-disable-line prefer-const
 
 const store = new Store();
 
@@ -47,25 +43,6 @@ const showErrorDialog = online => {
   }
 };
 
-const openFile = filePath => {
-  const { mainWindow } = global.windows;
-
-  fs.stat(filePath, (error, stats) => {
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    const file = {
-      name: path.basename(filePath),
-      size: stats.size,
-      path: filePath,
-    };
-
-    mainWindow.webContents.send("openFile", file);
-  });
-};
-
 // App Events
 app.on("before-quit", () => {
   global.windows.checkWindow = null;
@@ -84,18 +61,6 @@ app.on("activate", () => {
   if (mainWindow === null) {
     global.windows.mainWindow = createMainWindow();
   }
-});
-
-app.on("will-finish-launching", () => {
-  app.on("open-file", (event, filePath) => {
-    event.preventDefault();
-
-    if (global.windows && global.windows.mainWindow) {
-      openFile(filePath);
-    } else {
-      openFilesOnLaunch.push(filePath);
-    }
-  });
 });
 
 app.on("ready", async () => {
@@ -126,11 +91,6 @@ app.on("ready", async () => {
     checkWindow,
     progressWindow,
   } = global.windows;
-
-  mainWindow.on("show", () => {
-    openFilesOnLaunch.map(file => openFile(file));
-    openFilesOnLaunch = [];
-  });
 
   mainWindow.on("close", () => {
     global.windows = null;
