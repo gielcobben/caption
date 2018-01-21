@@ -9,22 +9,20 @@ const multiDownload = files => {
   const { mainWindow } = global.windows;
 
   try {
-    const downloadFiles = files.map(({ file, subtitle }) =>
+    const downloadFiles = files.map(item =>
       new Promise(resolve => {
-        const downloadLocation = path.dirname(file.path);
-        const originalFileName = file.name;
+        const downloadLocation = path.dirname(item.file.path);
+        const originalFileName = item.file.name;
         const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
         return Caption.download(
-          {
-            downloadUrl: subtitle.url,
-          },
-          "opensubtitles",
+          item,
+          item.source,
           `${downloadLocation}/${subtitleFilename}.srt`,
         ).then(() => {
           resultSet.push(`${downloadLocation}/${subtitleFilename}.srt`);
           mainWindow.webContents.send("updateFileSearchStatus", {
-            filePath: file.path,
+            filePath: item.file.path,
             status: "done",
           });
           resolve();
