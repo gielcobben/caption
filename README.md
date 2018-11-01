@@ -59,7 +59,7 @@ desired. This can be done in
 
 ## ⭐️ Links
 
-###### Authors:
+###### Makers:
 
 * [Giel Cobben](https://github.com/gielcobben)
 * [Vernon de Goede](https://github.com/vernondegoede)
