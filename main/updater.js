@@ -15,10 +15,9 @@ const cancelUpdater = () => {
 
 const checkForUpdates = async () => {
   const checking = await autoUpdater.checkForUpdates();
-  const { cancellationToken } = checking;
 
   global.updater = {
-    cancellationToken,
+    cancellationToken: checking ? checking.cancellationToken : null,
     onStartup: false,
   };
 };
