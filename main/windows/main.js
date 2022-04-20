@@ -20,7 +20,7 @@ const createMainWindow = () => {
     minWidth: 300,
     minHeight: 300,
     vibrancy: "sidebar",
-    titleBarStyle: "hidden-inset",
+    titleBarStyle: "hiddenInset",
     show: false,
     center: true,
     autoHideMenuBar: true,
