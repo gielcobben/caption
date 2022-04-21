@@ -32,8 +32,6 @@ class List extends React.Component {
   }
 
   onKeyDown(event) {
-    const { onDoubleClick } = this.props;
-
     if (event.keyCode === ARROW_DOWN_KEY) {
       this.onArrowDown();
     }
@@ -42,7 +40,7 @@ class List extends React.Component {
       this.onArrowUp();
     }
 
-    if (event.keyCode === ENTER_KEY) {
+    if (event.keyCode === ENTER_KEY && event.target.nodeName !== "INPUT") {
       this.onDoubleClick();
     }
   }
@@ -70,6 +68,12 @@ class List extends React.Component {
   onDoubleClick() {
     const { results } = this.props;
     const { selected } = this.state;
+
+    // Nothing selected.
+    if (!selected) {
+      return;
+    }
+
     const item = results[selected];
 
     // If size is specified, the file is dropped.
