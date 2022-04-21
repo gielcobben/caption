@@ -1,4 +1,6 @@
+const fs = require("fs");
 const path = require("path");
+const os = require("os");
 const { dialog } = require("electron");
 const notification = require("./notification");
 const Caption = require("caption-core");
@@ -65,8 +67,6 @@ const singleDownload = async item => {
     Caption.download(item, item.source, saveDialogResult.filePath)
       .then(() => {
         notification(`${item.name} is successfully downloaded!`);
-        mainWindow.webContents.send("singleDownloadSuccesfull", item);
-
         triggerDonateWindow();
       })
       .catch(err => console.log("error", err));
@@ -75,4 +75,19 @@ const singleDownload = async item => {
   }
 };
 
-module.exports = { multiDownload, singleDownload };
+const singleDownloadToTemp = async (item) => {
+  const hasExtension = item.name.includes(".srt");
+  const filename = hasExtension ? item.name : `${item.name}.srt`;
+
+  const tempFile = path.join(os.tmpdir(), filename);
+  if (!fs.existsSync(tempFile)) {
+    await Caption.download(item, item.source, tempFile);
+  }
+  // Add a barely noticeable timeout here, that seems to fix failure to drop occasionally.
+  // More: https://stackoverflow.com/questions/51194816/electron-drag-and-drop-remote-files-on-desktop
+  await new Promise(resolve => setTimeout(resolve, 350));
+
+  return tempFile;
+};
+
+module.exports = { multiDownload, singleDownload, singleDownloadToTemp };

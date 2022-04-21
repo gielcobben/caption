@@ -125,6 +125,14 @@ class List extends React.Component {
     });
   }
 
+  onDragStart(event, index) {
+    event.dataTransfer.effectAllowed = "copy";
+    const item = this.props.results[index];
+    if (item) {
+      ipcRenderer.send("startDrag", item);
+    }
+  }
+
   render() {
     const { results } = this.props;
     const { selected } = this.state;
@@ -138,7 +146,8 @@ class List extends React.Component {
             selected={selected === index}
             onClick={() => this.setState({ selected: index })}
             onDoubleClick={this.onDoubleClick}
-            onContextMenu={this.onContextMenu.bind(this, index)}
+            onContextMenu={() => this.onContextMenu(index)}
+            onDragStart={(event) => this.onDragStart(event, index)}
           />
         ))}
 

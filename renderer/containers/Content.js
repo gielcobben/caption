@@ -16,6 +16,14 @@ const mapDispatchToProps = {
     const rawFiles = event.dataTransfer
       ? event.dataTransfer.files
       : event.target.files;
+    if (!rawFiles || !rawFiles.length) {
+      return;
+    }
+
+    // Prevent handling self-dropped subtitles on our own window.
+    if (event.nativeEvent.dataTransfer.effectAllowed !== "all") {
+      return;
+    }
 
     Object.keys(rawFiles).map(key => droppedItems.push(rawFiles[key].path));
 

@@ -6,11 +6,14 @@ const ListItem = ({
   onClick,
   onDoubleClick,
   onContextMenu,
+  onDragStart,
 }) => (
   <li
+    draggable={true}
     onClick={onClick}
     onDoubleClick={onDoubleClick}
     onContextMenu={onContextMenu}
+    onDragStart={onDragStart}
     className={selected ? "selected" : ""}
   >
     {item.name}
