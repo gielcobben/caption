@@ -27,6 +27,9 @@ const createMainWindow = () => {
     acceptFirstMouse: true,
     opacity: 1,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
       backgroundThrottling: false,
       webSecurity: false,
     },

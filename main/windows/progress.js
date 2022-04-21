@@ -17,6 +17,9 @@ const createProgressWindow = () => {
     fullscreenable: false,
     backgroundColor: "#ECECEC",
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
       backgroundThrottling: false,
       webSecurity: false,
     },
