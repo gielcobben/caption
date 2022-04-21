@@ -81,6 +81,7 @@ class List extends React.Component {
       shell.openItem(item.path);
     } else {
       ipcRenderer.send("downloadSubtitle", item);
+      this.markItemAsDownloaded(item);
     }
   }
 
@@ -112,6 +113,7 @@ class List extends React.Component {
           label: "Download",
           click: () => {
             ipcRenderer.send("downloadSubtitle", item);
+            this.markItemAsDownloaded(item);
           },
         },
       ]);
@@ -130,7 +132,13 @@ class List extends React.Component {
     const item = this.props.results[index];
     if (item) {
       ipcRenderer.send("startDrag", item);
+      this.markItemAsDownloaded(item);
     }
+  }
+
+  markItemAsDownloaded(item) {
+    item.status = "done";
+    this.forceUpdate();
   }
 
   render() {
