@@ -15,7 +15,7 @@ const textSearch = async (...args) => {
     })
     .on("completed", results => {
       const subtitles = {
-        results,
+        results: JSON.parse(JSON.stringify(results)),
         isFinished: true,
       };
 
