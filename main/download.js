@@ -49,23 +49,20 @@ const singleDownload = async item => {
   const hasExtension = item.name.includes(".srt");
   const filename = hasExtension ? item.name : `${item.name}.srt`;
   const { mainWindow } = global.windows;
-  const saveToPath = await new Promise(resolve => {
-    dialog.showSaveDialog(
-      mainWindow,
-      {
-        title: "Download",
-        defaultPath: filename,
-      },
-      resolve,
-    );
-  });
+  const saveDialogResult = await dialog.showSaveDialog(
+    mainWindow,
+    {
+      title: "Download",
+      defaultPath: filename,
+    },
+  );
 
-  if (!saveToPath) {
+  if (!saveDialogResult || saveDialogResult.canceled) {
     return;
   }
 
   try {
-    Caption.download(item, item.source, saveToPath)
+    Caption.download(item, item.source, saveDialogResult.filePath)
       .then(() => {
         notification(`${item.name} is successfully downloaded!`);
         mainWindow.webContents.send("singleDownloadSuccesfull", item);
