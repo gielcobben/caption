@@ -81,11 +81,14 @@ const singleDownloadToTemp = async (item) => {
 
   const tempFile = path.join(os.tmpdir(), filename);
   if (!fs.existsSync(tempFile)) {
-    await Caption.download(item, item.source, tempFile);
+    // Make sure the temp file exists.
+    fs.closeSync(fs.openSync(tempFile, 'w'));
+    // Start downloading with caption-core.
+    Caption.download(item, item.source, tempFile);
   }
   // Add a barely noticeable timeout here, that seems to fix failure to drop occasionally.
   // More: https://stackoverflow.com/questions/51194816/electron-drag-and-drop-remote-files-on-desktop
-  await new Promise(resolve => setTimeout(resolve, 350));
+  await new Promise(resolve => setTimeout(resolve, 150));
 
   return tempFile;
 };
