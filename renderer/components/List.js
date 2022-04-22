@@ -68,9 +68,7 @@ class List extends React.Component {
   onDoubleClick() {
     const { results } = this.props;
     const { selected } = this.state;
-
-    // Nothing selected.
-    if (!selected) {
+    if (selected === undefined) {
       return;
     }
 
