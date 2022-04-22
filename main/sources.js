@@ -7,7 +7,7 @@ const textSearch = async (...args) => {
   Caption.searchByQuery(...args)
     .on("fastest", results => {
       const subtitles = {
-        results,
+        results: JSON.parse(JSON.stringify(results)),
         isFinished: false,
       };
 
