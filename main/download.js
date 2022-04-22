@@ -18,8 +18,10 @@ const multiDownload = files => {
         const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
         return Caption.download(
-          item,
-          item.source,
+          // Some revisions of Caption.download() may expect a "downloadUrl" attribute.
+          { downloadUrl: item.subtitle.url },
+          // Some revisions of Caption.fileSearch() may return an empty source, default to "opensubtitles".
+          item.subtitle.source || "opensubtitles",
           `${downloadLocation}/${subtitleFilename}.srt`,
         ).then(() => {
           resultSet.push(`${downloadLocation}/${subtitleFilename}.srt`);
