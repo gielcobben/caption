@@ -19,7 +19,7 @@ const multiDownload = files => {
 
         return Caption.download(
           // Some revisions of Caption.download() may expect a "downloadUrl" attribute.
-          { downloadUrl: item.subtitle.url },
+          { downloadUrl: item.subtitle.url || item.subtitle.downloadUrl },
           // Some revisions of Caption.fileSearch() may return an empty source, default to "opensubtitles".
           item.subtitle.source || "opensubtitles",
           `${downloadLocation}/${subtitleFilename}.srt`,
