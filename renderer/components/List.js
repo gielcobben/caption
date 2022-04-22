@@ -76,7 +76,7 @@ class List extends React.Component {
 
     // If size is specified, the file is dropped.
     if (item.size) {
-      shell.openItem(item.path);
+      shell.openPath(item.path);
     } else {
       ipcRenderer.send("downloadSubtitle", item);
       this.markItemAsDownloaded(item);
@@ -95,7 +95,7 @@ class List extends React.Component {
         {
           label: "Open",
           click: () => {
-            shell.openItem(item.path);
+            shell.openPath(item.path);
           },
         },
         {
