@@ -1,4 +1,5 @@
-const path = require("path");
+const { resolve } = require("app-root-path");
+const { format } = require("url");
 const Store = require("electron-store");
 const prepareNext = require("electron-next");
 const { app, ipcMain, dialog } = require("electron");
@@ -135,7 +136,9 @@ app.on("ready", async () => {
   ipcMain.on("startDrag",  async (event, item) => {
     event.sender.startDrag({
       file: await singleDownloadToTemp(item),
-      icon: path.join(__dirname, "../renderer/static/icon.iconset/icon_32x32.png"),
+      icon: format({
+        pathname: resolve("renderer/out/static/icon.iconset/icon_32x32.png"),
+      }),
     });
   });
 });
