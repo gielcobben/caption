@@ -26,7 +26,7 @@
   "scripts": {
     "start": "electron --inspect=5858 .",
     "build": "npm run test && next build renderer && next export renderer",
-    "dist:mac": "export CSC_IDENTITY_AUTO_DISCOVERY=\"true\"; node -r dotenv/config node_modules/.bin/electron-builder --mac -p always",
+    "dist:mac": "export CSC_IDENTITY_AUTO_DISCOVERY=\"true\"; node -r dotenv/config node_modules/.bin/electron-builder --mac --x64 --arm64 -p always",
     "dist:windows": "export CSC_NAME=\"Defringe\"; export CSC_IDENTITY_AUTO_DISCOVERY=\"false\"; export CSC_LINK=\"~/Defringe.p12\"; node -r dotenv/config node_modules/.bin/electron-builder --windows -p always",
     "dist:linux": "node -r dotenv/config node_modules/.bin/electron-builder --linux -p always",
     "dist": "npm run build && npm run dist:mac && npm run dist:windows && npm run dist:linux",
