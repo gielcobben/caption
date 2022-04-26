@@ -128,7 +128,7 @@ class List extends React.Component {
   onDragStart(event, index) {
     event.dataTransfer.effectAllowed = "copy";
     const item = this.props.results[index];
-    if (item) {
+    if (item && item.downloadUrl) {
       ipcRenderer.send("startDrag", item);
       this.markItemAsDownloaded(item);
     }
