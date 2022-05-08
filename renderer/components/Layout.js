@@ -130,6 +130,7 @@ const Layout = ({ children }) => (
           line-height: 1;
           margin: 0;
           font-size: 15px;
+          background: rgba(255, 255, 255, 0.5);
         }
 
         a {

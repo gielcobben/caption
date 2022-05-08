@@ -11,7 +11,7 @@ const createAboutWindow = () => {
     minimizable: false,
     maximizable: false,
     fullscreenable: false,
-    vibrancy: "sidebar",
+    vibrancy: "medium-light",
     title: "About",
     titleBarStyle: "hidden-inset",
     show: false,

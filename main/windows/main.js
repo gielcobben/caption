@@ -19,7 +19,7 @@ const createMainWindow = () => {
     title: "Caption",
     minWidth: 300,
     minHeight: 300,
-    vibrancy: "sidebar",
+    vibrancy: "medium-light",
     titleBarStyle: "hiddenInset",
     show: false,
     center: true,

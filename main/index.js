@@ -1,4 +1,5 @@
 const { resolve } = require("app-root-path");
+const isDev = require("electron-is-dev");
 const { format } = require("url");
 const Store = require("electron-store");
 const prepareNext = require("electron-next");
@@ -28,7 +29,7 @@ const store = new Store();
 let willQuitApp = false;
 
 // Functions
-const downloadSubtitle = item => {
+const downloadSubtitle = (item) => {
   if (!item) {
     return false;
   }
@@ -36,11 +37,11 @@ const downloadSubtitle = item => {
   return singleDownload(item);
 };
 
-const showErrorDialog = online => {
+const showErrorDialog = (online) => {
   if (!online) {
     dialog.showErrorBox(
       "Oops, something went wrong",
-      "It seems like your computer is offline! Please connect to the internet to use Caption.",
+      "It seems like your computer is offline! Please connect to the internet to use Caption."
     );
   }
 };
@@ -87,21 +88,19 @@ app.on("ready", async () => {
     progressWindow: createProgressWindow(),
   };
 
-  const {
-    mainWindow,
-    aboutWindow,
-    checkWindow,
-    progressWindow,
-  } = global.windows;
+  const { mainWindow, aboutWindow, checkWindow, progressWindow } =
+    global.windows;
 
   mainWindow.on("close", () => {
     global.windows = null;
     app.exit();
     app.quit();
   });
-  aboutWindow.on("close", event => closeAboutWindow(event, willQuitApp));
-  checkWindow.on("close", event => closeCheckWindow(event, willQuitApp));
-  progressWindow.on("close", event => closeProgressWindow(event, willQuitApp));
+  aboutWindow.on("close", (event) => closeAboutWindow(event, willQuitApp));
+  checkWindow.on("close", (event) => closeCheckWindow(event, willQuitApp));
+  progressWindow.on("close", (event) =>
+    closeProgressWindow(event, willQuitApp)
+  );
 
   // Setup
   buildMenu();
@@ -133,11 +132,15 @@ app.on("ready", async () => {
     processFiles(droppedItems);
   });
 
-  ipcMain.on("startDrag",  async (event, item) => {
+  ipcMain.on("startDrag", async (event, item) => {
     event.sender.startDrag({
       file: await singleDownloadToTemp(item),
       icon: format({
-        pathname: resolve("renderer/out/static/icon.iconset/icon_32x32.png"),
+        pathname: resolve(
+          isDev
+            ? "renderer/static/icon.iconset/icon_32x32.png"
+            : "renderer/out/static/icon.iconset/icon_32x32.png"
+        ),
       }),
     });
   });
