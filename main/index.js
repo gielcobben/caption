@@ -1,3 +1,5 @@
+const { resolve } = require("app-root-path");
+const { format } = require("url");
 const Store = require("electron-store");
 const prepareNext = require("electron-next");
 const { app, ipcMain, dialog } = require("electron");
@@ -8,7 +10,7 @@ const initSettings = require("./settings");
 const notification = require("./notification");
 const { processFiles } = require("./utils");
 const { checkForUpdates } = require("./updater");
-const { singleDownload } = require("./download");
+const { singleDownload, singleDownloadToTemp } = require("./download");
 const { textSearch, fileSearch } = require("./sources");
 
 // Windows
@@ -129,5 +131,14 @@ app.on("ready", async () => {
 
   ipcMain.on("processFiles", (event, droppedItems) => {
     processFiles(droppedItems);
+  });
+
+  ipcMain.on("startDrag",  async (event, item) => {
+    event.sender.startDrag({
+      file: await singleDownloadToTemp(item),
+      icon: format({
+        pathname: resolve("renderer/out/static/icon.iconset/icon_32x32.png"),
+      }),
+    });
   });
 });

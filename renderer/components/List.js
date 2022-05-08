@@ -32,8 +32,6 @@ class List extends React.Component {
   }
 
   onKeyDown(event) {
-    const { onDoubleClick } = this.props;
-
     if (event.keyCode === ARROW_DOWN_KEY) {
       this.onArrowDown();
     }
@@ -42,7 +40,7 @@ class List extends React.Component {
       this.onArrowUp();
     }
 
-    if (event.keyCode === ENTER_KEY) {
+    if (event.keyCode === ENTER_KEY && event.target.nodeName !== "INPUT") {
       this.onDoubleClick();
     }
   }
@@ -70,13 +68,18 @@ class List extends React.Component {
   onDoubleClick() {
     const { results } = this.props;
     const { selected } = this.state;
+    if (selected === undefined) {
+      return;
+    }
+
     const item = results[selected];
 
     // If size is specified, the file is dropped.
     if (item.size) {
-      shell.openItem(item.path);
+      shell.openPath(item.path);
     } else {
       ipcRenderer.send("downloadSubtitle", item);
+      this.markItemAsDownloaded(item);
     }
   }
 
@@ -92,7 +95,7 @@ class List extends React.Component {
         {
           label: "Open",
           click: () => {
-            shell.openItem(item.path);
+            shell.openPath(item.path);
           },
         },
         {
@@ -108,6 +111,7 @@ class List extends React.Component {
           label: "Download",
           click: () => {
             ipcRenderer.send("downloadSubtitle", item);
+            this.markItemAsDownloaded(item);
           },
         },
       ]);
@@ -119,6 +123,20 @@ class List extends React.Component {
         template.popup(remote.getCurrentWindow());
       }, 10);
     });
+  }
+
+  onDragStart(event, index) {
+    event.dataTransfer.effectAllowed = "copy";
+    const item = this.props.results[index];
+    if (item && item.downloadUrl) {
+      ipcRenderer.send("startDrag", item);
+      this.markItemAsDownloaded(item);
+    }
+  }
+
+  markItemAsDownloaded(item) {
+    item.status = "done";
+    this.forceUpdate();
   }
 
   render() {
@@ -134,7 +152,8 @@ class List extends React.Component {
             selected={selected === index}
             onClick={() => this.setState({ selected: index })}
             onDoubleClick={this.onDoubleClick}
-            onContextMenu={this.onContextMenu.bind(this, index)}
+            onContextMenu={() => this.onContextMenu(index)}
+            onDragStart={(event) => this.onDragStart(event, index)}
           />
         ))}
 

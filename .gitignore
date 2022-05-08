@@ -17,3 +17,6 @@ npm-debug.log
 
 # update files
 dev-app-update.yml
+
+# jetbrains
+.idea/

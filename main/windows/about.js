@@ -19,6 +19,9 @@ const createAboutWindow = () => {
     autoHideMenuBar: true,
     acceptFirstMouse: true,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
       backgroundThrottling: false,
       webSecurity: false,
     },

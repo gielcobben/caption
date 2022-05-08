@@ -1,4 +1,6 @@
+const fs = require("fs");
 const path = require("path");
+const os = require("os");
 const { dialog } = require("electron");
 const notification = require("./notification");
 const Caption = require("caption-core");
@@ -16,8 +18,10 @@ const multiDownload = files => {
         const subtitleFilename = originalFileName.replace(/\.[^/.]+$/, "");
 
         return Caption.download(
-          item,
-          item.source,
+          // Some revisions of Caption.download() may expect a "downloadUrl" attribute.
+          { downloadUrl: item.subtitle.url || item.subtitle.downloadUrl },
+          // Some revisions of Caption.fileSearch() may return an empty source, default to "opensubtitles".
+          item.subtitle.source || "opensubtitles",
           `${downloadLocation}/${subtitleFilename}.srt`,
         ).then(() => {
           resultSet.push(`${downloadLocation}/${subtitleFilename}.srt`);
@@ -49,27 +53,22 @@ const singleDownload = async item => {
   const hasExtension = item.name.includes(".srt");
   const filename = hasExtension ? item.name : `${item.name}.srt`;
   const { mainWindow } = global.windows;
-  const saveToPath = await new Promise(resolve => {
-    dialog.showSaveDialog(
-      mainWindow,
-      {
-        title: "Download",
-        defaultPath: filename,
-      },
-      resolve,
-    );
-  });
+  const saveDialogResult = await dialog.showSaveDialog(
+    mainWindow,
+    {
+      title: "Download",
+      defaultPath: filename,
+    },
+  );
 
-  if (!saveToPath) {
+  if (!saveDialogResult || saveDialogResult.canceled) {
     return;
   }
 
   try {
-    Caption.download(item, item.source, saveToPath)
+    Caption.download(item, item.source, saveDialogResult.filePath)
       .then(() => {
         notification(`${item.name} is successfully downloaded!`);
-        mainWindow.webContents.send("singleDownloadSuccesfull", item);
-
         triggerDonateWindow();
       })
       .catch(err => console.log("error", err));
@@ -78,4 +77,22 @@ const singleDownload = async item => {
   }
 };
 
-module.exports = { multiDownload, singleDownload };
+const singleDownloadToTemp = async (item) => {
+  const hasExtension = item.name.includes(".srt");
+  const filename = hasExtension ? item.name : `${item.name}.srt`;
+
+  const tempFile = path.join(os.tmpdir(), filename);
+  if (!fs.existsSync(tempFile)) {
+    // Make sure the temp file exists.
+    fs.closeSync(fs.openSync(tempFile, 'w'));
+    // Start downloading with caption-core.
+    Caption.download(item, item.source, tempFile);
+  }
+  // Add a barely noticeable timeout here, that seems to fix failure to drop occasionally.
+  // More: https://stackoverflow.com/questions/51194816/electron-drag-and-drop-remote-files-on-desktop
+  await new Promise(resolve => setTimeout(resolve, 150));
+
+  return tempFile;
+};
+
+module.exports = { multiDownload, singleDownload, singleDownloadToTemp };

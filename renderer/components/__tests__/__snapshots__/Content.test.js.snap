@@ -10,15 +10,19 @@ exports[`<Content /> should render <List /> when files dropped are dropped 1`] =
   >
     <li
       className="jsx-572805028 "
+      draggable={true}
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
+      onDragStart={[Function]}
     />
     <li
       className="jsx-572805028 "
+      draggable={true}
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
+      onDragStart={[Function]}
     />
   </ul>
 </section>
@@ -50,15 +54,19 @@ exports[`<Content /> should render <List /> when there are results 1`] = `
   >
     <li
       className="jsx-572805028 "
+      draggable={true}
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
+      onDragStart={[Function]}
     />
     <li
       className="jsx-572805028 "
+      draggable={true}
       onClick={[Function]}
       onContextMenu={[Function]}
       onDoubleClick={[Function]}
+      onDragStart={[Function]}
     />
   </ul>
 </section>
